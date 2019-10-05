@@ -15,6 +15,11 @@
 var basePath = '/DATABASE/DEVELOPMENT/PUBLIC/';
 var baseProductionPath = '/DATABASE/PRODUCTION/PUBLIC/';
 var baseTestingPath = '/DATABASE/TESTING/PUBLIC/';
+
+var imagebasePath = '/DATABASE/DEVELOPMENT/PUBLIC/';
+var imagebaseProductionPath = '/DATABASE/PRODUCTION/PUBLIC/';
+var imagebaseTestingPath = '/DATABASE/TESTING/PUBLIC/';
+
 // *********************************************
 
 // ********************************************
@@ -38,6 +43,9 @@ var sleep_timer = 1000;
 
 // Network status
 var is_network_present = true;
+
+// Upload Image Status : Is image ready to upload or not
+var is_upload_image_ready = false;
 
 // Key Selection Table
 var currentKeyTableData = 'NA';
@@ -280,7 +288,12 @@ function disableHandling(){
   for(var each_doc_key in allDocData) {
      if(each_doc_key != 'MAIN'){
 
-          if(image_tab_option == 'NO') {console.log('Disable Image Tab.' + each_doc_key); document.getElementById('image-'+each_doc_key).style.display = "none";}
+          if(image_tab_option == 'NO') {
+              console.log('Disable Image Tab.' + each_doc_key); 
+              document.getElementById('image-'+each_doc_key).style.display = "none";
+              document.getElementById('image_pro-'+each_doc_key).style.display = "none";
+           }
+
           if(multi_tab_option == 'NO') {console.log('Disable Multi Tab.' + each_doc_key); document.getElementById('multi-'+each_doc_key).style.display = "none";}
           if(form_tab_option == 'NO') {console.log('Disable Form Tab.' + each_doc_key); document.getElementById('form-'+each_doc_key).style.display = "none";}
 
@@ -320,6 +333,9 @@ function getTabPanelHTMLFormat(tab_id,nav_id,docData,docID) {
 	html += '</li>\n';
 	html += '<li class="nav-item">\n';
 	html += '<a class="nav-link" id="image-' + docID +'" data-toggle="tab" href="#image_' + nav_id + '" role="tab" aria-controls="image" aria-selected="false">IMAGE</a>\n';
+    html += '</li>\n';
+    html += '<li class="nav-item">\n';
+	html += '<a class="nav-link" id="image_pro-' + docID +'" data-toggle="tab" href="#image_pro_' + nav_id + '" role="tab" aria-controls="image" aria-selected="false">IMAGE PRO</a>\n';
 	html += '</li>\n';
 	html += '<li class="nav-item">\n';
 	html += '<a class="nav-link" id="multi-' + docID +'" data-toggle="tab" href="#multi_' + nav_id + '" role="tab" aria-controls="multi" aria-selected="false">MULTI</a>\n';
@@ -577,7 +593,7 @@ function getTabPanelHTMLFormat(tab_id,nav_id,docData,docID) {
 
 
         	   }
-        	}
+    }
 
 	
 	html += '</div>\n';
@@ -608,7 +624,9 @@ function getTabPanelHTMLFormat(tab_id,nav_id,docData,docID) {
 			html += '<div class="card-body">\n';
 			html += '<p class="card-text">' + infoData['DESC'] + '</p>\n';
 
-			// --------- Create Image Sub Components
+            // --------- Create Image Sub Components
+            var is_db_image_present = false
+            
 			for(var sub_info in data) {
 			    var sub_info_data = data[sub_info];
 
@@ -619,11 +637,30 @@ function getTabPanelHTMLFormat(tab_id,nav_id,docData,docID) {
                     eachDocFormIDdetails[key+'_'+sub_info] = docID + '_' + key + '_' + sub_info + '_' + infoData['MODE'] + '_'  +  sub_info_data['TYPE'];
 			        html += '<div id = "' + 'DIV_' + eachDocFormIDdetails[key+'_'+sub_info] + '" class="form-group">\n';
                     html += '<h5>' + sub_info_data['KEY'] + '</h5>\n';
-                    html += '<p class="card-subtitle mb-2 text-muted" style="font-size:70%;">' + sub_info_data['DESC'] + '</p>\n';
+                    html += '<p class="card-subtitle mb-2 text-muted" style="font-size:70%;">' + sub_info_data['DESC'] + '</p>\n';                    
                     html += '<input type="text" class="form-control" id="' + eachDocFormIDdetails[key+'_'+sub_info] + '" required value="' + sub_info_data['VALUE'] +'">\n';
+                                       
                     // Create Button
-                    html +='<br><input type="button" id="' + eachDocFormIDdetails[key+'_'+sub_info] + '_VIEW_IMAGE_BTN' +'" class="btn btn-primary" value="View" onclick="viewImage(\'' + eachDocFormIDdetails[key+'_'+sub_info] + '\')" />';
+                    if(sub_info == 'INFO3') {
+                        html +='<br><input type="button" id="' + eachDocFormIDdetails[key+'_'+sub_info] + '_VIEW_IMAGE_BTN' +'" class="btn btn-primary" value="View" onclick="viewImage(\'' + eachDocFormIDdetails[key+'_'+sub_info] + '\')" />';
+                    }
+                    html += '</div><br>\n';
 
+
+                } else if(sub_info_data['TYPE'] == 'TEXT_DIS') {
+
+                    eachDocFormIDdetails[key+'_'+sub_info] = docID + '_' + key + '_' + sub_info + '_' + infoData['MODE'] + '_'  +  sub_info_data['TYPE'];
+			        html += '<div id = "' + 'DIV_' + eachDocFormIDdetails[key+'_'+sub_info] + '" class="form-group">\n';
+                    html += '<h5>' + sub_info_data['KEY'] + '</h5>\n';
+                    html += '<p class="card-subtitle mb-2 text-muted" style="font-size:70%;">' + sub_info_data['DESC'] + '</p>\n';                    
+                    html += '<input type="text" class="form-control" id="' + eachDocFormIDdetails[key+'_'+sub_info] + '" required value="' + sub_info_data['VALUE'] +'" disabled>\n';
+                                        
+                    // Create Button
+                    if(sub_info == 'INFO1') {
+                        html +='<br><input type="button" id="' + eachDocFormIDdetails[key+'_'+sub_info] + '_VIEW_IMAGE_BTN' +'" class="btn btn-primary" value="View" onclick="viewImage(\'' + eachDocFormIDdetails[key+'_'+sub_info] + '\')" />';
+                    } else if(sub_info == 'INFO2') {
+                        if(sub_info_data['VALUE'] != 'NA'){is_db_image_present = true}
+                    }
                     html += '</div><br>\n';
 
 
@@ -650,9 +687,13 @@ function getTabPanelHTMLFormat(tab_id,nav_id,docData,docID) {
 
             }
             
-             // Create Button
-             html +='<input type="button" id="' + docID + '_' + key + '_UPLOAD_IMAGE_BTN' +'" class="btn btn-primary" value="Upload Image" onclick="uploadImage(\'' + docID + '#' + key + '\')" />';
-
+             // Create Button             
+             html +='<input type="button" id="' + docID + '_' + key + '_UPLOAD_IMAGE_BTN' +'" class="btn btn-primary" value="Upload Image" onclick="uploadImage(\'' + eachDocFormIDdetails[key] + '#' + imagebasePath+coll_lang+'/'+coll_name+'/'  + '\')" />';
+             
+             if(is_db_image_present) {
+                // Reset Button
+                html +='<input type="button" id="' + docID + '_' + key + '_RESET_IMAGE_BTN' +'" class="btn btn-warning" value="RESET" style="margin-left: 30px" onclick="resetImage(\'' + docID + '#' + key  + '\')" />';
+            }
 
             html += '</div>\n';
             html += '</div>\n';
@@ -661,9 +702,114 @@ function getTabPanelHTMLFormat(tab_id,nav_id,docData,docID) {
 
 	   }
 	   
-	}
+	}	
 	
-	
+    html += '</div>\n';
+    
+
+    // ----------------------------------------------
+	// ----------------- IMAGE PRO-------------------
+	// ----------------------------------------------
+	html += '<div class="tab-pane fade" id="image_pro_' + nav_id +'" role="tabpanel" aria-labelledby="image_pro-tab"><br>\n';
+
+	for (var key in docData) {
+	   infoData =  docData[key];
+
+
+	   if(infoData['MODE'] == 'IMAGE_PRO' && infoData['TYPE'] == 'TREE') {
+		    //console.log(infoData);
+
+		    var data = infoData['VALUE'];
+
+		    // --------------- Card -------------------
+		    eachDocFormIDdetails[key] = docID + '_' + key + '_' + infoData['MODE'];
+		    html += '<br><div id= "' + 'DIV_' + eachDocFormIDdetails[key] +'" class="card border-secondary mb-3" ">\n';
+			html += '<div class="card-header">';
+			html += '<a class="card-link" data-toggle="collapse" href="#' + eachDocFormIDdetails[key] +'">' + infoData['KEY'] + '</a>\n';
+			html += '</div>\n';
+			html += '<div id="' + eachDocFormIDdetails[key] +'" class="collapse">';
+			html += '<div class="card-body">\n';
+			html += '<p class="card-text">' + infoData['DESC'] + '</p>\n';
+
+            // --------- Create Image Sub Components
+            var is_db_image_present = false
+
+			for(var sub_info in data) {
+			    var sub_info_data = data[sub_info];
+
+			    if(user_role == 'DEV') {sub_info_data['DESC'] = key + '_' + sub_info + ': ' + sub_info_data['DESC'];}
+
+			    if(sub_info_data['TYPE'] == 'TEXT') {
+
+                    eachDocFormIDdetails[key+'_'+sub_info] = docID + '_' + key + '_' + sub_info + '_' + infoData['MODE'] + '_'  +  sub_info_data['TYPE'];
+			        html += '<div id = "' + 'DIV_' + eachDocFormIDdetails[key+'_'+sub_info] + '" class="form-group">\n';
+                    html += '<h5>' + sub_info_data['KEY'] + '</h5>\n';
+                    html += '<p class="card-subtitle mb-2 text-muted" style="font-size:70%;">' + sub_info_data['DESC'] + '</p>\n';                    
+                    html += '<input type="text" class="form-control" id="' + eachDocFormIDdetails[key+'_'+sub_info] + '" required value="' + sub_info_data['VALUE'] +'">\n';
+                                       
+                    // Create Button
+                    if(sub_info == 'INFO3') {
+                        html +='<br><input type="button" id="' + eachDocFormIDdetails[key+'_'+sub_info] + '_VIEW_IMAGE_BTN' +'" class="btn btn-primary" value="View" onclick="viewImage(\'' + eachDocFormIDdetails[key+'_'+sub_info] + '\')" />';
+                    }
+                    html += '</div><br>\n';
+
+
+                } else if(sub_info_data['TYPE'] == 'TEXT_DIS') {
+
+                    eachDocFormIDdetails[key+'_'+sub_info] = docID + '_' + key + '_' + sub_info + '_' + infoData['MODE'] + '_'  +  sub_info_data['TYPE'];
+			        html += '<div id = "' + 'DIV_' + eachDocFormIDdetails[key+'_'+sub_info] + '" class="form-group">\n';
+                    html += '<h5>' + sub_info_data['KEY'] + '</h5>\n';
+                    html += '<p class="card-subtitle mb-2 text-muted" style="font-size:70%;">' + sub_info_data['DESC'] + '</p>\n';                    
+                    html += '<input type="text" class="form-control" id="' + eachDocFormIDdetails[key+'_'+sub_info] + '" required value="' + sub_info_data['VALUE'] +'" disabled>\n';
+                                        
+                    // Create Button
+                    if(sub_info == 'INFO1') {
+                        html +='<br><input type="button" id="' + eachDocFormIDdetails[key+'_'+sub_info] + '_VIEW_IMAGE_BTN' +'" class="btn btn-primary" value="View" onclick="viewImage(\'' + eachDocFormIDdetails[key+'_'+sub_info] + '\')" />';
+                    } else if(sub_info == 'INFO2') {
+                        if(sub_info_data['VALUE'] != 'NA'){is_db_image_present = true}
+                    }
+                    html += '</div><br>\n';
+
+
+			    } else if(sub_info_data['TYPE'] == 'BOOL'){
+
+                  eachDocFormIDdetails[key+'_'+sub_info] = docID + '_' + key + '_' + sub_info + '_' + infoData['MODE'] + '_'  +  sub_info_data['TYPE'];
+			      html +='<div id="' + 'DIV_' + eachDocFormIDdetails[key+'_'+sub_info] +'" class="card border-secondary mb-3" style="width: 28rem;">';
+                  html +='<div class="card-body">';
+                  html +='<h5 class="card-title">' + sub_info_data['KEY'] + '</h5>';
+                  html +='<p class="card-subtitle mb-2 text-muted" style="font-size:70%;">' + sub_info_data['DESC'] + '</p>';
+
+			       if(sub_info_data['VALUE'] == 'YES') {
+                        html += '<label class="radio-inline"><input type="radio" name="' +  eachDocFormIDdetails[key+'_'+sub_info]  +  '" value="YES" checked>YES</label>\n';
+                        html += '<label class="radio-inline"><input type="radio" style="margin-left: 30px" name="' + eachDocFormIDdetails[key+'_'+sub_info]  + '" value="NO" >NO</label>\n';
+                    } else {
+                        html += '<label class="radio-inline"><input type="radio" name="' + eachDocFormIDdetails[key+'_'+sub_info]  + '" value="YES" >YES</label>\n';
+                        html += '<label class="radio-inline"><input type="radio" style="margin-left: 30px" name="' + eachDocFormIDdetails[key+'_'+sub_info]  + '" value="NO" checked>NO</label>\n';
+                    }
+
+                    html +='</div>';
+                    html +='</div><br>';
+
+                }
+
+            }
+            
+             // Create Button             
+             html +='<input type="button" id="' + docID + '_' + key + '_UPLOAD_IMAGE_BTN' +'" class="btn btn-primary" value="Upload Image" onclick="uploadImage(\'' + eachDocFormIDdetails[key] + '#' + imagebaseProductionPath+coll_lang+'/'+coll_name+'/'  + '\')" />';
+             
+             if(is_db_image_present) {
+                // Reset Button
+                html +='<input type="button" id="' + docID + '_' + key + '_RESET_IMAGE_BTN' +'" class="btn btn-warning" value="RESET" style="margin-left: 30px" onclick="resetImage(\'' + docID + '#' + key  +'\')" />';
+            }
+
+            html += '</div>\n';
+            html += '</div>\n';
+			html += '</div>\n';
+
+
+	   }
+	   
+	}	
 	
 	html += '</div>\n';
 
@@ -1000,33 +1146,47 @@ function getCollectionAdminHTMLContent(docData) {
                       html += '<input type="number" class="form-control" id="' + allCollFormIDDetails[key] + '" required value="' + sub_info_data['VALUE'] +'">\n';
                       html += '</div>\n';
 
-                }   else if(sub_info_data['TYPE'] == 'BOOL'){
-
-                 allCollFormIDDetails[key] = key + '_' + sub_info + '_' +  sub_info_data['TYPE'];
-                 html +='<br><div id = "' + 'DIV_' + allCollFormIDDetails[key] + '" class="card border-secondary mb-3" style="width: 28rem;">';
-                 html +='<div class="card-body">';
-                 html +='<h5 class="card-title">' + sub_info_data['KEY'] + '</h5>';
-                 html +='<p class="card-subtitle mb-2 text-muted" style="font-size:70%;">' + sub_info_data['DESC'] + '</p>';
-
-                 //html += '<br><br><label data-toggle="tooltip" data-placement="bottom" title=' + sub_info_data['DESC'] + '>' + sub_info_data['KEY'] + '</label>\n';
-                 //html += '<label for="details">' +  ' : ' + '</label><br>\n';
-
-                 if(sub_info_data['VALUE'] == 'YES') {
-                        html += '<label class="radio-inline"><input type="radio" name="' + allCollFormIDDetails[key]  +  '" value="YES" checked>YES</label>\n';
-                        html += '<label class="radio-inline"><input type="radio" style="margin-left: 30px" name="' + allCollFormIDDetails[key]  + '" value="NO" >NO</label>\n';
-                    } else {
-                        html += '<label class="radio-inline"><input type="radio" name="' + allCollFormIDDetails[key]  + '" value="YES" >YES</label>\n';
-                        html += '<label class="radio-inline"><input type="radio" style="margin-left: 30px" name="' + allCollFormIDDetails[key]  + '" value="NO" checked>NO</label>\n';
-                 }
-
-                  html +='</div>';
-                  html +='</div><br>';
-
-              }
+                }   
 
 
          }
     }
+
+    // Display BOOL Option Only
+    for (var key in docData) {
+        sub_info_data =  docData[key];
+        sub_info = 'COLLMAIN'
+
+        if(user_role == 'DEV') {sub_info_data['DESC'] = key + ': ' + sub_info_data['DESC'];}
+
+
+        if(sub_info_data['MODE'] == 'INFO') {
+
+            if(sub_info_data['TYPE'] == 'BOOL'){
+
+                allCollFormIDDetails[key] = key + '_' + sub_info + '_' +  sub_info_data['TYPE'];
+                html +='<br><div id = "' + 'DIV_' + allCollFormIDDetails[key] + '" class="card border-secondary mb-3" style="width: 28rem;">';
+                html +='<div class="card-body">';
+                html +='<h5 class="card-title">' + sub_info_data['KEY'] + '</h5>';
+                html +='<p class="card-subtitle mb-2 text-muted" style="font-size:70%;">' + sub_info_data['DESC'] + '</p>';
+
+                //html += '<br><br><label data-toggle="tooltip" data-placement="bottom" title=' + sub_info_data['DESC'] + '>' + sub_info_data['KEY'] + '</label>\n';
+                //html += '<label for="details">' +  ' : ' + '</label><br>\n';
+
+                if(sub_info_data['VALUE'] == 'YES') {
+                       html += '<label class="radio-inline"><input type="radio" name="' + allCollFormIDDetails[key]  +  '" value="YES" checked>YES</label>\n';
+                       html += '<label class="radio-inline"><input type="radio" style="margin-left: 30px" name="' + allCollFormIDDetails[key]  + '" value="NO" >NO</label>\n';
+                   } else {
+                       html += '<label class="radio-inline"><input type="radio" name="' + allCollFormIDDetails[key]  + '" value="YES" >YES</label>\n';
+                       html += '<label class="radio-inline"><input type="radio" style="margin-left: 30px" name="' + allCollFormIDDetails[key]  + '" value="NO" checked>NO</label>\n';
+                }
+
+                 html +='</div>';
+                 html +='</div><br>';
+
+             }
+            }
+   }
 
    html += '</div>\n';
 
@@ -1391,8 +1551,6 @@ async function deleteDocument(collPath,docValue,message){
 */
 function deleteCurrentDocument(value){
 
-   var currentData = readCurrentDocData(value);
-
    var result = confirm("Do you want to DELETE " + value + " Document ?");
 
     if(result) {
@@ -1406,6 +1564,20 @@ function deleteCurrentDocument(value){
            del_docCount = 0;
            total_doc_before_del = 1;
            deleteDocument(basePath + coll_lang+'/'+coll_name,value,'Document DELETED !!');
+
+           // Collect Image Details and delete
+           var docData = allDocData[value]
+           for (var key in docData) {
+               infoData =  docData[key];     
+                if(infoData['MODE'] == 'IMAGE' && infoData['TYPE'] == 'TREE') {
+                    deleteImageFromDb(infoData['VALUE']['INFO2']['VALUE'])
+                }
+
+                if(infoData['MODE'] == 'IMAGE_PRO' && infoData['TYPE'] == 'TREE') {
+                    deleteImageFromDb(infoData['VALUE']['INFO2']['VALUE'])
+                }
+            }
+
 
 
          }
@@ -1587,12 +1759,64 @@ function saveCurrentCollection() {
        // Update Data Set with new Details
         var dbDataSet = allDocData['MAIN']
 
+        // Read TREE Types Details
+        /*
+        INFO15 : LISTREF
+        INFO16 : IMAGE
+        INFO17 : IMAGE_PRO
+        INFO18 : TREE
+        INFO19 : FORM
+        */
+       var list_ref_line = ''
+       var image_line = ''
+       var image_pro_line = ''
+       var multi_line = ''
+       var form_line = ''
+
+        for(each_doc_key in allDocData) {
+            if(each_doc_key != 'MAIN') {
+                var each_doc_key_data = allDocData[each_doc_key]
+
+                for(each_info_key in each_doc_key_data) {
+                    var each_info_data = each_doc_key_data[each_info_key]
+
+                    if(each_info_data['TYPE'] == 'TREE') {
+                        if(each_info_data['MODE'] == 'LISTREF') {list_ref_line = list_ref_line + each_info_key + ','}
+                        if(each_info_data['MODE'] == 'IMAGE') {image_line = image_line + each_info_key + ','}
+                        if(each_info_data['MODE'] == 'IMAGE_PRO') {image_pro_line = image_pro_line + each_info_key + ','}
+                        if(each_info_data['MODE'] == 'TREE') {multi_line = multi_line + each_info_key + ','}
+                        if(each_info_data['MODE'] == 'FORM') {form_line = form_line + each_info_key + ','}
+    
+                    }
+
+
+                }
+
+                if(list_ref_line == '') {list_ref_line = 'NA'} else {list_ref_line = list_ref_line.slice(0,-1)}
+                if(image_line == '') {image_line = 'NA'} else {image_line = image_line.slice(0,-1)}
+                if(image_pro_line == '') {image_pro_line = 'NA'} else {image_pro_line = image_pro_line.slice(0,-1)}
+                if(multi_line == '') {multi_line = 'NA'} else {multi_line = multi_line.slice(0,-1)}
+                if(form_line == '') {form_line = 'NA'} else {form_line = form_line.slice(0,-1)}
+
+                break;                
+            }
+        }        
+
          showPleaseWait();
 
         for (var key in dbDataSet) {
                  dbDataValue =  dbDataSet[key];
                  dbDataSet[key]['VALUE'] = currentData[key];
         }
+
+        // Update MAIN data set Info details
+        dbDataSet['INFO15']['VALUE'] = list_ref_line
+        dbDataSet['INFO16']['VALUE'] = image_line
+        dbDataSet['INFO17']['VALUE'] = image_pro_line
+        dbDataSet['INFO18']['VALUE'] = multi_line
+        dbDataSet['INFO19']['VALUE'] = form_line
+
+        dbDataSet['INFO6']['VALUE'] = Object.keys(allDocData).length - 1;
 
         console.log(dbDataSet);
 
@@ -1749,9 +1973,9 @@ function createTable(docID) {
 
 
 	var empTable = document.createElement('table');
-	empTable.setAttribute('id', docID + '_docDetailsTable');            // SET THE TABLE ID.
-	empTable.setAttribute('class', 'table table-bordered w-auto');            // SET THE TABLE ID.
-	empTable.setAttribute('cellspacing', '100');            // SET THE TABLE ID.
+	empTable.setAttribute('id', docID + '_docDetailsTable');           
+	empTable.setAttribute('class', 'table table-bordered w-auto');            
+	empTable.setAttribute('cellspacing', '100');            
 
 	var tr = empTable.insertRow(-1);
 
@@ -1759,7 +1983,7 @@ function createTable(docID) {
 
 		var th = document.createElement('th');          // TABLE HEADER.
 		th.innerHTML = arrHead[h];
-		//th.setAttribute('class', 'col-sm-2');
+		//th.setAttribute('width', '12%');
 		tr.appendChild(th);
 
 	}
@@ -1822,11 +2046,11 @@ function addRow(count,docID,keyData,dbData,currentData,dbKey) {
             break;
 
 			case 3:
-                td.innerHTML = dbData;
+                    td.innerHTML = '<p class="wrap">' + dbData + '</p>';                
 			break;
 
 			case 4:
-                td.innerHTML = currentData;
+                    td.innerHTML = '<p class="wrap">' + currentData + '</p>';;               
 			break;
 		}
 
@@ -2398,7 +2622,12 @@ async function deletePublishedDocument(collPath,docValue,db_basePath){
 // -------- Create DATA Collection ---------
 function createDATACollection(collection_path,db_basePath) {
 	
-	updateCollectionListData(db_basePath);
+    updateCollectionListData(db_basePath);
+    
+    var publish_mode = 'DEV';
+    if(db_basePath.includes('PRODUCTION')) {
+        publish_mode = 'PRO';
+    }
 	
    // Read Current Collection Data
 
@@ -2429,29 +2658,45 @@ function createDATACollection(collection_path,db_basePath) {
 
 			   // Check for Type
 			   if(info_data['TYPE'] == 'TREE') {
-					// Parse Into Tree Data
-					for(var sub_info_key in info_data['VALUE']) {
-						var sub_info_data = info_data['VALUE'][sub_info_key];
-						
-						// ------ Check Publish Options -----------
-						if(sub_info_data['PUBLISH'] == 'YES') {
-							// Check for Data Type
-							if(sub_info_data['TYPE'] == 'BOOL') {
-								 if(sub_info_data['VALUE'] == "YES") {
-									 newDocDataSet[info_key + '_' + sub_info_key] = true;
-								 } else {
-									 newDocDataSet[info_key + '_' + sub_info_key] = false;
-								 }
-							  } else if(sub_info_data['TYPE'] == 'NUM') {
-								 newDocDataSet[info_key + '_' + sub_info_key] = Number(sub_info_data['VALUE']);
-							  } else {
-								 newDocDataSet[info_key + '_' + sub_info_key] = sub_info_data['VALUE'];
-							  }
-						} else {
-							console.log('Not Published : ' + sub_info_key);
-						}
+                    // Handle Image Dev and Production 
+                    var publish_tree_content = true;
+                    if(info_data['MODE'] == 'IMAGE_PRO' && publish_mode == 'DEV') {
+                        publish_tree_content = false;
+                    }
 
-					}
+                    if(info_data['MODE'] == 'IMAGE' && publish_mode == 'PRO') {
+                        publish_tree_content = false;
+                    }
+
+
+                    if(publish_tree_content) {
+                            // Parse Into Tree Data
+                            for(var sub_info_key in info_data['VALUE']) {
+                                
+                                var sub_info_data = info_data['VALUE'][sub_info_key];
+                                
+                                // ------ Check Publish Options -----------
+                                if(sub_info_data['PUBLISH'] == 'YES') {
+                                    // Check for Data Type
+                                    if(sub_info_data['TYPE'] == 'BOOL') {
+                                        if(sub_info_data['VALUE'] == "YES") {
+                                            newDocDataSet[info_key + '_' + sub_info_key] = true;
+                                        } else {
+                                            newDocDataSet[info_key + '_' + sub_info_key] = false;
+                                        }
+                                    } else if(sub_info_data['TYPE'] == 'NUM') {
+                                        newDocDataSet[info_key + '_' + sub_info_key] = Number(sub_info_data['VALUE']);
+                                    } else {
+                                        newDocDataSet[info_key + '_' + sub_info_key] = sub_info_data['VALUE'];
+                                    }
+                                } else {
+                                    console.log('Not Published : ' + sub_info_key);
+                                }
+
+                            }
+                    
+                        }
+
 			   } else {
 				   
 				   // ------ Check Publish Options -----------
@@ -2879,6 +3124,19 @@ function deleteCompleteCollection(base_coll_path,collection_name,nextStageStatus
                 querySnapshot.forEach((doc) => {
                     //console.log(`${doc.id} =>`, doc.data());
                     deleteFinalDocument(base_coll_path+coll_lang+'/'+collection_name,doc.id,nextStageStatus)
+
+                    // Collect Image Details and delete
+                    var docData = doc.data()
+                    for (var key in docData) {
+                        infoData =  docData[key];     
+                            if(infoData['MODE'] == 'IMAGE' && infoData['TYPE'] == 'TREE') {
+                                deleteImageFromDb(infoData['VALUE']['INFO2']['VALUE'])
+                            }
+
+                            if(infoData['MODE'] == 'IMAGE_PRO' && infoData['TYPE'] == 'TREE') {
+                                deleteImageFromDb(infoData['VALUE']['INFO2']['VALUE'])
+                            }
+                        }
                 });
 
             } else {
@@ -2965,7 +3223,7 @@ function deleteProductionCollection(){
 function uploadImage(value) {
     console.log(value)
 
-    uploadIMAGE('dasd')
+    uploadIMAGEmodel(value)
 
 
 } //EOF
@@ -2975,12 +3233,12 @@ function viewImage(value) {
     var image_details =  $('#' + value).val();
 
     //console.log(image_details)
-
-    showIMAGE(image_details)
+    if(image_details != 'NA') {
+        showIMAGEmodel(image_details)
+    }
 
 
 } //EOF
-
 
 function viewHTML(value) {
     //console.log(value)
@@ -2988,7 +3246,7 @@ function viewHTML(value) {
 
     console.log(html_details)
 
-    showHTML(html_details);
+    showHTMLmodel(html_details);
 
 
 } //EOF
@@ -3028,7 +3286,7 @@ function hidePleaseWait() {
 }
 
 // --- Show HTML Model ----
-function showHTML(html_content) {
+function showHTMLmodel(html_content) {
 
     var elem = document.getElementById('showHTMLmodel');
     if(elem){elem.parentNode.removeChild(elem);}
@@ -3056,13 +3314,8 @@ function showHTML(html_content) {
     $("#showHTMLmodel").modal("show");
 }
 
-function hideHTML() {
-  // Hide progress
-    $("#showHTMLmodel").modal("hide");
-}
-
 // --- Show IMAGE Model ----
-function showIMAGE(image_content) {
+function showIMAGEmodel(image_content) {
 
     var elem = document.getElementById('showIMAGEmodel');
     if(elem){elem.parentNode.removeChild(elem);}
@@ -3071,13 +3324,14 @@ function showIMAGE(image_content) {
     <div class="modal-dialog modal-lg" role="document">\
       <div class="modal-content">\
         <div class="modal-header">\
-          <h5 class="modal-title" id="showIMAGEmodelLabel">IMAGE Content</h5>\
+          <h5 class="modal-title" id="showIMAGEmodelLabel">IMAGE View</h5>\
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">\
             <span aria-hidden="true">&times;</span>\
           </button>\
         </div>\
         <div class="modal-body">\
-        <img src="' + image_content +'" alt="Image" class="center"></img> \
+        <img src="' + image_content +'" class="img-fluid" alt="Image"></img> \
+        <p class="wrap"><font size="1">' + image_content + '</font></p>\
         </div>\
         <div class="modal-footer">\
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>\
@@ -3090,16 +3344,17 @@ function showIMAGE(image_content) {
     $("#showIMAGEmodel").modal("show");
 }
 
-function hideIMAGE() {
-  // Hide progress
-    $("#showIMAGEmodel").modal("hide");
-}
+// ***********************************************************
+// ---------- Image Upload Handling --------------------------
+// ***********************************************************
 
 // --- Upload IMAGE Model ----
-function uploadIMAGE(image_content) {
+function uploadIMAGEmodel(idDetails) {
 
     var elem = document.getElementById('uploadIMAGEmodel');
     if(elem){elem.parentNode.removeChild(elem);}
+
+    is_upload_image_ready = false
     
     var modalLoading = '<div class="modal fade bd-example-modal-lg" id="uploadIMAGEmodel" tabindex="-1" role="dialog" aria-labelledby="uploadIMAGEmodelLabel" aria-hidden="true">\
     <div class="modal-dialog modal-lg" role="document">\
@@ -3111,20 +3366,207 @@ function uploadIMAGE(image_content) {
           </button>\
         </div>\
         <div class="modal-body">\
-        <img src="' + image_content +'" alt="Image" class="center"></img> \
+            <input type="file" id="inputImageFile" name="image" accept="image/*" onchange="readImageDetails(this);" />\
+            <br><br><br><img id="selectedImage" src="#" class="img-fluid" alt="Image"></img><br> \
+            <div id="imagespinner" class="spinner-border" role="status">\
+            <span class="sr-only">Uploading...</span>\
+            </div>\
         </div>\
         <div class="modal-footer">\
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>\
-          \
+          <button id="uploadImageBtn" type="button" class="btn btn-primary" onclick="uploadImageIntoDatabase(\'' + idDetails + '\')" >Upload</button>\
         </div>\
       </div>\
     </div>\
   </div>';
     $(document.body).append(modalLoading);
     $("#uploadIMAGEmodel").modal("show");
+
+    document.getElementById("imagespinner").style.display='none';
+    document.getElementById("selectedImage").style.display='none';
+    
+
 }
 
+function hideuploadIMAGEmodel() {
+    // Hide progress
+      $("#uploadIMAGEmodel").modal("hide");
+  }
 
+// Process Selected Image
+function readImageDetails(input) {
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            document.getElementById("selectedImage").style.display='block';
+            $('#selectedImage').attr('src', e.target.result)              
+            is_upload_image_ready = true
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        document.getElementById("selectedImage").style.display='none';
+        $('#selectedImage').attr('src', '#') 
+        is_upload_image_ready = false
+    }
+
+}
+
+// Upload Image process
+function uploadImageIntoDatabase(value) {
+
+    if(is_upload_image_ready) {
+
+        var image_id = value.split('#')[0]
+        var image_db_path = value.split('#')[1]
+
+        const file = $('#inputImageFile').get(0).files[0]
+        //const name = (+new Date()) + '-' + file.name;
+        const name = image_db_path + image_id+'.'+file.type.split('/')[1];
+
+        var result = confirm("Are you sure you want to Upload Image ?");
+
+        if(result) {
+        
+            console.log(file)
+            console.log(name)
+
+            const metadata = {
+                contentType: file.type
+            };
+
+            document.getElementById("imagespinner").style.display='block';
+            document.getElementById("uploadImageBtn").style.display='none';
+
+            // Uploading process
+            var storageRef = storage.ref()
+            const uploadTask = storageRef.child(name).put(file, metadata);
+
+            // Register three observers:
+            // 1. 'state_changed' observer, called any time the state changes
+            // 2. Error observer, called on failure
+            // 3. Completion observer, called on successful completion
+            uploadTask.on('state_changed', function(snapshot){
+                // Observe state change events such as progress, pause, and resume
+                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+
+                switch (snapshot.state) {
+                case firebase.storage.TaskState.PAUSED: // or 'paused'
+                    console.log('Upload is paused');
+                    break;
+                case firebase.storage.TaskState.RUNNING: // or 'running'
+                    console.log('Upload is running');
+                    break;
+                }
+            }, function(error) {
+                // Handle unsuccessful uploads
+                console.log(error);
+                alert("Upload Image operation : FAILED !!");
+                hidePleaseWait();
+
+            }, function() {
+                // Handle successful uploads on complete
+                // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                    console.log('File available at', downloadURL);
+                    updateNewImageRefintoDoc(downloadURL,image_id,name);                    
+                    
+                });
+            });
+
+        }
+
+       
+
+    } else {
+        alert("No Image file Selected !!")
+    }
+    
+}
+
+// Update New ref. into Document Info field
+function updateNewImageRefintoDoc(newImageRef,details,imgName){
+    console.log('New Image Ref : ' + newImageRef);
+    const docid = details.split('_')[0]
+    const infoid = details.split('_')[1]
+    console.log('Doc Details : ' + docid+','+infoid);   
+
+    var dbDataSet = allDocData[docid];
+
+    dbDataSet[infoid]['VALUE']['INFO1']['VALUE'] = newImageRef;
+    dbDataSet[infoid]['VALUE']['INFO2']['VALUE'] = imgName;
+
+    db.collection(basePath + coll_lang+'/'+coll_name).doc(docid).set(dbDataSet).then(function() {
+        console.log("New Image Ref Updated !!");
+
+        alert("Image Uploaded !!");
+        hideuploadIMAGEmodel();
+      });
+
+}
+
+// RESET Image Operation
+function resetImage(value){    
+
+    var result = confirm("Are you sure you want to RESET Image details ?");
+    if(result) {
+
+        const docid = value.split('#')[0]
+        const infoid = value.split('#')[1]
+
+        showPleaseWait();
+
+        var imagedbdetails = allDocData[docid][infoid]['VALUE']['INFO2']['VALUE'];
+
+        // Create a reference to the file to delete
+        var storageRef = storage.ref()
+        var desertRef = storageRef.child(imagedbdetails);
+
+        // Delete the file
+        desertRef.delete().then(function() {
+            // File deleted successfully
+            var dbDataSet = allDocData[docid];
+
+            dbDataSet[infoid]['VALUE']['INFO1']['VALUE'] = "NA";
+            dbDataSet[infoid]['VALUE']['INFO2']['VALUE'] = "NA";
+        
+            db.collection(basePath + coll_lang+'/'+coll_name).doc(docid).set(dbDataSet).then(function() {
+                
+                hidePleaseWait();
+                alert("Image details RESET successfully ");                
+            });
+
+        
+        }).catch(function(error) {
+                 // Uh-oh, an error occurred!
+                 hidePleaseWait();
+        });
+
+    }
+}
+
+// DELETE Image 
+function deleteImageFromDb(imagedbdetails){
+    if(imagedbdetails != 'NA') {
+        // Create a reference to the file to delete
+        var storageRef = storage.ref()
+        var desertRef = storageRef.child(imagedbdetails);
+
+        // Delete the file
+        desertRef.delete().then(function() {
+            // File deleted successfully  
+            console.log('IMAGE Deleted : ' + imagedbdetails)     
+        
+        }).catch(function(error) {
+                // Uh-oh, an error occurred!
+                hidePleaseWait();
+        });
+    }
+}
 
 // ----------Sleep Operation --------------
 const sleep = (milliseconds) => {

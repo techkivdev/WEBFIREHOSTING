@@ -403,10 +403,19 @@ function newCollectionDataSetForEachDocument(all_data_set_count) {
 	
 	if (all_data_set_count['IMAGE'] > 0) {
 		for (i = 0; i < all_data_set_count['IMAGE']; i++) {
-		  collectionObject["INFO"+count++] = getNewFieldDataSet('IMAGE');
+      collectionObject["INFO"+count++] = getNewFieldDataSet('IMAGE');
+      collectionObject["INFO"+count++] = getNewFieldDataSet('IMAGE_PRO');
+		}
+  }
+  
+  /*
+  if (all_data_set_count['IMAGE_PRO'] > 0) {
+		for (i = 0; i < all_data_set_count['IMAGE_PRO']; i++) {
+		  collectionObject["INFO"+count++] = getNewFieldDataSet('IMAGE_PRO');
 		}
 	}
-	
+  */
+  
 	if (all_data_set_count['TREE'] > 0) {
 		for (i = 0; i < all_data_set_count['TREE']; i++) {
 		  collectionObject["INFO"+count++] = getNewFieldDataSet('TREE');
@@ -550,6 +559,7 @@ $('.createNewColl').on("click", function( event ) {
                        NUM : coll_totalNumInfo,
                        LISTREF : coll_totalListref,
                        IMAGE : coll_totalImages,
+                       IMAGE_PRO : coll_totalImages,
                        TREE : coll_totalTree,
                        FORM : coll_totalForm
                     };

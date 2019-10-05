@@ -1,0 +1,6 @@
+p {
+    width: 300px;
+}
+.wrap {
+    word-wrap: break-word;
+}

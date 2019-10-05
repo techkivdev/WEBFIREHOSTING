@@ -60,25 +60,81 @@ function getNewFieldDataSet(control){
 		KEY: "Key Name",
 		VALUE: {
 			INFO1 : {
-				KEY: "Visible",
+				KEY: "Base Layout",
 				DESC: "Description",
-				VALUE: "Value",
+				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "TEXT"
 			},
 			INFO2 : {
-				KEY: "Ref Details",
+				KEY: "Base Image Ref",
 				DESC: "Description",
-				VALUE: "Value",
+				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "TEXT"
 			},
 			INFO3 : {
-				KEY: "Model Details",
+				KEY: "Base Title",
 				DESC: "Description",
-				VALUE: "Value",
+				VALUE: "NA",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO4 : {
+				KEY: "Base Description",
+				DESC: "Description",
+				VALUE: "NA",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO5 : {
+				KEY: "Model Collection Details",
+				DESC: "Description",
+				VALUE: "NA",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO6 : {
+				KEY: "Model Documents Details",
+				DESC: "Description",
+				VALUE: "NA",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO7 : {
+				KEY: "Model Layout",
+				DESC: "Description",
+				VALUE: "NA",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO8 : {
+				KEY: "Model Content Info Details",
+				DESC: "Description",
+				VALUE: "NA",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO9 : {
+				KEY: "Model Click Operation",
+				DESC: "Description",
+				VALUE: "NA",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO10 : {
+				KEY: "Visible Status",
+				DESC: "Description",
+				VALUE: "YES",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "BOOL"
@@ -99,31 +155,39 @@ function getNewFieldDataSet(control){
 			INFO1 : {
 				KEY: "Image Name",
 				DESC: "Description",
-				VALUE: "Value",
+				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
-				TYPE: "TEXT"
+				TYPE: "TEXT_DIS"
 			},
 			INFO2 : {
+				KEY: "Image DB Name",
+				DESC: "Description",
+				VALUE: "NA",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT_DIS"
+			},
+			INFO3 : {
 				KEY: "External Url",
 				DESC: "Description",
-				VALUE: "Value",
+				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "TEXT"
 			},
-			INFO3 : {
+			INFO4 : {
 				KEY: "Visible",
 				DESC: "Description",
-				VALUE: "Value",
+				VALUE: "YES",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "BOOL"
 			},
-			INFO4 : {
+			INFO5 : {
 				KEY: "Source",
 				DESC: "Description",
-				VALUE: "Value",
+				VALUE: "YES",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "BOOL"
@@ -131,6 +195,58 @@ function getNewFieldDataSet(control){
 		},
 		TYPE: "TREE",
 		MODE: "IMAGE",
+		ROLE: "ADMIN",
+		PUBLISH: "YES",
+		DESC: "Description"
+	};
+
+	// ----------- IMAGE PRODUCTION ----------------
+	var eachImageProField = {
+		KEY: "Key Name",
+		VALUE: {
+			INFO1 : {
+				KEY: "Image Name",
+				DESC: "Description",
+				VALUE: "NA",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT_DIS"
+			},
+			INFO2 : {
+				KEY: "Image DB Name",
+				DESC: "Description",
+				VALUE: "NA",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT_DIS"
+			},
+			INFO3 : {
+				KEY: "External Url",
+				DESC: "Description",
+				VALUE: "NA",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO4 : {
+				KEY: "Visible",
+				DESC: "Description",
+				VALUE: "YES",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "BOOL"
+			},
+			INFO5 : {
+				KEY: "Source",
+				DESC: "Description",
+				VALUE: "YES",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "BOOL"
+			}
+		},
+		TYPE: "TREE",
+		MODE: "IMAGE_PRO",
 		ROLE: "ADMIN",
 		PUBLISH: "YES",
 		DESC: "Description"
@@ -246,7 +362,7 @@ function getNewFieldDataSet(control){
 				VALUE: "Value",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
-				TYPE: "TEXT"
+				TYPE: "MULTI_TEXT"
 			},
 			INFO3 : {
 				KEY: "Owner",
@@ -301,6 +417,10 @@ function getNewFieldDataSet(control){
 		case 'IMAGE':
 		return eachImageField;
 		break;
+
+		case 'IMAGE_PRO':
+		return eachImageProField;
+		break;
 		
 		case 'TREE':
 		return eachTreeField;
@@ -315,9 +435,9 @@ function getNewFieldDataSet(control){
 
 function getCollectionMainDocSet(){
 
-   // ----------- MAIN ----------------
+	 // ----------- MAIN ----------------
 
-	var eachMainField = {
+	 var eachMainField = {
 
 	    INFO1 : {
                             KEY: "Collection Name",
@@ -391,66 +511,123 @@ function getCollectionMainDocSet(){
                 },
 
           INFO8 : {
-                                     KEY: "Display Image Tab",
-                                     VALUE: "YES",
-                                     TYPE: "BOOL",
-                                     MODE: "INFO",
-                                     ROLE: "ADMIN",
-									 PUBLISH: "YES",
-                                     DESC: "Description"
-                         },
+							KEY: "Display Image Tab",
+							VALUE: "YES",
+							TYPE: "BOOL",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Description"
+				},
 
            INFO9 : {
-                                   KEY: "Display Multi Tab",
-                                   VALUE: "YES",
-                                   TYPE: "BOOL",
-                                   MODE: "INFO",
-                                   ROLE: "ADMIN",
-								   PUBLISH: "YES",
-                                   DESC: "Description"
-                          },
+							KEY: "Display Multi Tab",
+							VALUE: "YES",
+							TYPE: "BOOL",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Description"
+					},
 
            INFO10 : {
-                                  KEY: "Display Form Tab",
-                                  VALUE: "YES",
-                                  TYPE: "BOOL",
-                                  MODE: "INFO",
-                                  ROLE: "ADMIN",
-								  PUBLISH: "YES",
-                                  DESC: "Description"
-                         },
+							KEY: "Display Form Tab",
+							VALUE: "YES",
+							TYPE: "BOOL",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Description"
+					},
 		 // --------- Documents Related Fields --------------
 		  INFO11 : {
-							  KEY: "Document Display ID",
-							  VALUE: "INFO0",
-							  TYPE: "TEXT",
-							  MODE: "INFO",
-							  ROLE: "ADMIN",
-							  PUBLISH: "YES",
-							  DESC: "Document Display ID INFO details."
-					 },
+							KEY: "Document Display ID",
+							VALUE: "INFO0",
+							TYPE: "TEXT",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Document Display ID INFO details."
+					},
 		INFO12 : {
-							  KEY: "Document Published Options",
-							  VALUE: "INFO1",
-							  TYPE: "TEXT",
-							  MODE: "INFO",
-							  ROLE: "ADMIN",
-							  PUBLISH: "YES",
-							  DESC: "Document Published options INFOR details."
-					 },
+							KEY: "Document Published Options",
+							VALUE: "INFO1",
+							TYPE: "TEXT",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Document Published options INFOR details."
+					},
 		INFO13 : {
-							  KEY: "Document List Data INFO Options",
-							  VALUE: "NA",
-							  TYPE: "TEXT",
-							  MODE: "INFO",
-							  ROLE: "ADMIN",
-							  PUBLISH: "YES",
-							  DESC: "Document List Data INFO Options Details. Ex : INFO1,INFO2,INFO3"
-					 }
+							KEY: "Document List Data INFO Options",
+							VALUE: "NA",
+							TYPE: "TEXT",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Document List Data INFO Options Details. Ex : INFO1,INFO2,INFO3"
+					},
+		INFO14 : {
+							KEY: "Default Image URL",
+							VALUE: "NA",
+							TYPE: "TEXT",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Collection Default Image URL."
+					},
+		
+		INFO15 : {
+							KEY: "LIST REF INFO Details",
+							VALUE: "NA",
+							TYPE: "TEXT",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Documents LIST REF infor fields details. Ex : INFO1,INFO2,INFO3"
+					},
+		INFO16 : {
+							KEY: "IMAGE INFO Details",
+							VALUE: "NA",
+							TYPE: "TEXT",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Documents IMAGE infor fields details. Ex : INFO1,INFO2,INFO3"
+					},
+		INFO17 : {
+							KEY: "IMAGE PRO INFO Details",
+							VALUE: "NA",
+							TYPE: "TEXT",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Documents IMAGE infor fields details. Ex : INFO1,INFO2,INFO3"
+					},
+		INFO18 : {
+							KEY: "MULTI INFO Details",
+							VALUE: "NA",
+							TYPE: "TEXT",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Documents MULTI infor fields details. Ex : INFO1,INFO2,INFO3"
+					},
+		INFO19 : {
+							KEY: "FORM INFO Details",
+							VALUE: "NA",
+							TYPE: "TEXT",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Documents FORM infor fields details. Ex : INFO1,INFO2,INFO3"
+					}
 
 	};
 
 	return eachMainField;
+
+  
 
 }
 

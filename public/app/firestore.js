@@ -15,6 +15,7 @@ let config = {
 firebase.initializeApp(config);
 let firestore = firebase.firestore();
 let db = firebase.firestore();
+let storage  = firebase.storage();
 console.log("Cloud Firestores Loaded");
 
 
