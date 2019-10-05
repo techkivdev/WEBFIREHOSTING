@@ -441,7 +441,10 @@ function getTabPanelHTMLFormat(tab_id,nav_id,docData,docID) {
 			html += '<h5>' + infoData['KEY'] + '</h5>\n';
             html += '<p class="card-subtitle mb-2 text-muted" style="font-size:70%;">' + infoData['DESC'] + '</p>\n';
 			html += '<textarea class="form-control" rows="5" id=' + eachDocFormIDdetails[key] + '>' + infoData['VALUE'] +'</textarea>\n';
-			html += '</div>\n';
+            // Create Button
+            html +='<br><input type="button" id="' + eachDocFormIDdetails[key] + '_VIEW_HTML_BTN' +'" class="btn btn-primary" value="View HTML" onclick="viewHTML(\'' + eachDocFormIDdetails[key] + '\')" />';
+
+            html += '</div>\n';
 
 	   } else if(infoData['MODE'] == 'INFO' && infoData['TYPE'] == 'NUM') {
 
@@ -618,6 +621,9 @@ function getTabPanelHTMLFormat(tab_id,nav_id,docData,docID) {
                     html += '<h5>' + sub_info_data['KEY'] + '</h5>\n';
                     html += '<p class="card-subtitle mb-2 text-muted" style="font-size:70%;">' + sub_info_data['DESC'] + '</p>\n';
                     html += '<input type="text" class="form-control" id="' + eachDocFormIDdetails[key+'_'+sub_info] + '" required value="' + sub_info_data['VALUE'] +'">\n';
+                    // Create Button
+                    html +='<br><input type="button" id="' + eachDocFormIDdetails[key+'_'+sub_info] + '_VIEW_IMAGE_BTN' +'" class="btn btn-primary" value="View" onclick="viewImage(\'' + eachDocFormIDdetails[key+'_'+sub_info] + '\')" />';
+
                     html += '</div><br>\n';
 
 
@@ -640,8 +646,13 @@ function getTabPanelHTMLFormat(tab_id,nav_id,docData,docID) {
                     html +='</div>';
                     html +='</div><br>';
 
-			    }
-			}
+                }
+
+            }
+            
+             // Create Button
+             html +='<input type="button" id="' + docID + '_' + key + '_UPLOAD_IMAGE_BTN' +'" class="btn btn-primary" value="Upload Image" onclick="uploadImage(\'' + docID + '#' + key + '\')" />';
+
 
             html += '</div>\n';
             html += '</div>\n';
@@ -704,6 +715,9 @@ function getTabPanelHTMLFormat(tab_id,nav_id,docData,docID) {
                     html += '<h5>' + sub_info_data['KEY'] + '</h5>\n';
                     html += '<p class="card-subtitle mb-2 text-muted" style="font-size:70%;">' + sub_info_data['DESC'] + '</p>\n';
                     html += '<textarea class="form-control" rows="5" id=' +  eachDocFormIDdetails[key+'_'+sub_info] + '>' + sub_info_data['VALUE'] +'</textarea>\n';
+                    // Create Button
+                    html +='<br><input type="button" id="' + eachDocFormIDdetails[key+'_'+sub_info] + '_VIEW_HTML_BTN' +'" class="btn btn-primary" value="View HTML" onclick="viewHTML(\'' + eachDocFormIDdetails[key+'_'+sub_info] + '\')" />';
+
                     html += '</div>\n';
 
 
@@ -2946,7 +2960,41 @@ function deleteProductionCollection(){
 
 }//EOF
 
-// --------------------------- EXTRA ------------------------------
+
+// --------------------------- IMAGE HANDLING ---------------------
+function uploadImage(value) {
+    console.log(value)
+
+    uploadIMAGE('dasd')
+
+
+} //EOF
+
+function viewImage(value) {
+   // console.log(value)
+    var image_details =  $('#' + value).val();
+
+    //console.log(image_details)
+
+    showIMAGE(image_details)
+
+
+} //EOF
+
+
+function viewHTML(value) {
+    //console.log(value)
+    var html_details =  $('#' + value).val();
+
+    console.log(html_details)
+
+    showHTML(html_details);
+
+
+} //EOF
+
+
+// --------------------------- EXTRA MODEL ------------------------------
 /**
  * Displays overlay with "Please wait" text. Based on bootstrap modal. Contains animated progress bar.
  */
@@ -2978,6 +3026,105 @@ function hidePleaseWait() {
   // Hide progress
     $("#pleaseWaitDialog").modal("hide");
 }
+
+// --- Show HTML Model ----
+function showHTML(html_content) {
+
+    var elem = document.getElementById('showHTMLmodel');
+    if(elem){elem.parentNode.removeChild(elem);}
+    
+    var modalLoading = '<div class="modal fade" id="showHTMLmodel" tabindex="-1" role="dialog" aria-labelledby="showHTMLmodelLabel" aria-hidden="true">\
+    <div class="modal-dialog" role="document">\
+      <div class="modal-content">\
+        <div class="modal-header">\
+          <h5 class="modal-title" id="showHTMLmodelLabel">HTML Content</h5>\
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\
+            <span aria-hidden="true">&times;</span>\
+          </button>\
+        </div>\
+        <div class="modal-body">' +
+        html_content
+        + '</div>\
+        <div class="modal-footer">\
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>\
+          \
+        </div>\
+      </div>\
+    </div>\
+  </div>';
+    $(document.body).append(modalLoading);
+    $("#showHTMLmodel").modal("show");
+}
+
+function hideHTML() {
+  // Hide progress
+    $("#showHTMLmodel").modal("hide");
+}
+
+// --- Show IMAGE Model ----
+function showIMAGE(image_content) {
+
+    var elem = document.getElementById('showIMAGEmodel');
+    if(elem){elem.parentNode.removeChild(elem);}
+    
+    var modalLoading = '<div class="modal fade bd-example-modal-lg" id="showIMAGEmodel" tabindex="-1" role="dialog" aria-labelledby="showIMAGEmodelLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-lg" role="document">\
+      <div class="modal-content">\
+        <div class="modal-header">\
+          <h5 class="modal-title" id="showIMAGEmodelLabel">IMAGE Content</h5>\
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\
+            <span aria-hidden="true">&times;</span>\
+          </button>\
+        </div>\
+        <div class="modal-body">\
+        <img src="' + image_content +'" alt="Image" class="center"></img> \
+        </div>\
+        <div class="modal-footer">\
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>\
+          \
+        </div>\
+      </div>\
+    </div>\
+  </div>';
+    $(document.body).append(modalLoading);
+    $("#showIMAGEmodel").modal("show");
+}
+
+function hideIMAGE() {
+  // Hide progress
+    $("#showIMAGEmodel").modal("hide");
+}
+
+// --- Upload IMAGE Model ----
+function uploadIMAGE(image_content) {
+
+    var elem = document.getElementById('uploadIMAGEmodel');
+    if(elem){elem.parentNode.removeChild(elem);}
+    
+    var modalLoading = '<div class="modal fade bd-example-modal-lg" id="uploadIMAGEmodel" tabindex="-1" role="dialog" aria-labelledby="uploadIMAGEmodelLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-lg" role="document">\
+      <div class="modal-content">\
+        <div class="modal-header">\
+          <h5 class="modal-title" id="uploadIMAGEmodelLabel">Upload Image</h5>\
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\
+            <span aria-hidden="true">&times;</span>\
+          </button>\
+        </div>\
+        <div class="modal-body">\
+        <img src="' + image_content +'" alt="Image" class="center"></img> \
+        </div>\
+        <div class="modal-footer">\
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>\
+          \
+        </div>\
+      </div>\
+    </div>\
+  </div>';
+    $(document.body).append(modalLoading);
+    $("#uploadIMAGEmodel").modal("show");
+}
+
+
 
 // ----------Sleep Operation --------------
 const sleep = (milliseconds) => {

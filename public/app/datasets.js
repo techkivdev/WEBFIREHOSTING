@@ -20,7 +20,7 @@ function getNewFieldDataSet(control){
 	};
 
 
-	// ----------- MULTI_INFO ----------------
+	// ----------- MULTI_TEXT ----------------
 	var eachMultiInfoField = {
 		KEY: "Key Name",
 		VALUE: "Value",
@@ -282,7 +282,7 @@ function getNewFieldDataSet(control){
 		return eachInfoField;
 		break;
 
-		case 'MULTI_INFO':
+		case 'MULTI_TEXT':
 		return eachMultiInfoField;
 		break;
 

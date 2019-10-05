@@ -29,7 +29,7 @@ var total_doc_before_del = 0;
 // ***************************************************
 // ---------- Global Informations ---------------
 // DEV or ADMIN
-var user_role = 'ADMIN';
+var user_role = 'DEV';
 
 // ***************************************************
 
@@ -377,9 +377,9 @@ function newCollectionDataSetForEachDocument(all_data_set_count) {
 		}
 	}
 
-	if (all_data_set_count['MULTI_INFO'] > 0) {
-		for (i = 0; i < all_data_set_count['MULTI_INFO']; i++) {
-		  collectionObject["INFO"+count++] = getNewFieldDataSet('MULTI_INFO');
+	if (all_data_set_count['MULTI_TEXT'] > 0) {
+		for (i = 0; i < all_data_set_count['MULTI_TEXT']; i++) {
+		  collectionObject["INFO"+count++] = getNewFieldDataSet('MULTI_TEXT');
 		}
 	}
 
@@ -545,7 +545,7 @@ $('.createNewColl').on("click", function( event ) {
 
 				   var data_set_count = {
                        INFO : coll_totalInfo,
-                       MULTI_INFO : coll_totalMultiInfo,
+                       MULTI_TEXT : coll_totalMultiInfo,
                        BOOL : coll_totalBoolInfo,
                        NUM : coll_totalNumInfo,
                        LISTREF : coll_totalListref,
@@ -816,7 +816,7 @@ function manageCollectionContent(value){
 	//window.open("http://127.0.0.1:8887/update_collection.html");
 	
 	
-    var url = 'http://127.0.0.1:8887/update_collection.html?lang_name=' + encodeURIComponent(lang_db_name) + '&coll_name=' + encodeURIComponent(collection_name) + '&role=' + encodeURIComponent(role);
+    var url = 'update_collection.html?lang_name=' + encodeURIComponent(lang_db_name) + '&coll_name=' + encodeURIComponent(collection_name) + '&role=' + encodeURIComponent(role);
 
     document.location.href = url;
 	
