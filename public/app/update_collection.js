@@ -2596,7 +2596,6 @@ function deletePublishedCollection(collection_path,db_basePath){
                 del_docCount = 0;
                 total_doc_before_del = querySnapshot.size;
 
-                var docCount = 0;
                 // Read Each Documents
                 querySnapshot.forEach((doc) => {
                     //console.log(`${doc.id} =>`, doc.data());
