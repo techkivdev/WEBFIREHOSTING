@@ -138,7 +138,14 @@ function readDataFromDatabase() {
                         } else {
 
                         // Create List group HTML tags
-                        list_html += '<a class="list-group-item list-group-item-action " data-toggle="list" href="#' + doc.id + '_TAB' + '" role="tab">' + doc.id + '</a>\n';
+                        //list_html += '<a class="list-group-item list-group-item-action " data-toggle="list" href="#' + doc.id + '_TAB' + '" role="tab">' + doc.id + '</a>\n';
+
+                        list_html += '<a class="list-group-item list-group-item-action " data-toggle="list" href="#' + doc.id + '_TAB' + '" role="tab">\n';
+                        list_html += '<div class="d-flex w-100 justify-content-between">\n';
+                        list_html += '<h5 class="mb-1">' + allDocData[doc.id]['MAIN']['VALUE']['INFO1']['VALUE'] + '</h5>\n';                        
+                        list_html += '</div>\n';
+                        list_html += '<small>' + doc.id +'</small>\n';
+                        list_html += '</a>\n';
 
                         // Create NAV HTML Tags.
                         nav_html += getTabPanelHTMLFormat(doc.id + '_TAB',doc.id + '_NAV',doc.data(),doc.id)
@@ -1974,8 +1981,11 @@ function createTable(docID) {
 
 	var empTable = document.createElement('table');
 	empTable.setAttribute('id', docID + '_docDetailsTable');           
-	empTable.setAttribute('class', 'table table-bordered w-auto');            
-	empTable.setAttribute('cellspacing', '100');            
+	empTable.setAttribute('class', 'table table-striped table-bordered table-sm');            
+    empTable.setAttribute('cellspacing', '0');
+    empTable.setAttribute('width', '100%');
+    
+    
 
 	var tr = empTable.insertRow(-1);
 

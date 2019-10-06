@@ -191,6 +191,14 @@ function getNewFieldDataSet(control){
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "BOOL"
+			},
+			INFO6 : {
+				KEY: "Image Description",
+				DESC: "Description",
+				VALUE: "Details",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
 			}
 		},
 		TYPE: "TREE",
@@ -243,6 +251,14 @@ function getNewFieldDataSet(control){
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "BOOL"
+			},
+			INFO6 : {
+				KEY: "Image Description",
+				DESC: "Description",
+				VALUE: "Details",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
 			}
 		},
 		TYPE: "TREE",
@@ -349,7 +365,7 @@ function getNewFieldDataSet(control){
 		KEY: "Key Name",
 		VALUE: {
 			INFO1 : {
-				KEY: "NAME",
+				KEY: "ID",
 				DESC: "Description",
 				VALUE: "Name",
 				ROLE: "ADMIN",
@@ -357,6 +373,14 @@ function getNewFieldDataSet(control){
 				TYPE: "TEXT"
 			},
 			INFO2 : {
+				KEY: "NAME",
+				DESC: "Description",
+				VALUE: "Name",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO3 : {
 				KEY: "Description",
 				DESC: "Description",
 				VALUE: "Value",
@@ -364,7 +388,7 @@ function getNewFieldDataSet(control){
 				PUBLISH: "YES",
 				TYPE: "MULTI_TEXT"
 			},
-			INFO3 : {
+			INFO4 : {
 				KEY: "Owner",
 				DESC: "Description",
 				VALUE: "Value",
@@ -372,7 +396,7 @@ function getNewFieldDataSet(control){
 				PUBLISH: "YES",
 				TYPE: "TEXT"
 			},
-			INFO4 : {
+			INFO5 : {
 				KEY: "Visible",
 				DESC: "Description",
 				VALUE: "Value",
@@ -438,6 +462,16 @@ function getCollectionMainDocSet(){
 	 // ----------- MAIN ----------------
 
 	 var eachMainField = {
+
+		INFO0 : {
+							KEY: "Collection ID",
+							VALUE: "Value",
+							TYPE: "TEXT",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Description"
+				},
 
 	    INFO1 : {
                             KEY: "Collection Name",
@@ -541,7 +575,7 @@ function getCollectionMainDocSet(){
 					},
 		 // --------- Documents Related Fields --------------
 		  INFO11 : {
-							KEY: "Document Display ID",
+							KEY: "Collection personal Documents",
 							VALUE: "INFO0",
 							TYPE: "TEXT",
 							MODE: "INFO",
@@ -621,6 +655,15 @@ function getCollectionMainDocSet(){
 							ROLE: "ADMIN",
 							PUBLISH: "YES",
 							DESC: "Documents FORM infor fields details. Ex : INFO1,INFO2,INFO3"
+					},
+		INFO20 : {
+							KEY: "Documents COMMON DATA",
+							VALUE: "NA",
+							TYPE: "MULTI_TEXT",
+							MODE: "INFO",
+							ROLE: "ADMIN",
+							PUBLISH: "YES",
+							DESC: "Data which is common to all documents."
 					}
 
 	};
