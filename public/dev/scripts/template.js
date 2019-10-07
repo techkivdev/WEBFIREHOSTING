@@ -293,6 +293,7 @@ function mapDocumentDetails(docID) {
 
     // LIST REF Information
     docMapDetails['LIST_1'] = docID + '#INFO23'
+    docMapDetails['LIST_2'] = docID + '#INFO26'
 
     // MAP Development and Production Image correctly .....
     if(is_production_mode) {
@@ -376,6 +377,45 @@ function getImageDesc(details) {
   return allDocCmpData[docID][info_details+'_INFO6']
 }
 
+// Extract LIST_REF Details
+function getListRefDetails(details,htmlID) {
+
+  var docID = details.split('#')[0]
+  var info_details = details.split('#')[1]
+
+  var list_ref_details = {} 
+  list_ref_details['BS_LYT'] = allDocCmpData[docID][info_details+'_INFO1']
+  list_ref_details['BS_IMG_REF'] = allDocCmpData[docID][info_details+'_INFO2']
+  list_ref_details['BS_TITLE'] = allDocCmpData[docID][info_details+'_INFO3']
+  list_ref_details['BS_DESC'] = allDocCmpData[docID][info_details+'_INFO4']
+  list_ref_details['MDL_COLL'] = allDocCmpData[docID][info_details+'_INFO5']
+  list_ref_details['MDL_DOC'] = allDocCmpData[docID][info_details+'_INFO6']
+  list_ref_details['MDL_LYT'] = allDocCmpData[docID][info_details+'_INFO7']
+  list_ref_details['MDL_INFO'] = allDocCmpData[docID][info_details+'_INFO8']
+  list_ref_details['MDL_CLICK'] = allDocCmpData[docID][info_details+'_INFO9']
+  list_ref_details['VISIBLE'] = allDocCmpData[docID][info_details+'_INFO10']
+
+  //Read Collection Document data from LIST_DATA collection
+  db.collection(coll_base_path+coll_lang+'/'+'LIST_DATA').doc(list_ref_details['MDL_COLL']).get()
+  .then(doc => {
+    if (!doc.exists) {
+      displayOutput('No such document!'); 
+    } else {
+      displayOutput(docID + ' - Document data Read Done.');
+      list_ref_details['MDL_DOC_DATA'] = doc.data()
+
+      // ----- Update HTML Content ---------
+      if(list_ref_details['VISIBLE']) {
+        createListRefHTMLContent(list_ref_details,htmlID)
+      }
+    }
+  })
+  .catch(err => {
+    displayOutput('Error getting document', err);    
+  });
+
+}
+
 
 // ******************************************************
 // --------------- Common Functions --------------------
@@ -417,7 +457,146 @@ function updateHeaderImages() {
 
   $("#header_carousel_1").html(header_carousel_1_line);
 
+  // Update Text Information
+  var header_information = '<h3>'+ docMapDetails['TEXT_1'] + '</h3>\
+  <p><em>'+ docMapDetails['TEXT_2'] + '</em></p>\
+  <p>'+ docMapDetails['MULTI_1'] + '</p>\
+  <br>';
+
+  $("#header_information").html(header_information);
+
+  // Collect List Ref Details and Display Into HTML
+  getListRefDetails(docMapDetails['LIST_1'],'model_list_ref_1')
+  getListRefDetails(docMapDetails['LIST_2'],'model_list_ref_2')
+
 }
+
+// Create List ref layout HTML content
+function createListRefHTMLContent(details,htmlID) {
+
+  var all_doc_list = details['MDL_DOC'].split(',')
+  var all_doc_info_list = details['MDL_INFO'].split(',')  
+
+  var each_list_ref_div_content = '';
+
+  // Read Each Document details and create lsit view 
+  for(each_doc in all_doc_list) {
+
+    var doc_id = all_doc_list[each_doc]
+
+    // Get Doc Details
+    var doc_details = details['MDL_DOC_DATA'][doc_id]
+    
+    // Create Layout according to the Model Layouts
+    
+    each_list_ref_div_content += modelLayoutSelector(doc_id,details['MDL_LYT'],doc_details,all_doc_info_list)
+
+  }
+   
+  // Update HTML Page
+  $("#"+htmlID).html(each_list_ref_div_content);
+
+}
+
+// ----------------------------------------------------------------
+// ----------- MDOEL Layout's -------------------------------------
+
+// Model Layout Selector
+function modelLayoutSelector(doc_id,mdl_layout,doc_details,all_doc_info_list) {
+
+  var mdl_html_line = ''
+
+  //Information Details
+  var doc_info_details = {}
+  doc_info_details['IMG'] = all_doc_info_list[0]
+  doc_info_details['HEADER'] = all_doc_info_list[1]
+  doc_info_details['CONTENT_1'] = all_doc_info_list[2]
+  doc_info_details['CONTENT_2'] = all_doc_info_list[3]
+
+  // CIRCLE_COLLAPSE Layout
+  if(mdl_layout == 'CIRCLE_COLLAPSE') {
+
+    mdl_html_line = modelLytCircleWithCollaps(
+                                                doc_id,
+                                                doc_details[doc_info_details['IMG']],
+                                                doc_details[doc_info_details['HEADER']],
+                                                doc_details[doc_info_details['CONTENT_1']],
+                                                doc_details[doc_info_details['CONTENT_2']],
+                                                true
+                                                )
+  }
+
+  // CIRCLE_ONLY Layout
+  if(mdl_layout == 'CIRCLE_ONLY') {
+
+    mdl_html_line = modelLytCircleWithCollaps(
+                                                doc_id,
+                                                doc_details[doc_info_details['IMG']],
+                                                doc_details[doc_info_details['HEADER']],
+                                                doc_details[doc_info_details['CONTENT_1']],
+                                                doc_details[doc_info_details['CONTENT_2']],
+                                                false
+                                                )
+  }
+
+  // SQUARE_WITH_BUTTON Layout
+  if(mdl_layout == 'SQUARE_WITH_BUTTON') {
+
+    mdl_html_line = modelLytSquareWithButton(
+                                                doc_id,
+                                                doc_details[doc_info_details['IMG']],
+                                                doc_details[doc_info_details['HEADER']],
+                                                doc_details[doc_info_details['CONTENT_1']],
+                                                doc_details[doc_info_details['CONTENT_2']],
+                                                true
+                                                )
+  }
+
+  return mdl_html_line;
+
+}
+
+// Model Circle Layout with collaps feature
+function modelLytCircleWithCollaps(doc_id,image_ref,header,content_1,content_2,is_collapse) {
+
+  var htmlLine = '<div class="col-sm-4">\
+            <p class="text-center"><strong>'+ header +'</strong></p><br>\
+            <a href="#' + doc_id +'" data-toggle="collapse">\
+              <img src="' + image_ref +'" class="img-circle person" alt="Random Name" width="255" height="255">\
+            </a>';
+      
+      if(is_collapse) {
+        htmlLine += '<div id="' + doc_id + '" class="collapse">\
+            <p>' + content_1 +'</p>\
+            <p>' + content_2 +'</p>\
+            \
+          </div>\
+        </div>';
+       } else {
+        htmlLine += '</div>';
+       }
+           
+
+  return htmlLine
+
+}
+
+// Model Square with button
+function modelLytSquareWithButton(doc_id,image_ref,header,content_1,content_2,is_button) {
+   
+  var htmlLine = ' <div class="col-sm-4">\
+      <div class="thumbnail">\
+        <img src="' + image_ref +'" alt="Paris" width="400" height="300">\
+        <p><strong>'+ header + '</strong></p>\
+        <p>' + content_1 + '</p>\
+        <button class="btn" data-toggle="modal" data-target="#myModal">' + content_2 +'</button>\
+      </div>\
+    </div>';
+
+    return htmlLine;
+
+}
+
 
 // *********************************************************
 // --------------------------- EXTRA MODEL ------------------------------
