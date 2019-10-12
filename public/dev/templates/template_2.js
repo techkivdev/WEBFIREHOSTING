@@ -1,5 +1,5 @@
 // *******************************************************************************
-// SCRIPT : index_dev.js
+// SCRIPT : alldetails.js
 //
 //
 // Author : Vivek Thakur
@@ -10,28 +10,41 @@
 // ------------- CONFIGURATION ----------------
 var basePath = '/DATABASE/DEVELOPMENT/PUBLIC/';
 var baseProductionPath = '/DATABASE/PRODUCTION/PUBLIC/';
-var baseTestingPath = '/DATABASE/TESTING/PUBLIC/';
 
 var imagebasePath = '/DATABASE/DEVELOPMENT/PUBLIC/';
 var imagebaseProductionPath = '/DATABASE/PRODUCTION/PUBLIC/';
-var imagebaseTestingPath = '/DATABASE/TESTING/PUBLIC/';
 
 // ********************************************
-// ------------ INPUT DATA --------------------
-console.log('-------- index.js ---------')
+// ------------ Mode Configuration -----------
+// Debug Mode
 var debug_mode = true
 
+// Change Mode for Production or Development
+var is_production_mode = false
+
 // ---------- Main Variables ---------
-var coll_base_path = basePath // Use production path for prod js file
+var coll_base_path = basePath
 
-var coll_lang = 'NA';
-var coll_name = 'NA';
-var user_role = 'NA';
+if(is_production_mode) {
+  coll_base_path = baseProductionPath
+}
+
+// -------- Link Page with Collection and Documents -----
+var coll_lang = 'CORE';
+var coll_name = 'LIST_DATA';
 var document_ID = 'NA';
+var filter = 'NA';
+var extra = 'NA';
 
+// Global Data variables
+// All documents data
 var allDocCmpData = {}
 
-// ********************************************
+// Mapping Data
+var mainDocMapDetails = {}
+var docMapDetails = {}
+
+// ***********************************************
 
 // ***********************************************
 // ----------- Read Parameters -------------------
@@ -50,22 +63,13 @@ function getParams(){
 	displayOutput(params);
 	
   // ------- Update Variables ------------
-  if(params.size > 0) {
-    coll_lang = params['lang_name'];
-    coll_name = params['coll_name'];
-    user_role = params['role'];
-    document_ID = params['docID'];
-  } else {
-    // Use default value for testing purpose
-    if(debug_mode){
-      coll_lang = 'CORE';
-      coll_name = 'COLLECTION2_DATA'
-      user_role = 'DEV'
-      document_ID = 'DOC0'
-    }
-  }
-  
-  displayOutput(coll_lang +' , '+ coll_name + ' , ' + user_role + ' , ' + document_ID)
+  if('detail1' in  params) {
+    document_ID = params['detail1'];
+    filter = params['detail2'];
+    extra = params['detail3'];    
+  } 
+
+  displayOutput(coll_name +' , '+ filter + ' , ' +  extra)
 	
 	
 }
@@ -115,33 +119,6 @@ function readCompleateCollection() {
 	
 } // EOF
 
-// Read Only one Document Data
-function readDocumentData(docID) {
-
-  showPleaseWait()
-
-  let getDoc = db.collection(coll_base_path+coll_lang+'/'+coll_name).doc(docID).get()
-    .then(doc => {
-      if (!doc.exists) {
-        displayOutput('No such document!');
-        hidePleaseWait()
-
-      } else {
-        displayOutput('Document data Done.');
-        allDocCmpData[docID] = doc.data()
-
-        updateHTMLPage()
-
-        hidePleaseWait()
-      }
-    })
-    .catch(err => {
-      displayOutput('Error getting document', err);
-
-      hidePleaseWait()
-    });
-
-}
 
 // Read Document Data in async mode
 async function readDocumentDataAsync(docID) {
@@ -151,37 +128,14 @@ async function readDocumentDataAsync(docID) {
   await db.collection(coll_base_path+coll_lang+'/'+coll_name).doc(docID).get()
     .then(doc => {
       if (!doc.exists) {
-        displayOutput('No such document!');
+        showAlert('No Record Found!!');
         hidePleaseWait()
        
       } else {
         displayOutput(docID + ' - Document data Read Done.');
-        allDocCmpData[docID] = doc.data()
-      }
-    })
-    .catch(err => {
-      displayOutput('Error getting document', err);
-
-      hidePleaseWait()
-    });
-
-
-    // ------------- Read MAIN Document --------------
-    await db.collection(coll_base_path+coll_lang+'/'+coll_name).doc('MAIN').get()
-    .then(doc => {
-      if (!doc.exists) {
-        displayOutput('No such document!');
-
-        hidePleaseWait()
-       
-      } else {
-        displayOutput('MAIN - Document data Read Done.');
-        allDocCmpData['MAIN'] = doc.data()
-
-        hidePleaseWait()
-
+        allDocCmpData[docID] = doc.data()   
+        
         updateHTMLPage()
-
       }
     })
     .catch(err => {
@@ -199,26 +153,72 @@ async function readDocumentDataAsync(docID) {
 // Call Function when page loaded
 // ******************************************************
 
+startUpCalls();
+
 // Get Parameters details
 getParams();
 
 // Read All Documents from Collection
 //readCompleateCollection();
 
-// Read only one Document Data
-//readDocumentData(document_ID);
-
 // Async Mode
 readDocumentDataAsync(document_ID)
 
 // *******************************************************
 // --------------- Functions -----------------------------
+
+// Update Complete HTML Page
 function updateHTMLPage() {
 
-  displayOutput(allDocCmpData)
+  displayOutput(allDocCmpData)  
+
+  // HTML Modification functions
+  updateHeaderImages()
+  
 
 }
 
+// *******************************************************
+// --------------- Extract Functions ---------------------
+
+// Extract Image URL Details
+function getImageUrl(details) {
+
+  var docID = details.split('#')[0]
+  var info_details = details.split('#')[1]
+
+  // Check Visible Status
+  if(allDocCmpData[docID][info_details+'_INFO4']) {
+     // Check Source Status
+     var image_url = 'NA'
+     if(allDocCmpData[docID][info_details+'_INFO5']) {
+            // Return DB Url
+            image_url = allDocCmpData[docID][info_details+'_INFO1']
+     } else {
+            // Return External Url
+            image_url = allDocCmpData[docID][info_details+'_INFO3']
+     }
+
+     if(image_url == 'NA') {
+       return mainDocMapDetails['DEF_IMG']
+     } else {
+       return image_url
+     }
+
+  } else {
+       // Return Collection Default Image Url
+       return mainDocMapDetails['DEF_IMG']
+  }
+
+}
+
+// Get Image Description details
+function getImageDesc(details) {
+  var docID = details.split('#')[0]
+  var info_details = details.split('#')[1]
+
+  return allDocCmpData[docID][info_details+'_INFO6']
+}
 
 
 // ******************************************************
@@ -229,36 +229,59 @@ function displayOutput(details) {
   }
 }
 
+// ------------- Show Alert ----------------------------
+function showAlert(details) {  
+    alert(details)  
+}
 
-// --------------------------- EXTRA MODEL ------------------------------
+// ----- Click Handling Operation --------
+function clickHandling(action,page_name,name,filter,extra) {
+ 
+  if(action == 'NEWPAGE') {
+    var url = page_name+'.html?name=' + encodeURIComponent(name) + '&filter=' + encodeURIComponent(filter) + '&extra=' + encodeURIComponent(extra);
+
+    //document.location.href = url;
+    return url
+  } else {
+    return 'NA'
+  }
+ 
+}
+
+
+// *******************************************************
+// --------- Presentation Layer --------------------------
+// - This Layer change according to projects
+// - Sequence of all HTML modification code
+// *******************************************************
+
+// Update Header Image
+function updateHeaderImages() {
+
+}
+
+
+// *********************************************************
+// --------------------------- EXTRA MODEL -----------------
 /**
  * Displays overlay with "Please wait" text. Based on bootstrap modal. Contains animated progress bar.
  */
-function showPleaseWait() {
-  var modalLoading = '<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false" role="dialog">\
-      <div class="modal-dialog">\
-          <div class="modal-content">\
-              <div class="modal-header">\
-                  <h4 class="modal-title">Please wait...</h4>\
-              </div>\
-              <div class="modal-body">\
-                  <div class="progress">\
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"\
-                    aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%; height: 40px">\
-                    </div>\
-                  </div>\
-              </div>\
-          </div>\
-      </div>\
-  </div>';
-  $(document.body).append(modalLoading);
-  $("#pleaseWaitDialog").modal("show");
+function showPleaseWait() { 
+  document.getElementById('main_progress').style.display = "block";
 }
 
-/**
-* Hides "Please wait" overlay. See function showPleaseWait().
-*/
+
 function hidePleaseWait() {
 // Hide progress
-  $("#pleaseWaitDialog").modal("hide");
+document.getElementById('main_progress').style.display = "none";
 }
+
+// ----------- START UP CALLS ----------------
+function startUpCalls() {
+
+  $(document).ready(function(){
+    $('.modal').modal();
+  });
+
+}
+

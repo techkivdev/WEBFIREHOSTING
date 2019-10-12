@@ -1,5 +1,5 @@
 // *******************************************************************************
-// SCRIPT : index.js
+// SCRIPT : template.js
 //
 //
 // Author : Vivek Thakur
@@ -32,7 +32,6 @@ if(is_production_mode) {
 // -------- Link Page with Collection and Documents -----
 var coll_lang = 'CORE';
 var coll_name = 'COLLECTION2_DATA';
-var user_role = 'DEV';
 var document_ID = 'DOC0';
 
 // Global Data variables
@@ -62,14 +61,13 @@ function getParams(){
 	displayOutput(params);
 	
   // ------- Update Variables ------------
-  if(params.size > 0) {
-    coll_lang = params['lang_name'];
-    coll_name = params['coll_name'];
-    user_role = params['role'];
-    document_ID = params['docID'];
+  if('detail1' in  params) {
+    coll_lang = params['detail1'];
+    coll_name = params['detail2'];
+    document_ID = params['detail3'];    
   } 
 
-  displayOutput(coll_lang +' , '+ coll_name + ' , ' + user_role + ' , ' + document_ID)
+  displayOutput(coll_lang +' , '+ coll_name + ' , ' +  document_ID)
 	
 	
 }
@@ -379,62 +377,6 @@ function getImageDesc(details) {
   return allDocCmpData[docID][info_details+'_INFO6']
 }
 
-// Get Local Image Details
-function getDirectImageUrl(details) {
-  if(details == 'NA') {
-    return 'Images/default.jpg'
-  } else {
-    return details
-  }
-}
-
-// Extract LIST_REF Details
-function getListRefDetails(details,htmlID) {
-
-  var docID = details.split('#')[0]
-  var info_details = details.split('#')[1]
-
-  var list_ref_details = {} 
-  list_ref_details['BS_LYT'] = allDocCmpData[docID][info_details+'_INFO1']
-  list_ref_details['BS_IMG_REF'] = allDocCmpData[docID][info_details+'_INFO2']
-  list_ref_details['BS_TITLE'] = allDocCmpData[docID][info_details+'_INFO3']
-  list_ref_details['BS_DESC'] = allDocCmpData[docID][info_details+'_INFO4']
-  list_ref_details['MDL_COLL'] = allDocCmpData[docID][info_details+'_INFO5']
-  list_ref_details['MDL_DOC'] = allDocCmpData[docID][info_details+'_INFO6']
-  list_ref_details['MDL_LYT'] = allDocCmpData[docID][info_details+'_INFO7']
-  list_ref_details['MDL_INFO'] = allDocCmpData[docID][info_details+'_INFO8']
-  list_ref_details['MDL_CLICK'] = allDocCmpData[docID][info_details+'_INFO9']
-  list_ref_details['VISIBLE'] = allDocCmpData[docID][info_details+'_INFO10']
-
-  // -------------- Change Here details for testing purpose -------------
-  if(false) {
-    list_ref_details['BS_LYT'] = 'CARD_ROW_HORIZ'
-    list_ref_details['MDL_LYT'] = 'SQUARE_CARD_HORIZ'
-  }
-
-
-
-  //Read Collection Document data from LIST_DATA collection
-  db.collection(coll_base_path+coll_lang+'/'+'LIST_DATA').doc(list_ref_details['MDL_COLL']).get()
-  .then(doc => {
-    if (!doc.exists) {
-      displayOutput('No such document!'); 
-    } else {
-      displayOutput(docID + ' - Document data Read Done.');
-      list_ref_details['MDL_DOC_DATA'] = doc.data()
-
-      // ----- Update HTML Content ---------
-      if(list_ref_details['VISIBLE']) {
-        createListRefHTMLContent(list_ref_details,htmlID)
-      }
-    }
-  })
-  .catch(err => {
-    displayOutput('Error getting document', err);    
-  });
-
-}
-
 
 // ******************************************************
 // --------------- Common Functions --------------------
@@ -448,7 +390,7 @@ function displayOutput(details) {
 function clickHandling(action,page_name,name,filter,extra) {
  
   if(action == 'NEWPAGE') {
-    var url = page_name+'.html?detail1=' + encodeURIComponent(name) + '&detail2=' + encodeURIComponent(filter) + '&detail3=' + encodeURIComponent(extra);
+    var url = page_name+'.html?name=' + encodeURIComponent(name) + '&filter=' + encodeURIComponent(filter) + '&extra=' + encodeURIComponent(extra);
 
     //document.location.href = url;
     return url
@@ -466,214 +408,7 @@ function clickHandling(action,page_name,name,filter,extra) {
 // *******************************************************
 
 // Update Header Image
-function updateHeaderImages() { 
-  
-
-  // Update parallax Section  
-  $("#parallax_image_1").prop('src', mainDocMapDetails['DEF_IMG'])
-
-  // Collect List Ref Details and Display Into HTML
-  getListRefDetails(docMapDetails['LIST_1'],'col_section_1')
-  getListRefDetails(docMapDetails['LIST_2'],'col_section_2')
-  getListRefDetails(docMapDetails['LIST_2'],'col_section_3')
-
-}
-
-// Create List ref layout HTML content
-function createListRefHTMLContent(details,htmlID) {
-
-  var all_doc_list = details['MDL_DOC'].split(',')
-  var all_doc_info_list = details['MDL_INFO'].split(',')  
-
-  var each_list_ref_div_content = '';
-
-  // Read Each Document details and create lsit view 
-  for(each_doc in all_doc_list) {
-
-    var doc_id = all_doc_list[each_doc]
-
-    // Get Doc Details
-    var doc_details = details['MDL_DOC_DATA'][doc_id]
-    
-    // Create Layout according to the Model Layouts    
-    each_list_ref_div_content += modelLayoutSelector(doc_id,details['MDL_LYT'],doc_details,all_doc_info_list,details['MDL_CLICK'])
-
-  }
-
-  // Get BASE Layout content 
-  var base_layout_content = getBaseLayoutHTML(details['BS_LYT'],details['BS_TITLE'],each_list_ref_div_content)
- 
-              
-  // Update HTML Page
-  $("#"+htmlID).html(base_layout_content);
-
-}
-
-// ---------------------------------------------------------------
-// --------------------------- BASE Layout -----------------------
-
-// Create Base Layout
-function getBaseLayoutHTML(base_layout,header,model_content){ 
-
-  var base_layout_html = ''
-
-  if(base_layout == 'CARD_ROW') {        
-        base_layout_html = '<div class="row">\
-                    <div class="col s12 left">\
-                      <h3><i class="mdi-content-send brown-text"></i></h3>\
-                      <h4>' + header  +'</h4></div>\
-                  </div><div class="row">' + model_content  +'</div>';
-  }
-  
-  if(base_layout == 'CARD_ROW_HORIZ') {
-
-    base_layout_html = '<div class="row">\
-          <div class="col s12 left">\
-            <h3><i class="mdi-content-send brown-text"></i></h3>\
-            <h4>' + header  +'</h4></div>\
-          </div>' + model_content;
-
-  }
-
-
-  return base_layout_html;
-
-
-}
-
-// ----------------------------------------------------------------
-// ----------- MDOEL Layout's -------------------------------------
-
-// Model Layout Selector
-function modelLayoutSelector(doc_id,mdl_layout,doc_details,all_doc_info_list,mdl_action_details) {
-
-  var mdl_html_line = ''
-
-  //Information Details
-  var doc_info_details = {}
-  doc_info_details['IMG'] = all_doc_info_list[0]
-  doc_info_details['HEADER'] = all_doc_info_list[1]
-  doc_info_details['CONTENT_1'] = all_doc_info_list[2]
-  doc_info_details['CONTENT_2'] = all_doc_info_list[3]  
-
-  // CIRCLE_COLLAPSE Layout
-  if(mdl_layout == 'CIRCLE_COLLAPSE') {
-
-    mdl_html_line = modelLytCircleWithCollaps(
-                                                doc_id,
-                                                doc_details[doc_info_details['IMG']],
-                                                doc_details[doc_info_details['HEADER']],
-                                                doc_details[doc_info_details['CONTENT_1']],
-                                                doc_details[doc_info_details['CONTENT_2']],
-                                                true
-                                                )
-  }
-
-  // CIRCLE_ONLY Layout
-  if(mdl_layout == 'CIRCLE_ONLY') {
-
-    mdl_html_line = modelLytCircleWithCollaps(
-                                                doc_id,
-                                                doc_details[doc_info_details['IMG']],
-                                                doc_details[doc_info_details['HEADER']],
-                                                doc_details[doc_info_details['CONTENT_1']],
-                                                doc_details[doc_info_details['CONTENT_2']],
-                                                false
-                                                )
-  }
-
-  // SQUARE_WITH_BUTTON Layout
-  if(mdl_layout == 'SQUARE_CARD') {
-
-    mdl_html_line = modelLytSquareCard(
-                                                doc_id,
-                                                doc_details[doc_info_details['IMG']],
-                                                doc_details[doc_info_details['HEADER']],
-                                                doc_details[doc_info_details['CONTENT_1']],
-                                                doc_details[doc_info_details['CONTENT_2']],
-                                                mdl_action_details
-                                                )
-  }
-
-  // SQUARE_WITH_BUTTON Layout
-  if(mdl_layout == 'SQUARE_CARD_HORIZ') {
-
-    mdl_html_line = modelLytSquareHoriCard(
-                                                doc_id,
-                                                doc_details[doc_info_details['IMG']],
-                                                doc_details[doc_info_details['HEADER']],
-                                                doc_details[doc_info_details['CONTENT_1']],
-                                                doc_details[doc_info_details['CONTENT_2']],
-                                                mdl_action_details
-                                                )
-  }
-
-  return mdl_html_line;
-
-}
-
-// Model Circle Layout with collaps feature
-function modelLytCircleWithCollaps(doc_id,image_ref,header,content_1,content_2,mdl_action_details) {
-
-  var htmlLine = '<div class="col-sm-4">\
-            <p class="text-center"><strong>'+ header +'</strong></p><br>\
-            <a href="#' + doc_id +'" data-toggle="collapse">\
-              <img src="' + image_ref +'" class="img-circle person" alt="Random Name" width="255" height="255">\
-            </a>';
-      
-      if(is_collapse) {
-        htmlLine += '<div id="' + doc_id + '" class="collapse">\
-            <p>' + content_1 +'</p>\
-            <p>' + content_2 +'</p>\
-            \
-          </div>\
-        </div>';
-       } else {
-        htmlLine += '</div>';
-       }
-           
-
-  return htmlLine
-
-}
-
-// Model Square Card
-function modelLytSquareCard(doc_id,image_ref,header,content_1,content_2,mdl_action_details) {
-   
-  var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_action_details.split(',')[0],mdl_action_details.split(',')[1],mdl_action_details.split(',')[2],mdl_action_details.split(',')[3],mdl_action_details.split(',')[4])  +'">\
-                  <div class="card">\
-                    <div class="card-image">\
-                      <img src="' + image_ref +'">\
-                    </div>\
-                    <div class="card-content">\
-                      <span class="blue-grey-text text-lighten-2">' + content_1 +'</span>\
-                    </div>\
-                  </div>\
-                </a>\
-              </div>';
-
-    return htmlLine;
-
-}
-
-// Model Square Card
-function modelLytSquareHoriCard(doc_id,image_ref,header,content_1,content_2,mdl_action_details) {
-   
-  var htmlLine = '<div class="col s12 m7"><a href="' + clickHandling(mdl_action_details.split(',')[0],mdl_action_details.split(',')[1],mdl_action_details.split(',')[2],mdl_action_details.split(',')[3],mdl_action_details.split(',')[4])  +'">\
-            <div class="card horizontal">\
-              <div class="card-image">\
-                <img src="' + image_ref +'">\
-              </div>\
-              <div class="card-stacked">\
-                <div class="card-content">\
-                  <span class="blue-grey-text text-lighten-2">' + content_1 +'</span>\
-                </div>\
-              </div>\
-            </div>\
-          </a>\
-        </div>';
-
-    return htmlLine;
+function updateHeaderImages() {
 
 }
 
