@@ -1,5 +1,5 @@
 // *******************************************************************************
-// SCRIPT : alldetails.js
+// SCRIPT : eachdetails.js
 //
 //
 // Author : Vivek Thakur
@@ -40,6 +40,10 @@ var extra = 'NA';
 // All documents data
 var allDocCmpData = {}
 
+// Mapping Data
+var mainDocMapDetails = {}
+var docMapDetails = {}
+
 // ***********************************************
 
 // ***********************************************
@@ -60,12 +64,12 @@ function getParams(){
 	
   // ------- Update Variables ------------
   if('detail1' in  params) {
-    document_ID = params['detail1'];
-    filter = params['detail2'];
+    coll_name = params['detail1']+'_DATA';
+    document_ID = params['detail2'];
     extra = params['detail3'];    
   } 
 
-  displayOutput(coll_name +' , '+ filter + ' , ' +  extra)
+  displayOutput(coll_name +' , '+ document_ID + ' , ' +  extra)
 	
 	
 }
@@ -124,14 +128,41 @@ async function readDocumentDataAsync(docID) {
   await db.collection(coll_base_path+coll_lang+'/'+coll_name).doc(docID).get()
     .then(doc => {
       if (!doc.exists) {
-        showAlert('No Record Found!!');
+        displayOutput('No such document!');
         hidePleaseWait()
        
       } else {
         displayOutput(docID + ' - Document data Read Done.');
-        allDocCmpData[docID] = doc.data()   
-        
+        allDocCmpData[docID] = doc.data()
+
+        mapDocumentDetails(docID)
+      }
+    })
+    .catch(err => {
+      displayOutput('Error getting document', err);
+
+      hidePleaseWait()
+    });
+
+
+    // ------------- Read MAIN Document --------------
+    await db.collection(coll_base_path+coll_lang+'/'+coll_name).doc('MAIN').get()
+    .then(doc => {
+      if (!doc.exists) {
+        displayOutput('No such document!');
+
+        hidePleaseWait()
+       
+      } else {
+        displayOutput('MAIN - Document data Read Done.');
+        allDocCmpData['MAIN'] = doc.data()
+
+        mapMAINDocDetails()
+
+        hidePleaseWait()
+
         updateHTMLPage()
+
       }
     })
     .catch(err => {
@@ -141,7 +172,6 @@ async function readDocumentDataAsync(docID) {
     });
 
 }
-
 
 
 // ******************************************************
@@ -166,13 +196,121 @@ readDocumentDataAsync(document_ID)
 // Update Complete HTML Page
 function updateHTMLPage() {
 
-  displayOutput(allDocCmpData)  
-
-  hidePleaseWait()
+  displayOutput(allDocCmpData)
+  displayOutput(mainDocMapDetails)
+  displayOutput(docMapDetails)
 
   // HTML Modification functions
-  updateCardLayout('col_section_1')
+  //updateHeaderImages()
   
+
+}
+
+// *******************************************************
+// --------------- Mapping Functions ---------------------
+
+// MAP MAIN Document Details
+function mapMAINDocDetails() {  
+
+  if('MAIN' in allDocCmpData) {
+
+    /*
+    mainDocMapDetails['ID'] = allDocCmpData['MAIN']['INFO0']
+    mainDocMapDetails['NAME'] = allDocCmpData['MAIN']['INFO1']
+    mainDocMapDetails['DESC'] = allDocCmpData['MAIN']['INFO2']
+    mainDocMapDetails['VISIBLE'] = allDocCmpData['MAIN']['INFO3']
+    mainDocMapDetails['OWNER'] = allDocCmpData['MAIN']['INFO4']
+    mainDocMapDetails['LINKS'] = allDocCmpData['MAIN']['INFO5']
+    mainDocMapDetails['TDOC'] = allDocCmpData['MAIN']['INFO6']
+    mainDocMapDetails['ADMIN'] = allDocCmpData['MAIN']['INFO7']
+    mainDocMapDetails['IMAGE_TAB'] = allDocCmpData['MAIN']['INFO8']
+    mainDocMapDetails['MULTI_TAB'] = allDocCmpData['MAIN']['INFO9']
+    mainDocMapDetails['FORM_TAB'] = allDocCmpData['MAIN']['INFO10']
+    mainDocMapDetails['COLL_DOC'] = allDocCmpData['MAIN']['INFO11']
+    mainDocMapDetails['DOC_PBLS'] = allDocCmpData['MAIN']['INFO12']
+    mainDocMapDetails['DOC_LIST'] = allDocCmpData['MAIN']['INFO13']
+    mainDocMapDetails['DEF_IMG'] = allDocCmpData['MAIN']['INFO14']
+    mainDocMapDetails['LIST_REF_INFO'] = allDocCmpData['MAIN']['INFO15']
+    mainDocMapDetails['IMAGE_INFO'] = allDocCmpData['MAIN']['INFO16']
+    mainDocMapDetails['IMAGE_PRO_INFO'] = allDocCmpData['MAIN']['INFO17']
+    mainDocMapDetails['MULTI_INFO'] = allDocCmpData['MAIN']['INFO18']
+    mainDocMapDetails['FORM_INFO'] = allDocCmpData['MAIN']['INFO19']   
+    */ 
+
+
+    displayOutput('MAIN Mapping done')
+
+  } else {
+    displayOutput('MAIN Doc details is not found !!')
+  }
+  
+
+}
+
+// MAP Documents Details
+function mapDocumentDetails(docID) {  
+
+  if(docID in allDocCmpData) {
+
+    /* Text Information
+    docMapDetails['TEXT_1'] = allDocCmpData[docID]['INFO0']
+    docMapDetails['TEXT_2'] = allDocCmpData[docID]['INFO1']
+    docMapDetails['TEXT_3'] = allDocCmpData[docID]['INFO2']
+    docMapDetails['TEXT_4'] = allDocCmpData[docID]['INFO3']
+    docMapDetails['TEXT_5'] = allDocCmpData[docID]['INFO4']
+
+    // Multi Text Information
+    docMapDetails['MULTI_1'] = allDocCmpData[docID]['INFO5']
+    docMapDetails['MULTI_2'] = allDocCmpData[docID]['INFO6']
+
+    // Control Information
+    docMapDetails['CNT_1'] = allDocCmpData[docID]['INFO22']
+
+    // LIST REF Information
+    docMapDetails['LIST_1'] = docID + '#INFO23'
+    docMapDetails['LIST_2'] = docID + '#INFO26'
+
+    // MAP Development and Production Image correctly .....
+    if(is_production_mode) {
+
+      // IMAGES Production Information
+      docMapDetails['IMG_1'] = docID + '#INFO10'
+      docMapDetails['IMG_2'] = docID + '#INFO12'
+      docMapDetails['IMG_3'] = docID + '#INFO14'
+      docMapDetails['IMG_4'] = docID + '#INFO16'
+      docMapDetails['IMG_5'] = docID + '#INFO19'
+      docMapDetails['IMG_6'] = docID + '#INFO21'
+      docMapDetails['IMG_7'] = docID + '#INFO8'
+    } else {
+
+      // IMAGES Information
+      docMapDetails['IMG_1'] = docID + '#INFO11'
+      docMapDetails['IMG_2'] = docID + '#INFO13'
+      docMapDetails['IMG_3'] = docID + '#INFO15'
+      docMapDetails['IMG_4'] = docID + '#INFO18'
+      docMapDetails['IMG_5'] = docID + '#INFO20'
+      docMapDetails['IMG_6'] = docID + '#INFO7'
+      docMapDetails['IMG_7'] = docID + '#INFO9'
+
+    }
+
+    // TREE Information
+    docMapDetails['TREE_1'] = docID + '#INFO24'
+
+    // FORM Information
+    docMapDetails['FORM_1'] = docID + '#INFO25'
+
+    */
+
+    displayOutput(docID+' Mapping Done !!')
+
+    
+
+    
+
+  } else {
+    displayOutput(docID + ' Data not found !!')
+  }
 
 }
 
@@ -317,7 +455,7 @@ function showAlert(details) {
 function clickHandling(action,page_name,name,filter,extra) {
  
   if(action == 'NEWPAGE') {
-    var url = page_name+'.html?detail1=' + encodeURIComponent(name) + '&detail2=' + encodeURIComponent(filter) + '&detail3=' + encodeURIComponent(extra);
+    var url = page_name+'.html?name=' + encodeURIComponent(name) + '&filter=' + encodeURIComponent(filter) + '&extra=' + encodeURIComponent(extra);
 
     //document.location.href = url;
     return url
@@ -347,7 +485,7 @@ function updateCardLayout(htmlID) {
      var doc_data = coll_list_data[each_doc_id]
      
      // Create Layout according to the Model Layouts  
-     var currentmdlContent = modelLayoutSelector(each_doc_id,'SQUARE_CARD_HORIZ',doc_data,'NEWPAGE,eachdetails,' + document_ID +',' + each_doc_id +',NA')  
+     var currentmdlContent = modelLayoutSelector(each_doc_id,'SQUARE_CARD_HORIZ',doc_data,'NA,NA,NA,NA,NA')  
      each_list_ref_div_content += currentmdlContent
  
    }

@@ -379,6 +379,15 @@ function getImageDesc(details) {
   return allDocCmpData[docID][info_details+'_INFO6']
 }
 
+// Get Local Image Details
+function getDirectImageUrl(details) {
+  if(details == 'NA') {
+    return 'Images/default.jpg'
+  } else {
+    return details
+  }
+}
+
 // Extract LIST_REF Details
 function getListRefDetails(details,htmlID) {
 
