@@ -57,11 +57,12 @@ function getNewFieldDataSet(control){
 
 	// ----------- LISTREF ----------------
 	var eachListRefField = {
-		KEY: "Key Name",
+		KEY: "Key",
 		VALUE: {
 			INFO1 : {
 				KEY: "Base Layout",
-				DESC: "Description",
+				DESC: "Specify Base Layout Format <br> CARD_ROW : Display Card in ROW format each row contain three card.<br>\
+				CARD_ROW_HORIZ : Display card in horizontal format.",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -69,7 +70,7 @@ function getNewFieldDataSet(control){
 			},
 			INFO2 : {
 				KEY: "Base Image Ref",
-				DESC: "Description",
+				DESC: "Base layout Image reference",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -77,7 +78,7 @@ function getNewFieldDataSet(control){
 			},
 			INFO3 : {
 				KEY: "Base Title",
-				DESC: "Description",
+				DESC: "Title Name",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -85,23 +86,23 @@ function getNewFieldDataSet(control){
 			},
 			INFO4 : {
 				KEY: "Base Description",
-				DESC: "Description",
+				DESC: "Complete Base Description",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "TEXT"
 			},
 			INFO5 : {
-				KEY: "Model Collection Details",
-				DESC: "Description",
+				KEY: "Model Collection",
+				DESC: "Specify model collection ID name",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "TEXT"
 			},
 			INFO6 : {
-				KEY: "Model Documents Details",
-				DESC: "Description",
+				KEY: "Model Documents",
+				DESC: "Specify collection documents list details",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -109,23 +110,24 @@ function getNewFieldDataSet(control){
 			},
 			INFO7 : {
 				KEY: "Model Layout",
-				DESC: "Description",
+				DESC: "Specify model layout format <br> SQUARE_CARD : Show square card.<br>\
+				SQUARE_CARD_HORIZ : Show horizontal card",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "TEXT"
 			},
 			INFO8 : {
-				KEY: "Model Content Info Details",
-				DESC: "Description",
+				KEY: "Model Info",
+				DESC: "Specify each docuemts Info fields details",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "TEXT"
 			},
 			INFO9 : {
-				KEY: "Model Click Operation",
-				DESC: "Description",
+				KEY: "Model Click",
+				DESC: "Specify click operation on model. Ex NEWPAGE,page_name,details1,detail2,detail3 etc.",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -133,7 +135,7 @@ function getNewFieldDataSet(control){
 			},
 			INFO10 : {
 				KEY: "Visible Status",
-				DESC: "Description",
+				DESC: "Do you want to show complete layout YES/NO",
 				VALUE: "YES",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -150,11 +152,11 @@ function getNewFieldDataSet(control){
 
 	// ----------- IMAGE ----------------
 	var eachImageField = {
-		KEY: "Key Name",
+		KEY: "Key",
 		VALUE: {
 			INFO1 : {
 				KEY: "Image Name",
-				DESC: "Description",
+				DESC: "Image Download URL from Database",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -162,7 +164,7 @@ function getNewFieldDataSet(control){
 			},
 			INFO2 : {
 				KEY: "Image DB Name",
-				DESC: "Description",
+				DESC: "Image name into Database",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -170,7 +172,7 @@ function getNewFieldDataSet(control){
 			},
 			INFO3 : {
 				KEY: "External Url",
-				DESC: "Description",
+				DESC: "Please specify external image URL any url from web",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -178,7 +180,7 @@ function getNewFieldDataSet(control){
 			},
 			INFO4 : {
 				KEY: "Visible",
-				DESC: "Description",
+				DESC: "Do you want to show Image YES/NO",
 				VALUE: "YES",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -186,7 +188,7 @@ function getNewFieldDataSet(control){
 			},
 			INFO5 : {
 				KEY: "Source",
-				DESC: "Description",
+				DESC: "Do you want to show image from Database YES/NO , No means you are showing image from external URL.",
 				VALUE: "YES",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -194,7 +196,15 @@ function getNewFieldDataSet(control){
 			},
 			INFO6 : {
 				KEY: "Image Description",
-				DESC: "Description",
+				DESC: "Your Image Description",
+				VALUE: "Details",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO7 : {
+				KEY: "Extra Control",
+				DESC: "Some more Controls.",
 				VALUE: "Details",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -205,16 +215,16 @@ function getNewFieldDataSet(control){
 		MODE: "IMAGE",
 		ROLE: "ADMIN",
 		PUBLISH: "YES",
-		DESC: "Description"
+		DESC: "For Development Purpose."
 	};
 
 	// ----------- IMAGE PRODUCTION ----------------
 	var eachImageProField = {
-		KEY: "Key Name",
+		KEY: "Key",
 		VALUE: {
 			INFO1 : {
 				KEY: "Image Name",
-				DESC: "Description",
+				DESC: "Image Download URL from Database",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -222,7 +232,7 @@ function getNewFieldDataSet(control){
 			},
 			INFO2 : {
 				KEY: "Image DB Name",
-				DESC: "Description",
+				DESC: "Image name into Database",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -230,7 +240,7 @@ function getNewFieldDataSet(control){
 			},
 			INFO3 : {
 				KEY: "External Url",
-				DESC: "Description",
+				DESC: "Please specify external image URL any url from web",
 				VALUE: "NA",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -238,7 +248,7 @@ function getNewFieldDataSet(control){
 			},
 			INFO4 : {
 				KEY: "Visible",
-				DESC: "Description",
+				DESC: "Do you want to show Image YES/NO",
 				VALUE: "YES",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -246,7 +256,7 @@ function getNewFieldDataSet(control){
 			},
 			INFO5 : {
 				KEY: "Source",
-				DESC: "Description",
+				DESC: "Do you want to show image from Database YES/NO , No means you are showing image from external URL.",
 				VALUE: "YES",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -254,7 +264,15 @@ function getNewFieldDataSet(control){
 			},
 			INFO6 : {
 				KEY: "Image Description",
-				DESC: "Description",
+				DESC: "Your Image Description",
+				VALUE: "Details",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO7 : {
+				KEY: "Extra Control",
+				DESC: "Some more Controls.",
 				VALUE: "Details",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -265,41 +283,58 @@ function getNewFieldDataSet(control){
 		MODE: "IMAGE_PRO",
 		ROLE: "ADMIN",
 		PUBLISH: "YES",
-		DESC: "Description"
+		DESC: "For Production Purpose."
 	};
 
 
 	// ----------- TREE ----------------
+	// ---------- For Itinerary ---------
 	var eachTreeField = {
 		KEY: "Key Name",
 		VALUE: {
 			INFO1 : {
-				KEY: "Key Name",
-				DESC: "Description",
+				KEY: "Day",
+				DESC: "Day details like Day-1 ect.",
 				VALUE: "Value",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "TEXT"
 			},
 			INFO2 : {
-				KEY: "Key Name",
-				DESC: "Description",
+				KEY: "Header",
+				DESC: "Header details",
 				VALUE: "Value",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
 				TYPE: "TEXT"
 			},
 			INFO3 : {
-				KEY: "Key Name",
+				KEY: "Tags",
+				DESC: "Specify tags details. Use ,",
+				VALUE: "Value",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO4 : {
+				KEY: "Complete",
+				DESC: "Specify ",
+				VALUE: "Value",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "MULTI_TEXT"
+			},
+			INFO5 : {
+				KEY: "Images Details",
 				DESC: "Description",
 				VALUE: "Value",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
-				TYPE: "BOOL"
+				TYPE: "TEXT"
 			},
-			INFO4 : {
-				KEY: "Key Name",
-				DESC: "Description",
+			INFO6 : {
+				KEY: "Status",
+				DESC: "Do you want to use it or not YES/NO",
 				VALUE: "Value",
 				ROLE: "ADMIN",
 				PUBLISH: "YES",
@@ -312,6 +347,61 @@ function getNewFieldDataSet(control){
 		PUBLISH: "YES",
 		DESC: "Description"
 	};
+
+
+	// ----------- TREE ----------------
+	/* ---------- For Places Details ---------
+	var eachTreeField = {
+		KEY: "Key Name",
+		VALUE: {
+			INFO1 : {
+				KEY: "Place",
+				DESC: "Places Name",
+				VALUE: "Value",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO2 : {
+				KEY: "Complete",
+				DESC: "Place Complete Description",
+				VALUE: "Value",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "MULTI_TEXT"
+			},
+			INFO3 : {
+				KEY: "Tags",
+				DESC: "Tags Details",
+				VALUE: "Value",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO4 : {
+				KEY: "Images",
+				DESC: "Image Ref details",
+				VALUE: "Value",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "TEXT"
+			},
+			INFO5 : {
+				KEY: "Extra",
+				DESC: "Something extra if required.",
+				VALUE: "Value",
+				ROLE: "ADMIN",
+				PUBLISH: "YES",
+				TYPE: "MULTI_TEXT"
+			}
+		},
+		TYPE: "TREE",
+		MODE: "TREE",
+		ROLE: "ADMIN",
+		PUBLISH: "YES",
+		DESC: "Description"
+	};
+	*/
 
 
 
