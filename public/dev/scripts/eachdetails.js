@@ -123,13 +123,14 @@ async function readDocumentDataAsync(docID) {
     })
     .catch(err => {
       displayOutput('Error getting document', err);
+      displayOutput(err)
 
       hidePleaseWait()
     });
 
 
   // ------------- Read MAIN Document --------------
-  await db.collection(coll_base_path + coll_lang + '/' + coll_name+ '_DATA').doc('MAIN').get()
+  await db.collection(coll_base_path + coll_lang + '/' + coll_name + '_DATA').doc('MAIN').get()
     .then(doc => {
       if (!doc.exists) {
         displayOutput('No such document!');
@@ -141,12 +142,12 @@ async function readDocumentDataAsync(docID) {
         allDocCmpData['MAIN'] = doc.data()
 
         // Update Mapping Data set
-        if(coll_name == 'DESTINATIONS') {
+        if (coll_name == 'DESTINATIONS') {
           updateMappingDetails_D(docID)
-        } else if(coll_name == 'PACKAGES') {
+        } else if (coll_name == 'PACKAGES') {
           updateMappingDetails_P(docID)
         }
-        
+
 
         hidePleaseWait()
 
@@ -156,6 +157,7 @@ async function readDocumentDataAsync(docID) {
     })
     .catch(err => {
       displayOutput('Error getting document', err);
+      displayOutput(err)
 
       hidePleaseWait()
     });
@@ -190,12 +192,14 @@ function updateHTMLPage() {
   displayOutput(docMapDetails)
 
   // HTML Modification functions  
-   if(coll_name == 'DESTINATIONS') {
+  if (coll_name == 'DESTINATIONS') {
+    document.getElementById("col_section_1").style.display = 'block';
     genHTMLContentType1('col_section_1')
-  } else if(coll_name == 'PACKAGES') {
-    genHTMLContentType2('col_section_1')
+  } else if (coll_name == 'PACKAGES') {
+    document.getElementById("col_section_2").style.display = 'block';
+    genHTMLContentType2('col_section_2')
   }
-  
+
 
 
 }
@@ -211,7 +215,7 @@ function updateHTMLPage() {
 //**************** Mapping Function ***************************
 // Update Mapping Data Sets details
 function updateMappingDetails_D(docID) {
-  if ("MAIN" in allDocCmpData) {
+  if("MAIN" in allDocCmpData) {
     mainDocMapDetails["ID"] = allDocCmpData["MAIN"]["INFO0"]
     mainDocMapDetails["NAME"] = allDocCmpData["MAIN"]["INFO1"]
     mainDocMapDetails["DESC"] = allDocCmpData["MAIN"]["INFO2"]
@@ -241,52 +245,54 @@ function updateMappingDetails_D(docID) {
 
 
 
-  if (docID in allDocCmpData) {
-    docMapDetails["id"] = allDocCmpData[docID]["INFO0"]
-    docMapDetails["price"] = allDocCmpData[docID]["INFO10"]
-    docMapDetails["cut_price"] = allDocCmpData[docID]["INFO11"]
-    docMapDetails["reach_details"] = allDocCmpData[docID]["INFO12"]
-    docMapDetails["packages_details"] = docID + "#INFO13"
-    docMapDetails["places_details"] = docID + "#INFO14"
-    docMapDetails["review_details"] = docID + "#INFO15"
-    docMapDetails["name"] = allDocCmpData[docID]["INFO2"]
-    docMapDetails["catageory"] = allDocCmpData[docID]["INFO3"]
-    docMapDetails["tags"] = allDocCmpData[docID]["INFO4"]
-    docMapDetails["country"] = allDocCmpData[docID]["INFO5"]
-    docMapDetails["state"] = allDocCmpData[docID]["INFO6"]
-    docMapDetails["places"] = allDocCmpData[docID]["INFO7"]
-    docMapDetails["best_times"] = allDocCmpData[docID]["INFO8"]
-    docMapDetails["description"] = allDocCmpData[docID]["INFO9"]
+if(docID in allDocCmpData) {
+docMapDetails["id"] = allDocCmpData[docID]["INFO0"]
+docMapDetails["price"] = allDocCmpData[docID]["INFO10"]
+docMapDetails["cut_price"] = allDocCmpData[docID]["INFO11"]
+docMapDetails["reach_details"] = allDocCmpData[docID]["INFO12"]
+docMapDetails["packages_details"] = docID + "#INFO13"
+docMapDetails["places_details"] = docID + "#INFO14"
+docMapDetails["review_details"] = docID + "#INFO15"
+docMapDetails["name"] = allDocCmpData[docID]["INFO2"]
+docMapDetails["catageory"] = allDocCmpData[docID]["INFO3"]
+docMapDetails["district"] = allDocCmpData[docID]["INFO30"]
+docMapDetails["activities"] = allDocCmpData[docID]["INFO31"]
+docMapDetails["ratings"] = allDocCmpData[docID]["INFO32"]
+docMapDetails["tags"] = allDocCmpData[docID]["INFO4"]
+docMapDetails["country"] = allDocCmpData[docID]["INFO5"]
+docMapDetails["state"] = allDocCmpData[docID]["INFO6"]
+docMapDetails["places"] = allDocCmpData[docID]["INFO7"]
+docMapDetails["best_times"] = allDocCmpData[docID]["INFO8"]
+docMapDetails["description"] = allDocCmpData[docID]["INFO9"]
 
-    // MAP Development and Production Image correctly .....
-    if (is_production_mode) {
+// MAP Development and Production Image correctly .....
+if(is_production_mode) {
 
-      // IMAGES Production Information
+// IMAGES Production Information
 
-      docMapDetails["image_1"] = docID + "#INFO17"
-      docMapDetails["image_2"] = docID + "#INFO19"
-      docMapDetails["image_3"] = docID + "#INFO21"
-      docMapDetails["image_4"] = docID + "#INFO23"
-      docMapDetails["image_5"] = docID + "#INFO25"
-      docMapDetails["image_6"] = docID + "#INFO27"
-      docMapDetails["model"] = docID + "#INFO29"
+docMapDetails["image_1"] = docID + "#INFO17"
+docMapDetails["image_2"] = docID + "#INFO19"
+docMapDetails["image_3"] = docID + "#INFO21"
+docMapDetails["image_4"] = docID + "#INFO23"
+docMapDetails["image_5"] = docID + "#INFO25"
+docMapDetails["image_6"] = docID + "#INFO27"
+docMapDetails["model"] = docID + "#INFO29"
 
-    } else {
-      // IMAGES Information
+} else {
+// IMAGES Information
 
-      docMapDetails["image_1"] = docID + "#INFO16"
-      docMapDetails["image_2"] = docID + "#INFO18"
-      docMapDetails["image_3"] = docID + "#INFO20"
-      docMapDetails["image_4"] = docID + "#INFO22"
-      docMapDetails["image_5"] = docID + "#INFO24"
-      docMapDetails["image_6"] = docID + "#INFO26"
-      docMapDetails["model"] = docID + "#INFO28"
+docMapDetails["image_1"] = docID + "#INFO16"
+docMapDetails["image_2"] = docID + "#INFO18"
+docMapDetails["image_3"] = docID + "#INFO20"
+docMapDetails["image_4"] = docID + "#INFO22"
+docMapDetails["image_5"] = docID + "#INFO24"
+docMapDetails["image_6"] = docID + "#INFO26"
+docMapDetails["model"] = docID + "#INFO28"
 
-    }
-  } else {
+}    
+} else {
     displayOutput(docID + " Data not found !!")
-  }
-
+}
 }
 //**************** END ***************************
 
@@ -294,7 +300,7 @@ function updateMappingDetails_D(docID) {
 //**************** Mapping Function ***************************
 // Update Mapping Data Sets details
 function updateMappingDetails_P(docID) {
-  if ("MAIN" in allDocCmpData) {
+  if("MAIN" in allDocCmpData) {
     mainDocMapDetails["ID"] = allDocCmpData["MAIN"]["INFO0"]
     mainDocMapDetails["NAME"] = allDocCmpData["MAIN"]["INFO1"]
     mainDocMapDetails["DESC"] = allDocCmpData["MAIN"]["INFO2"]
@@ -324,86 +330,90 @@ function updateMappingDetails_P(docID) {
 
 
 
-  if (docID in allDocCmpData) {
-    docMapDetails["id"] = allDocCmpData[docID]["INFO0"]
-    docMapDetails["name"] = allDocCmpData[docID]["INFO1"]
-    docMapDetails["catageory"] = allDocCmpData[docID]["INFO10"]
-    docMapDetails["tags"] = allDocCmpData[docID]["INFO11"]
-    docMapDetails["destination_id"] = allDocCmpData[docID]["INFO12"]
-    docMapDetails["country"] = allDocCmpData[docID]["INFO13"]
-    docMapDetails["state"] = allDocCmpData[docID]["INFO14"]
-    docMapDetails["places"] = allDocCmpData[docID]["INFO15"]
-    docMapDetails["difficulty"] = allDocCmpData[docID]["INFO16"]
-    docMapDetails["description"] = allDocCmpData[docID]["INFO17"]
-    docMapDetails["overview"] = allDocCmpData[docID]["INFO18"]
-    docMapDetails["inclusions"] = allDocCmpData[docID]["INFO19"]
-    docMapDetails["days"] = allDocCmpData[docID]["INFO2"]
-    docMapDetails["exclusions"] = allDocCmpData[docID]["INFO20"]
-    docMapDetails["to_take"] = allDocCmpData[docID]["INFO21"]
-    docMapDetails["organiser"] = allDocCmpData[docID]["INFO22"]
-    docMapDetails["map"] = allDocCmpData[docID]["INFO23"]
-    docMapDetails["places_list"] = docID + "#INFO24"
-    docMapDetails["review_list"] = docID + "#INFO25"
-    docMapDetails["hotels"] = allDocCmpData[docID]["INFO3"]
-    docMapDetails["hotel_star"] = allDocCmpData[docID]["INFO4"]
-    docMapDetails["hotel_image"] = allDocCmpData[docID]["INFO5"]
-    docMapDetails["itinerary_1"] = docID + "#INFO56"
-    docMapDetails["itinerary_2"] = docID + "#INFO57"
-    docMapDetails["itinerary_3"] = docID + "#INFO58"
-    docMapDetails["itinerary_4"] = docID + "#INFO59"
-    docMapDetails["routes"] = allDocCmpData[docID]["INFO6"]
-    docMapDetails["itinerary_5"] = docID + "#INFO60"
-    docMapDetails["itinerary_6"] = docID + "#INFO61"
-    docMapDetails["itinerary_7"] = docID + "#INFO62"
-    docMapDetails["price"] = allDocCmpData[docID]["INFO7"]
-    docMapDetails["cut_price"] = allDocCmpData[docID]["INFO8"]
-    docMapDetails["includes"] = allDocCmpData[docID]["INFO9"]
+if(docID in allDocCmpData) {
+docMapDetails["id"] = allDocCmpData[docID]["INFO0"]
+docMapDetails["name"] = allDocCmpData[docID]["INFO1"]
+docMapDetails["catageory"] = allDocCmpData[docID]["INFO10"]
+docMapDetails["tags"] = allDocCmpData[docID]["INFO11"]
+docMapDetails["destination_id"] = allDocCmpData[docID]["INFO12"]
+docMapDetails["country"] = allDocCmpData[docID]["INFO13"]
+docMapDetails["state"] = allDocCmpData[docID]["INFO14"]
+docMapDetails["district"] = allDocCmpData[docID]["INFO15"]
+docMapDetails["difficulty"] = allDocCmpData[docID]["INFO16"]
+docMapDetails["highlights"] = allDocCmpData[docID]["INFO17"]
+docMapDetails["overview"] = allDocCmpData[docID]["INFO18"]
+docMapDetails["inclusions"] = allDocCmpData[docID]["INFO19"]
+docMapDetails["days"] = allDocCmpData[docID]["INFO2"]
+docMapDetails["exclusions"] = allDocCmpData[docID]["INFO20"]
+docMapDetails["to_take"] = allDocCmpData[docID]["INFO21"]
+docMapDetails["organiser"] = allDocCmpData[docID]["INFO22"]
+docMapDetails["map"] = allDocCmpData[docID]["INFO23"]
+docMapDetails["places_list"] = docID + "#INFO24"
+docMapDetails["review_list"] = docID + "#INFO25"
+docMapDetails["hotels"] = allDocCmpData[docID]["INFO3"]
+docMapDetails["hotel_star"] = allDocCmpData[docID]["INFO4"]
+docMapDetails["hotel_image"] = allDocCmpData[docID]["INFO5"]
+docMapDetails["itinerary_1d"] = docID + "#INFO56"
+docMapDetails["itinerary_2d"] = docID + "#INFO57"
+docMapDetails["itinerary_3d"] = docID + "#INFO58"
+docMapDetails["itinerary_4d"] = docID + "#INFO59"
+docMapDetails["routes"] = allDocCmpData[docID]["INFO6"]
+docMapDetails["itinerary_5d"] = docID + "#INFO60"
+docMapDetails["itinerary_6d"] = docID + "#INFO61"
+docMapDetails["itinerary_7d"] = docID + "#INFO62"
+docMapDetails["district"] = allDocCmpData[docID]["INFO64"]
+docMapDetails["activities"] = allDocCmpData[docID]["INFO65"]
+docMapDetails["ratings"] = allDocCmpData[docID]["INFO66"]
+docMapDetails["best_time"] = allDocCmpData[docID]["INFO67"]
+docMapDetails["cities"] = allDocCmpData[docID]["INFO68"]
+docMapDetails["price"] = allDocCmpData[docID]["INFO7"]
+docMapDetails["cut_price"] = allDocCmpData[docID]["INFO8"]
+docMapDetails["includes"] = allDocCmpData[docID]["INFO9"]
 
-    // MAP Development and Production Image correctly .....
-    if (is_production_mode) {
+// MAP Development and Production Image correctly .....
+if(is_production_mode) {
 
-      // IMAGES Production Information
+// IMAGES Production Information
 
-      docMapDetails["image_1"] = docID + "#INFO27"
-      docMapDetails["image_2"] = docID + "#INFO29"
-      docMapDetails["image_3"] = docID + "#INFO31"
-      docMapDetails["image_4"] = docID + "#INFO33"
-      docMapDetails["image_5"] = docID + "#INFO35"
-      docMapDetails["itinerary_1"] = docID + "#INFO37"
-      docMapDetails["itinerary_2"] = docID + "#INFO39"
-      docMapDetails["itinerary_3"] = docID + "#INFO41"
-      docMapDetails["itinerary_4"] = docID + "#INFO43"
-      docMapDetails["itinerary_5"] = docID + "#INFO45"
-      docMapDetails["itinerary_6"] = docID + "#INFO47"
-      docMapDetails["itinerary_7"] = docID + "#INFO49"
-      docMapDetails["model"] = docID + "#INFO51"
-      docMapDetails["image_7"] = docID + "#INFO53"
-      docMapDetails["image_8"] = docID + "#INFO55"
+docMapDetails["image_1"] = docID + "#INFO27"
+docMapDetails["image_2"] = docID + "#INFO29"
+docMapDetails["image_3"] = docID + "#INFO31"
+docMapDetails["image_4"] = docID + "#INFO33"
+docMapDetails["image_5"] = docID + "#INFO35"
+docMapDetails["itinerary_1"] = docID + "#INFO37"
+docMapDetails["itinerary_2"] = docID + "#INFO39"
+docMapDetails["itinerary_3"] = docID + "#INFO41"
+docMapDetails["itinerary_4"] = docID + "#INFO43"
+docMapDetails["itinerary_5"] = docID + "#INFO45"
+docMapDetails["itinerary_6"] = docID + "#INFO47"
+docMapDetails["itinerary_7"] = docID + "#INFO49"
+docMapDetails["model"] = docID + "#INFO51"
+docMapDetails["image_7"] = docID + "#INFO53"
+docMapDetails["image_8"] = docID + "#INFO55"
 
-    } else {
-      // IMAGES Information
+} else {
+// IMAGES Information
 
-      docMapDetails["image_1"] = docID + "#INFO26"
-      docMapDetails["image_2"] = docID + "#INFO28"
-      docMapDetails["image_3"] = docID + "#INFO30"
-      docMapDetails["image_4"] = docID + "#INFO32"
-      docMapDetails["image_5"] = docID + "#INFO34"
-      docMapDetails["itinerary_1"] = docID + "#INFO36"
-      docMapDetails["itinerary_2"] = docID + "#INFO38"
-      docMapDetails["itinerary_3"] = docID + "#INFO40"
-      docMapDetails["itinerary_4"] = docID + "#INFO42"
-      docMapDetails["itinerary_5"] = docID + "#INFO44"
-      docMapDetails["itinerary_6"] = docID + "#INFO46"
-      docMapDetails["itinerary_7"] = docID + "#INFO48"
-      docMapDetails["model"] = docID + "#INFO50"
-      docMapDetails["image_7"] = docID + "#INFO52"
-      docMapDetails["image_8"] = docID + "#INFO54"
+docMapDetails["image_1"] = docID + "#INFO26"
+docMapDetails["image_2"] = docID + "#INFO28"
+docMapDetails["image_3"] = docID + "#INFO30"
+docMapDetails["image_4"] = docID + "#INFO32"
+docMapDetails["image_5"] = docID + "#INFO34"
+docMapDetails["itinerary_1"] = docID + "#INFO36"
+docMapDetails["itinerary_2"] = docID + "#INFO38"
+docMapDetails["itinerary_3"] = docID + "#INFO40"
+docMapDetails["itinerary_4"] = docID + "#INFO42"
+docMapDetails["itinerary_5"] = docID + "#INFO44"
+docMapDetails["itinerary_6"] = docID + "#INFO46"
+docMapDetails["itinerary_7"] = docID + "#INFO48"
+docMapDetails["model"] = docID + "#INFO50"
+docMapDetails["image_7"] = docID + "#INFO52"
+docMapDetails["image_8"] = docID + "#INFO54"
 
-    }
-  } else {
+}    
+} else {
     displayOutput(docID + " Data not found !!")
-  }
-
+}
 }
 //**************** END ***************************
 
@@ -415,34 +425,275 @@ function updateMappingDetails_P(docID) {
 // - Sequence of all HTML modification code
 // *******************************************************
 
+// --------- Update Model Content ------------------------------- 
+// Model Layout Configuration
+function getModelLayoutConfig(mdl_coll){
+
+  /*
+  show_model_base_header = true
+  show_model_base_button = true
+  header_text_layout_position = 'center'
+  header_button_layout_position = 'center'
+  */
+
+    return [true,true,'center','center']  
+    
+}
+
+// Create Model Content
+function getModelCompleteContent(mdl_coll, all_doc_info_list, doc_data) {
+
+  var html_div_line = ''  
+
+    var header = doc_data[all_doc_info_list[0]]
+    var content = doc_data[all_doc_info_list[1]]
+    var content_1 = doc_data[all_doc_info_list[2]]
+
+    html_div_line = '<b>' + header + '</b><br>' + content + '<br>' + content_1
+     
+
+   
+
+  return html_div_line
+
+}
+
 // Create HTML Content Type 1
-function genHTMLContentType1(maindivID){
-  displayOutput('>>> Create HTML Content Type 1')
+function genHTMLContentType1(maindivID) {
+  displayOutput('>>> Create HTML Content Type 1')  
+  
+  // Update header Images
+  document.getElementById('hdr_image_1').src = getImageUrl(docMapDetails["image_1"])
+  document.getElementById('hdr_image_2').src = getImageUrl(docMapDetails["image_2"]) 
+  document.getElementById('hdr_image_3').src = getImageUrl(docMapDetails["image_3"])
+  document.getElementById('hdr_image_4').src = getImageUrl(docMapDetails["image_4"])
 
-  var main_html_content = '<h3>DESTINATIONS</h3>'
+ 
+  // Update HTML Page Details
+  $("#dest_title").html(docMapDetails["name"]);
+  $("#dest_price").html(docMapDetails["price"]);
+  $("#dest_best_time").html(docMapDetails["best_times"]);  
+  $("#dest_ratings").html(docMapDetails["ratings"]);
+  $("#dest_description").html(docMapDetails["description"]);
 
+  // Update Activities
+  var all_activities_list = docMapDetails["activities"].split(',')
 
-  // Update HTML Page
-  $("#" + maindivID).html(main_html_content);
+  var activities_html_line = ''
+  for(each_act_idx in all_activities_list) {
+    var act_name = all_activities_list[each_act_idx]
+    activities_html_line += '<div class="chip"> \
+                <img src="Images/default.jpg" alt="default"> '+ act_name +'</div>'
+  }
+
+  $("#dest_activities").html(activities_html_line);
+
+  // Update List Ref Details
+  getListRefDetails(docMapDetails['packages_details'], 'all_packages_list_ref')
 
 }
 
 // Create HTML Content Type 2
-function genHTMLContentType2(maindivID){
+function genHTMLContentType2(maindivID) {
   displayOutput('>>> Create HTML Content Type 2')
 
-  var main_html_content = '<h3>PACKAGES</h3>'
-  
-  // Update HTML Page
-  $("#" + maindivID).html(main_html_content);
+  // Update header Images
+  document.getElementById('hdr_image_1').src = getImageUrl(docMapDetails[getKeyDetails("Image 1")])
+  document.getElementById('hdr_image_2').src = getImageUrl(docMapDetails[getKeyDetails("Image 2")]) 
+  document.getElementById('hdr_image_3').src = getImageUrl(docMapDetails[getKeyDetails("Image 3")])
+  document.getElementById('hdr_image_4').src = getImageUrl(docMapDetails[getKeyDetails("Image 4")])
+
+  // Update HTML Page Details
+  $("#pkg_price").html(docMapDetails[getKeyDetails("Name")]);
+  $("#pkg_best_time").html(docMapDetails[getKeyDetails("Best Time")]);
+  $("#pkg_days").html(docMapDetails[getKeyDetails("Days")]);
+  $("#pkg_hotel_inc").html(docMapDetails[getKeyDetails("Hotel Star")]);
+  $("#pkg_cities").html(docMapDetails[getKeyDetails("Cities")]);
+  $("#pkg_ratings").html(docMapDetails[getKeyDetails("Ratings")]);
+
+  // Update Activities
+  var all_activities_list = docMapDetails[getKeyDetails("Activities")].split(',')
+
+  var activities_html_line = ''
+  for(each_act_idx in all_activities_list) {
+    var act_name = all_activities_list[each_act_idx]
+    activities_html_line += '<div class="chip"> \
+                <img src="Images/default.jpg" alt="default"> '+ act_name +'</div>'
+  }
+
+  $("#pkg_activities").html(activities_html_line);
+
+  // Update Includes
+  var all_includes_list = docMapDetails[getKeyDetails("Includes")].split(',')
+
+  var includes_html_line = ''
+  for(each_incl_idx in all_includes_list) {
+    var incl_name = all_includes_list[each_incl_idx]
+    includes_html_line += '<div class="chip"> \
+                <img src="Images/default.jpg" alt="default"> '+ incl_name +'</div>'
+  }
+
+  $("#pkg_includes").html(includes_html_line);
+
+
+  $("#pkg_description").html(docMapDetails[getKeyDetails("Overview")]);
+
+  // Update Highlights
+  var highligts_details = docMapDetails[getKeyDetails("Highlights")]
+
+  if(highligts_details == "NA") {
+    document.getElementById("card_highlights").style.display = 'none';
+  } else {  
+
+  var all_highlights_list = highligts_details.split('#')
+
+  var highlights_html_line = ''
+  for(each_highl_idx in all_highlights_list) {
+    if(each_highl_idx == 0){continue}
+    var highl_name = all_highlights_list[each_highl_idx]
+    highlights_html_line += '<blockquote>' + highl_name + '</blockquote>'
+  }
+
+  $("#pkg_highlights").html(highlights_html_line);
+}
+
+
+// Update Hotels Details
+var hotel_details = docMapDetails[getKeyDetails("Hotels")]
+
+$("#hotel_name").html(hotel_details.split('#')[1].split(':')[1].trim());
+$("#hotel_days").html(hotel_details.split('#')[2].split(':')[1].trim());
+$("#hotel_star").html(hotel_details.split('#')[3].split(':')[1].trim());
+
+var extra_details = hotel_details.split('#')[4].split(':')[1].trim()
+if(extra_details == "NA") {  
+  document.getElementById("hotel_extra").style.display = 'none';
+} else {
+  $("#hotel_extra").html(extra_details);
+}
+
+
+document.getElementById('hotel_image').src = getImageUrl(docMapDetails[getKeyDetails(docMapDetails[getKeyDetails("Hotel Image")])])
+
+
+
+// Update Inclusions
+var all_inclusions_list = docMapDetails[getKeyDetails("Inclusions")].split('#')
+
+  var inclusions_html_line = ''
+  for(each_incl_idx in all_inclusions_list) {
+    if(each_incl_idx == 0){continue}
+    var incl_name = all_inclusions_list[each_incl_idx]
+    inclusions_html_line += '<div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>'+ incl_name +'</div>'
+  }
+
+  $("#pkg_inclusions").html(inclusions_html_line);
+
+
+  // Update Inclusions
+var all_exclusion_list = docMapDetails[getKeyDetails("Exclusions")].split('#')
+
+var exclusion_html_line = ''
+for(each_exincl_idx in all_exclusion_list) {
+  if(each_exincl_idx == 0){continue}
+  var exclu_name = all_exclusion_list[each_exincl_idx]
+  exclusion_html_line += '<div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>'+ exclu_name +'</div>'
+}
+
+$("#pkg_exclusions").html(exclusion_html_line);
+
+
+// Update Itinerary 
+updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 1D")],"itinerary_1")
+updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 2D")],"itinerary_2")
+updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 3D")],"itinerary_3")
+updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 4D")],"itinerary_4")
+updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 5D")],"itinerary_5")
+updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 6D")],"itinerary_6")
+updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 7D")],"itinerary_7")
 
 }
+
+// Get Multi Info details
+function getMultiInfoDetails(id_details) {
+
+var doc_id = id_details.split('#')[0]
+var info_details = id_details.split('#')[1]
+
+var multi_info_details = {}
+
+multi_info_details["DAY"] =  allDocCmpData[doc_id][info_details+"_INFO1"]
+multi_info_details["HEADER"] =  allDocCmpData[doc_id][info_details+"_INFO2"]
+multi_info_details["TAGS"] =  allDocCmpData[doc_id][info_details+"_INFO3"]
+multi_info_details["COMPLETE"] =  allDocCmpData[doc_id][info_details+"_INFO4"]
+multi_info_details["IMAGE"] =  allDocCmpData[doc_id][info_details+"_INFO5"]
+multi_info_details["STATUS"] =  allDocCmpData[doc_id][info_details+"_INFO6"]
+
+ return multi_info_details
+
+}
+
+// Update Multi Info HTML Details
+function updateMultiInfoDetails(id_details,html_tag) {
+
+  var multi_details = getMultiInfoDetails(id_details)
+
+  if(multi_details["STATUS"]) {
+
+  $("#" + html_tag + "_day").html(multi_details["DAY"]);
+  $("#" + html_tag + "_header").html(multi_details["HEADER"]);
+  
+ 
+  // Update Tags
+  var all_tags_list = multi_details["TAGS"].split(',')
+
+  var tags_html_line = ''
+  for(each_tags_idx in all_tags_list) {
+    var tag_name = all_tags_list[each_tags_idx]
+    tags_html_line += '<div class="chip">'+ tag_name +'</div>'
+  }
+
+  $("#" + html_tag + "_tags").html(tags_html_line);
+
+
+  // Update Body
+var all_body_list = multi_details["COMPLETE"].split('#')
+
+var body_html_line = ''
+for(each_idx in all_body_list) {
+  if(each_idx == 0){continue}
+  var body_line = all_body_list[each_idx]
+  body_html_line += '<blockquote>' + body_line + '</blockquote>'
+}
+
+$("#" + html_tag + "_body").html(body_html_line);
+
+  } else {
+document.getElementById(html_tag).style.display = 'none';
+  }
+
+  
+
+}
+
 
 // ----------- START UP CALLS ----------------
 function startUpCalls() {
 
   $(document).ready(function () {
     $('.modal').modal();
+  });
+
+  $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+
+  $('.carousel.carousel-slider').carousel({
+    fullWidth: true
+  });
+
+  $(document).ready(function(){
+    $('.tabs').tabs();
   });
 
 }

@@ -315,6 +315,31 @@ function updateListRefDetails() {
 
 
 // --------- Update Model Content ------------------------------- 
+// Model Layout Configuration
+function getModelLayoutConfig(mdl_coll){
+
+  /*
+  show_model_base_header = true
+  show_model_base_button = true
+  header_text_layout_position = 'center'
+  header_button_layout_position = 'center'
+  */
+
+ switch (mdl_coll) {
+  case "DESTINATIONS":
+    return [true,true,'center','center']
+    
+  case "PACKAGES":
+    return [true,true,'center','center']
+
+  default:
+    return [true,true,'center','center']
+}
+
+  
+    
+}
+
 // Create Model Content
 function getModelCompleteContent(mdl_coll, all_doc_info_list, doc_data) {
 

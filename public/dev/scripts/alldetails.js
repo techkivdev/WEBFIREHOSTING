@@ -166,6 +166,31 @@ function updateHTMLPage() {
 // - Sequence of all HTML modification code
 // *******************************************************
 
+// Model Layout Configuration
+function getModelLayoutConfig(mdl_coll){
+
+  /*
+  show_model_base_header = true
+  show_model_base_button = true
+  header_text_layout_position = 'center'
+  header_button_layout_position = 'center'
+  */
+
+ switch (mdl_coll) {
+  case "DESTINATIONS":
+    return [true,false,'left','center']
+    
+  case "PACKAGES":
+    return [true,false,'left','center']
+
+  default:
+    return [true,false,'left','center']
+}
+
+  
+    
+}
+
 // Update Header Image
 function updateCardLayout(htmlID) {
 
@@ -215,7 +240,7 @@ function updateCardLayout(htmlID) {
   }
 
   // Get BASE Layout content 
-  var base_layout_content = getBaseLayoutHTML(base_layout, base_title, each_list_ref_div_content)
+  var base_layout_content = getBaseLayoutHTML(model_layout,base_layout, base_title, each_list_ref_div_content)
 
 
   // Update HTML Page
@@ -298,7 +323,7 @@ function modelLayoutSelector_local(mdl_layout, doc_details, mdl_action_details) 
 function modelLytSquareHoriCard_local(image_ref, complete_content, mdl_action_details) {
 
   var htmlLine = '<div class="col s12 m7"><a href="' + clickHandling(mdl_action_details.split(',')[0], mdl_action_details.split(',')[1], mdl_action_details.split(',')[2], mdl_action_details.split(',')[3], mdl_action_details.split(',')[4]) + '">\
-            <div class="card horizontal">\
+            <div class="card horizontal hoverable">\
               <div class="card-image">\
                 <img src="' + getModelImageRef(image_ref) + '">\
               </div>\
@@ -319,7 +344,7 @@ function modelLytSquareHoriCard_local(image_ref, complete_content, mdl_action_de
 function modelLytSquareCard_local(image_ref, complete_content, mdl_action_details) {
 
   var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_action_details.split(',')[0], mdl_action_details.split(',')[1], mdl_action_details.split(',')[2], mdl_action_details.split(',')[3], mdl_action_details.split(',')[4]) + '">\
-                  <div class="card">\
+                  <div class="card hoverable">\
                     <div class="card-image">\
                       <img src="' + getModelImageRef(image_ref) + '">\
                     </div>\

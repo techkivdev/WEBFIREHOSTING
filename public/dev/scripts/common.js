@@ -157,6 +157,11 @@ function clickHandling(action, page_name, name, filter, extra) {
 
 }
 
+// --------  Get Key Names Details --------
+function getKeyDetails(key_name) {
+  return key_name.replace(' ','_').toLowerCase()
+ }
+
 
 
 // ---------------------------------------------------------------
@@ -183,7 +188,7 @@ function createListRefHTMLContent(details, htmlID) {
   }
 
   // Get BASE Layout content 
-  var base_layout_content = getBaseLayoutHTML(details['BS_LYT'], details['BS_TITLE'], each_list_ref_div_content)
+  var base_layout_content = getBaseLayoutHTML(details['MDL_COLL'],details['BS_LYT'], details['BS_TITLE'], each_list_ref_div_content)
 
 
   // Update HTML Page
@@ -192,25 +197,88 @@ function createListRefHTMLContent(details, htmlID) {
 }
 
 // Create Base Layout
-function getBaseLayoutHTML(base_layout, header, model_content) {
+function getBaseLayoutHTML(mdl_coll,base_layout, header, model_content) {
 
   var base_layout_html = ''
 
+  var show_model_base_header = true
+  var show_model_base_button = true
+  var header_text_layout_position = 'center'
+  var header_button_layout_position = 'center'
+
+  // **********************************************************************
+  // ---------------------- CARD_ROW -------------------------------
+  // *********************************************************************
+
   if (base_layout == 'CARD_ROW') {
+    
+    // ------------- Configuration -------------------------
+    var mdl_lyt_config = getModelLayoutConfig(mdl_coll)
+    show_model_base_header = mdl_lyt_config[0]
+    show_model_base_button = mdl_lyt_config[1]
+    header_text_layout_position = mdl_lyt_config[2]
+    header_button_layout_position = mdl_lyt_config[3]
+    // -----------------------------------------------------
+
     base_layout_html = '<div class="row">\
-                    <div class="col s12 left">\
+                    <div class="col s12 ' + header_text_layout_position + '">\
                       <h3><i class="mdi-content-send brown-text"></i></h3>\
-                      <h4>' + header + '</h4></div>\
+                      <div class="row">'
+                      if(show_model_base_header) {
+                        base_layout_html += '<div class="col s12">\
+                        <h4>' + header + '</h4>\
+                      </div> ';                     
+                    }
+                        
+
+                      if(show_model_base_button){
+                        base_layout_html += '<div class="col s12">\
+                          <div class="' + header_button_layout_position + '">\
+                            <a class="waves-effect waves-light btn">View All</a>\
+                          </div>\
+                        </div>'
+                      }
+
+                      base_layout_html += '</div>\
+                      </div>\
                   </div><div class="row">' + model_content + '</div>';
   }
 
+  // **********************************************************************
+  // ---------------------- CARD_ROW_HORIZ -------------------------------
+  // **********************************************************************
+
   if (base_layout == 'CARD_ROW_HORIZ') {
 
-    base_layout_html = '<div class="row">\
-          <div class="col s12 left">\
-            <h3><i class="mdi-content-send brown-text"></i></h3>\
-            <h4>' + header + '</h4></div>\
-          </div>' + model_content;
+     // ------------- Configuration -------------------------
+     var mdl_lyt_config = getModelLayoutConfig(mdl_coll)
+    show_model_base_header = mdl_lyt_config[0]
+    show_model_base_button = mdl_lyt_config[1]
+    header_text_layout_position = mdl_lyt_config[2]
+    header_button_layout_position = mdl_lyt_config[3]
+     // -----------------------------------------------------
+     base_layout_html = '<div class="row">\
+                    <div class="col s12 ' + header_text_layout_position + '">\
+                      <h3><i class="mdi-content-send brown-text"></i></h3>\
+                      <div class="row">'
+                      if(show_model_base_header) {
+                        base_layout_html += '<div class="col s12">\
+                        <h4>' + header + '</h4>\
+                      </div> ';                     
+                    }
+                        
+
+                      if(show_model_base_button){
+                        base_layout_html += '<div class="col s12">\
+                          <div class="' + header_button_layout_position + '">\
+                            <a class="waves-effect waves-light btn">View All</a>\
+                          </div>\
+                        </div>'
+                      }
+
+                      base_layout_html += '</div>\
+                      </div>\
+                  </div>' + model_content;    
 
   }
 
@@ -260,7 +328,7 @@ function modelLayoutSelector(mdl_coll, mdl_layout, doc_details, all_doc_info_lis
 function modelLytSquareCard(image_ref, complete_content, mdl_action_details) {
 
   var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_action_details.split(',')[0], mdl_action_details.split(',')[1], mdl_action_details.split(',')[2], mdl_action_details.split(',')[3], mdl_action_details.split(',')[4]) + '">\
-                  <div class="card">\
+                  <div class="card hoverable">\
                     <div class="card-image">\
                       <img src="' + getModelImageRef(image_ref) + '">\
                     </div>\
@@ -279,7 +347,7 @@ function modelLytSquareCard(image_ref, complete_content, mdl_action_details) {
 function modelLytSquareHoriCard(image_ref, complete_content, mdl_action_details) {
 
   var htmlLine = '<div class="col s12 m7"><a href="' + clickHandling(mdl_action_details.split(',')[0], mdl_action_details.split(',')[1], mdl_action_details.split(',')[2], mdl_action_details.split(',')[3], mdl_action_details.split(',')[4]) + '">\
-            <div class="card horizontal">\
+            <div class="card horizontal hoverable">\
               <div class="card-image">\
                 <img src="' + getModelImageRef(image_ref) + '">\
               </div>\
