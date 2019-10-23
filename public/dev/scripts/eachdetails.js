@@ -200,6 +200,8 @@ function updateHTMLPage() {
     genHTMLContentType2('col_section_2')
   }
 
+  startUpCalls()
+
 
 
 }
@@ -440,16 +442,57 @@ function getModelLayoutConfig(mdl_coll){
     
 }
 
+// Get Info details
+function getInfoDetails(key) {
+  return docMapDetails[getKeyDetails(key)]
+}
+
 // Create Model Content
 function getModelCompleteContent(mdl_coll, all_doc_info_list, doc_data) {
 
   var html_div_line = ''  
 
-    var header = doc_data[all_doc_info_list[0]]
-    var content = doc_data[all_doc_info_list[1]]
-    var content_1 = doc_data[all_doc_info_list[2]]
+  var header = doc_data[all_doc_info_list[0]]
+  var sub_header = doc_data[all_doc_info_list[1]]
+  var ratings = doc_data[all_doc_info_list[2]]
+  var price = doc_data[all_doc_info_list[3]]
+  var cut_price = doc_data[all_doc_info_list[4]]
 
-    html_div_line = '<b>' + header + '</b><br>' + content + '<br>' + content_1
+  //html_div_line = '<b>' + header + '</b><br>' + content + '<br>' + content_1
+
+  // Update Ratings
+  //ratings = '2.5#(18,560)'
+  if(!ratings.includes("#")) {
+    ratings = '1#(1)'
+  }
+
+
+  var rating_num = ratings.split('#')[0]
+  
+  var ratings_line = ''
+  for (i = 0; i < Number(rating_num.split('.')[0]); i++) {
+    ratings_line += '<i class="fas fa-star text-warning"></i>';
+  }
+
+  if(rating_num.includes(".5")) {
+    ratings_line += '<i class="fas fa-star-half text-warning"></i>';
+  }
+
+  ratings_line += rating_num + ' ' + ratings.split('#')[1]
+
+
+
+
+  html_div_line = '<div class="black-text"><h6>'+ header +'</h6>\
+              <p class="card-text" style="font-size: 11px;">'+ sub_header +'</p>\
+              <p><small class="text-muted">' +  ratings_line  + '\
+                  </small>\
+              <br>\
+              <span class="right"> \
+                <small style="text-decoration: line-through;" class="text-muted">\
+                  ($'+ cut_price +')</small>$'+ price +' </span>\
+                  <br>\
+            </p></div>';
      
 
    
@@ -459,15 +502,17 @@ function getModelCompleteContent(mdl_coll, all_doc_info_list, doc_data) {
 }
 
 // Create HTML Content Type 1
-function genHTMLContentType1(maindivID) {
-  displayOutput('>>> Create HTML Content Type 1')  
-  
-  // Update header Images
-  document.getElementById('hdr_image_1').src = getImageUrl(docMapDetails["image_1"])
-  document.getElementById('hdr_image_2').src = getImageUrl(docMapDetails["image_2"]) 
-  document.getElementById('hdr_image_3').src = getImageUrl(docMapDetails["image_3"])
-  document.getElementById('hdr_image_4').src = getImageUrl(docMapDetails["image_4"])
+function genHTMLContentType1() {
+  displayOutput('>>> Create HTML Content Type 1')    
+ 
+   // Update header Images
+   document.getElementById('banner_main_image').src = getImageUrl(getInfoDetails("Image 1"))
 
+   // Update Image View
+   updateImageView("dest_image_view",["Image 1","Image 2","Image 3","Image 4","Image 5"])
+
+  $("#banner_main_header").html(docMapDetails[getKeyDetails("Name")]);
+  $("#banner_small_header").html(" ");
  
   // Update HTML Page Details
   $("#dest_title").html(docMapDetails["name"]);
@@ -494,25 +539,29 @@ function genHTMLContentType1(maindivID) {
 }
 
 // Create HTML Content Type 2
-function genHTMLContentType2(maindivID) {
+function genHTMLContentType2() {
   displayOutput('>>> Create HTML Content Type 2')
 
   // Update header Images
-  document.getElementById('hdr_image_1').src = getImageUrl(docMapDetails[getKeyDetails("Image 1")])
-  document.getElementById('hdr_image_2').src = getImageUrl(docMapDetails[getKeyDetails("Image 2")]) 
-  document.getElementById('hdr_image_3').src = getImageUrl(docMapDetails[getKeyDetails("Image 3")])
-  document.getElementById('hdr_image_4').src = getImageUrl(docMapDetails[getKeyDetails("Image 4")])
+  document.getElementById('banner_main_image').src = getImageUrl(getInfoDetails("Image 1"))
+
+  // Update Image View
+  updateImageView("pkg_image_view",["Image 1","Image 2","Image 3","Image 4","Image 5"])
+  
+
+  $("#banner_main_header").html(getInfoDetails("Name"));
+  $("#banner_small_header").html(" ");
 
   // Update HTML Page Details
-  $("#pkg_price").html(docMapDetails[getKeyDetails("Name")]);
-  $("#pkg_best_time").html(docMapDetails[getKeyDetails("Best Time")]);
-  $("#pkg_days").html(docMapDetails[getKeyDetails("Days")]);
-  $("#pkg_hotel_inc").html(docMapDetails[getKeyDetails("Hotel Star")]);
-  $("#pkg_cities").html(docMapDetails[getKeyDetails("Cities")]);
-  $("#pkg_ratings").html(docMapDetails[getKeyDetails("Ratings")]);
+  $("#pkg_price").html(getInfoDetails("Name"));
+  $("#pkg_best_time").html(getInfoDetails("Best Time"));
+  $("#pkg_days").html(getInfoDetails("Days"));
+  $("#pkg_hotel_inc").html(getInfoDetails("Hotel Star"));
+  $("#pkg_cities").html(getInfoDetails("Cities"));
+  $("#pkg_ratings").html(getInfoDetails("Ratings").replace('#',','));
 
   // Update Activities
-  var all_activities_list = docMapDetails[getKeyDetails("Activities")].split(',')
+  var all_activities_list = getInfoDetails("Activities").split(',')
 
   var activities_html_line = ''
   for(each_act_idx in all_activities_list) {
@@ -524,7 +573,7 @@ function genHTMLContentType2(maindivID) {
   $("#pkg_activities").html(activities_html_line);
 
   // Update Includes
-  var all_includes_list = docMapDetails[getKeyDetails("Includes")].split(',')
+  var all_includes_list = getInfoDetails("Includes").split(',')
 
   var includes_html_line = ''
   for(each_incl_idx in all_includes_list) {
@@ -536,10 +585,10 @@ function genHTMLContentType2(maindivID) {
   $("#pkg_includes").html(includes_html_line);
 
 
-  $("#pkg_description").html(docMapDetails[getKeyDetails("Overview")]);
+  $("#pkg_description").html(getInfoDetails("Overview"));
 
   // Update Highlights
-  var highligts_details = docMapDetails[getKeyDetails("Highlights")]
+  var highligts_details = getInfoDetails("Highlights")
 
   if(highligts_details == "NA") {
     document.getElementById("card_highlights").style.display = 'none';
@@ -559,7 +608,7 @@ function genHTMLContentType2(maindivID) {
 
 
 // Update Hotels Details
-var hotel_details = docMapDetails[getKeyDetails("Hotels")]
+var hotel_details = getInfoDetails("Hotels")
 
 $("#hotel_name").html(hotel_details.split('#')[1].split(':')[1].trim());
 $("#hotel_days").html(hotel_details.split('#')[2].split(':')[1].trim());
@@ -572,13 +621,17 @@ if(extra_details == "NA") {
   $("#hotel_extra").html(extra_details);
 }
 
-
-document.getElementById('hotel_image').src = getImageUrl(docMapDetails[getKeyDetails(docMapDetails[getKeyDetails("Hotel Image")])])
+var hotel_image_details = getImageUrl(getInfoDetails(getInfoDetails("Hotel Image")))
+if(hotel_image_details != "NOK") {
+  document.getElementById('hotel_image').src = hotel_image_details
+} else {
+  document.getElementById('hotel_image').src = getDirectImageUrl("Images/hotel_default.jpg")
+}
 
 
 
 // Update Inclusions
-var all_inclusions_list = docMapDetails[getKeyDetails("Inclusions")].split('#')
+var all_inclusions_list = getInfoDetails("Inclusions").split('#')
 
   var inclusions_html_line = ''
   for(each_incl_idx in all_inclusions_list) {
@@ -591,7 +644,7 @@ var all_inclusions_list = docMapDetails[getKeyDetails("Inclusions")].split('#')
 
 
   // Update Inclusions
-var all_exclusion_list = docMapDetails[getKeyDetails("Exclusions")].split('#')
+var all_exclusion_list = getInfoDetails("Exclusions").split('#')
 
 var exclusion_html_line = ''
 for(each_exincl_idx in all_exclusion_list) {
@@ -604,13 +657,13 @@ $("#pkg_exclusions").html(exclusion_html_line);
 
 
 // Update Itinerary 
-updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 1D")],"itinerary_1")
-updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 2D")],"itinerary_2")
-updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 3D")],"itinerary_3")
-updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 4D")],"itinerary_4")
-updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 5D")],"itinerary_5")
-updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 6D")],"itinerary_6")
-updateMultiInfoDetails(docMapDetails[getKeyDetails("Itinerary 7D")],"itinerary_7")
+updateMultiInfoDetails(getInfoDetails("Itinerary 1D"),"itinerary_1")
+updateMultiInfoDetails(getInfoDetails("Itinerary 2D"),"itinerary_2")
+updateMultiInfoDetails(getInfoDetails("Itinerary 3D"),"itinerary_3")
+updateMultiInfoDetails(getInfoDetails("Itinerary 4D"),"itinerary_4")
+updateMultiInfoDetails(getInfoDetails("Itinerary 5D"),"itinerary_5")
+updateMultiInfoDetails(getInfoDetails("Itinerary 6D"),"itinerary_6")
+updateMultiInfoDetails(getInfoDetails("Itinerary 7D"),"itinerary_7")
 
 }
 
@@ -666,6 +719,13 @@ for(each_idx in all_body_list) {
   body_html_line += '<blockquote>' + body_line + '</blockquote>'
 }
 
+// Update Image
+var itnr_image_details = getImageUrl(getInfoDetails(multi_details["IMAGE"]))
+
+if(itnr_image_details != "NOK") {
+  body_html_line += '<br><img class="materialboxed" data-caption="Click on image to close it" width="250" src="' + itnr_image_details +'"></img>'
+}
+
 $("#" + html_tag + "_body").html(body_html_line);
 
   } else {
@@ -673,6 +733,45 @@ document.getElementById(html_tag).style.display = 'none';
   }
 
   
+
+}
+
+// Update Image View
+function updateImageView(divID,imagesList) {
+  var image_html_line = ''
+  
+  for(idx in imagesList) {
+
+    var imageName = imagesList[idx]
+    
+    var imageDetails = getImageUrl(getInfoDetails(imageName))
+
+    if(imageDetails != "NOK") {
+
+      var imageDesc = getImageDesc(getInfoDetails(imageName))
+
+      image_html_line += '<div class="col s12 m4">\
+                  <div class="card">\
+                    <div class="card-image">\
+                        <img class="materialboxed" data-caption="Click on image to close it" src="' + imageDetails +'"> </div>\
+                    <div class="card-content">\
+                        <p style="font-size: 10px;">'+ imageDesc +'</p>\
+                      </div></div>\
+                </div>';
+
+    } 
+
+  } // for end
+
+  if(image_html_line == '') {
+    document.getElementById(divID+"_section").style.display = 'none';
+  } else {
+    $("#"+divID).html(image_html_line);
+  }
+  
+
+ 
+
 
 }
 
@@ -688,12 +787,18 @@ function startUpCalls() {
     $('.collapsible').collapsible();
   });
 
+  /*
   $('.carousel.carousel-slider').carousel({
     fullWidth: true
   });
+  */
 
   $(document).ready(function(){
     $('.tabs').tabs();
+  });
+
+  $(document).ready(function(){
+    $('.materialboxed').materialbox();
   });
 
 }

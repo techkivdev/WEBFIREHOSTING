@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="../external/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
   <link href="../external/css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+  <link href="css/style.css" type="text/css" rel="stylesheet" />
 </head>
 
 
@@ -56,6 +57,29 @@
   <!-- **************************************** -->
 
 
+  <!-- **************************************** -->
+  <!-- Main Banner -->
+  <!-- **************************************** -->
+
+  <div class="new-container">
+
+    <img id="banner_main_image" class="responsive-img" src="Images/default.jpg" alt="Snow"
+      style="height: 500px; width:100%; background-size: 100%;">
+
+    <div class="centered">
+      <h1 id="banner_main_header"> </h1>
+      <p id="banner_small_header"> </p>
+      <br>
+      <a href="requestform.html?detail1=NA&detail2=NA&detail3=NA" class="waves-effect waves-light btn-large pink">Customize & Get Quotes</a>
+    </div>
+  </div>
+
+  <div id="main_progress" class="progress">
+    <div class="indeterminate red"></div>
+  </div>
+
+
+  <!--
   <div id="header_images" class="carousel carousel-slider z-depth-2">
 
 
@@ -68,11 +92,11 @@
     <a class="carousel-item" href="#four!"><img id="hdr_image_4" class="responsive-img"
         src="Images/header_default.jpg"></a>
 
-    <div id="main_progress" class="progress">
-      <div class="indeterminate red"></div>
-    </div>
+    
 
   </div>
+
+-->
 
 
   <!-- **************************************** -->
@@ -159,6 +183,22 @@
             </div>
           </div>
 
+           <!-- CARD Infromation Images -->
+        <div id= "dest_image_view_section" class="col s12">
+            <ul class="collapsible">
+                <li>
+                  <div class="collapsible-header"><i class="material-icons">dashboard</i>Images</div>
+                  <div class="collapsible-body">
+                    
+                    <div id="dest_image_view" class="row">                                        
+    
+                    </div>
+    
+                  </div>
+                </li>           
+              </ul>
+            </div>
+
         </div>
 
 
@@ -184,7 +224,7 @@
       <!-- Row Section 1 -->
       <div class="row">
 
-        <!-- CARD Infromation 1 -->
+        <!-- CARD Infromation 1 Details -->
         <div class="col s12">
           <div class="card grey lighten-5">
             <div class="card-content black-text">
@@ -195,24 +235,32 @@
               <div class="row">
                 <div class="col s6">
                   <p>Base Price</p>
-                  <b><p id="pkg_price"># </p></b>
+                  <b>
+                    <p id="pkg_price"># </p>
+                  </b>
                   <p>/ Per Person</p>
 
                 </div>
                 <div class="col s6">
                   <p>Best Time</p>
-                  <b><p id="pkg_best_time">#</p></b>
+                  <b>
+                    <p id="pkg_best_time">#</p>
+                  </b>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col s6">
                   <p>Days</p>
-                  <b><p id="pkg_days">#</p></b>
+                  <b>
+                    <p id="pkg_days">#</p>
+                  </b>
                 </div>
                 <div class="col s6">
                   <p>Hotel Included</p>
-                  <b><p id="pkg_hotel_inc">#</p></b>
+                  <b>
+                    <p id="pkg_hotel_inc">#</p>
+                  </b>
                 </div>
 
               </div>
@@ -220,7 +268,9 @@
               <div class="row">
                 <div class="col s12">
                   <p>Cities</p>
-                  <b><p id="pkg_cities">#</p></b>
+                  <b>
+                    <p id="pkg_cities">#</p>
+                  </b>
                 </div>
               </div>
 
@@ -265,7 +315,9 @@
               <div class="row">
                 <div class="col s12">
                   <p>Ratings</p>
-                  <b><p id="pkg_ratings">#</p></b>
+                  <b>
+                    <p id="pkg_ratings">#</p>
+                  </b>
                 </div>
               </div>
 
@@ -275,7 +327,23 @@
           </div>
         </div>
 
-        <!-- CARD Infromation 2 -->
+         <!-- CARD Infromation Images -->
+        <div id="pkg_image_view_section" class="col s12">
+        <ul class="collapsible">
+            <li>
+              <div class="collapsible-header"><i class="material-icons">dashboard</i>Images</div>
+              <div class="collapsible-body">
+                
+                <div id="pkg_image_view" class="row">                                        
+
+                </div>
+
+              </div>
+            </li>           
+          </ul>
+        </div>
+
+        <!-- CARD Infromation 2 Overview -->
         <div class="col s12">
           <div class="card grey lighten-5">
             <div class="card-content black-text">
@@ -293,8 +361,8 @@
           </div>
         </div>
 
-        <!-- CARD Infromation 3 -->
-        <div id = "card_highlights" class="col s12">
+        <!-- CARD Infromation 3 Highlights -->
+        <div id="card_highlights" class="col s12">
           <div class="card">
             <div class="card-content black-text">
               <span class="card-title"><b>Highlights</b></span>
@@ -314,205 +382,219 @@
           </div>
         </div>
 
-        <!-- CARD Infromation 4 -->       
-            <div class="col s12">
-                <div class="card">
-                  <div class="card-content black-text">
-                    <span class="card-title"><b>Itinerary</b></span>
-      
-                    <!-- Card Body START -->
-                    <div id="pkg_itinerary">
-
-                        <ul class="collapsible popout">
-
-
-                          <!-- itinerary_1 Card START -->
-                            <li id="itinerary_1">
-                              <div class="collapsible-header">
-                                <!-- Header -->
-                                <b><div id="itinerary_1_day" class="col s1">#</div></b>
-                                <div class="col s11">
-                                    <p id="itinerary_1_header">#</p>                                                                   
-                                    <div id="itinerary_1_tags"></div>
-                                </div>
-                                <!-- end -->
-                              </div>
-                              <div id="itinerary_1_body" class="collapsible-body"></div>                              
-                            </li>
-                            <!-- itinerary_1 END -->
-
-                            <!-- itinerary_2 Card START -->
-                            <li id="itinerary_2">
-                                <div class="collapsible-header">
-                                  <!-- Header -->
-                                  <b><div id="itinerary_2_day" class="col s1">#</div></b>
-                                  <div class="col s11">
-                                      <p id="itinerary_2_header">#</p>                                                                   
-                                      <div id="itinerary_2_tags"></div>
-                                  </div>
-                                  <!-- end -->
-                                </div>
-                                <div id="itinerary_2_body" class="collapsible-body"></div>                              
-                              </li>
-                              <!-- itinerary_2 END -->
-
-                              <!-- itinerary_3 Card START -->
-                            <li id="itinerary_3">
-                                <div class="collapsible-header">
-                                  <!-- Header -->
-                                  <b><div id="itinerary_3_day" class="col s1">#</div></b>
-                                  <div class="col s11">
-                                      <p id="itinerary_3_header">#</p>                                                                   
-                                      <div id="itinerary_3_tags"></div>
-                                  </div>
-                                  <!-- end -->
-                                </div>
-                                <div id="itinerary_3_body" class="collapsible-body"></div>                              
-                              </li>
-                              <!-- itinerary_3 END -->
-
-                              <!-- itinerary_4 Card START -->
-                            <li id="itinerary_4">
-                                <div class="collapsible-header">
-                                  <!-- Header -->
-                                  <b><div id="itinerary_4_day" class="col s1">#</div></b>
-                                  <div class="col s11">
-                                      <p id="itinerary_4_header">#</p>                                                                   
-                                      <div id="itinerary_4_tags"></div>
-                                  </div>
-                                  <!-- end -->
-                                </div>
-                                <div id="itinerary_4_body" class="collapsible-body"></div>                              
-                              </li>
-                              <!-- itinerary_4 END -->
-
-                              <!-- itinerary_5 Card START -->
-                            <li id="itinerary_5">
-                                <div class="collapsible-header">
-                                  <!-- Header -->
-                                  <b><div id="itinerary_5_day" class="col s1">#</div></b>
-                                  <div class="col s11">
-                                      <p id="itinerary_5_header">#</p>                                                                   
-                                      <div id="itinerary_5_tags"></div>
-                                  </div>
-                                  <!-- end -->
-                                </div>
-                                <div id="itinerary_5_body" class="collapsible-body"></div>                              
-                              </li>
-                              <!-- itinerary_5 END -->
-
-                              <!-- itinerary_6 Card START -->
-                            <li id="itinerary_6">
-                                <div class="collapsible-header">
-                                  <!-- Header -->
-                                  <b><div id="itinerary_6_day" class="col s1">#</div></b>
-                                  <div class="col s11">
-                                      <p id="itinerary_6_header">#</p>                                                                   
-                                      <div id="itinerary_6_tags"></div>
-                                  </div>
-                                  <!-- end -->
-                                </div>
-                                <div id="itinerary_6_body" class="collapsible-body"></div>                              
-                              </li>
-                              <!-- itinerary_6 END -->
-
-                              <!-- itinerary_7 Card START -->
-                            <li id="itinerary_7">
-                                <div class="collapsible-header">
-                                  <!-- Header -->
-                                  <b><div id="itinerary_7_day" class="col s1">#</div></b>
-                                  <div class="col s11">
-                                      <p id="itinerary_7_header">#</p>                                                                   
-                                      <div id="itinerary_7_tags"></div>
-                                  </div>
-                                  <!-- end -->
-                                </div>
-                                <div id="itinerary_7_body" class="collapsible-body"></div>                              
-                              </li>
-                              <!-- itinerary_7 END -->
-
-
-                          </ul>
-      
-                      
-      
-                    </div>
-                    <!-- Card Body END -->
-      
-      
-                  </div>
-                </div>
-              </div>         
-            
-      
-
-         <!-- CARD Infromation 5 -->
-         <div class="col s12">
-            <div class="card grey lighten-5">
-              <div class="card-content black-text">
-                <span class="card-title"><b>Hotels</b></span>
-  
-                <!-- Card Body START -->
-                <div class="row" id="pkg_hotels"> 
-                  
-                    <div class="col s12">
-                      <b id="hotel_name">Hotel Name</b> 
-                      <p id="hotel_days">Days Details</p>                                        
-                    </div>
-
-                    <div class="col s6">
-                    <img id="hotel_image" class="responsive-img" src="Images/header_default.jpg">
-                  </div>
-
-
-                  <div class="col s12">                    
-                    <p id="hotel_star">Hotel Star</p>
-                    <p id="hotel_extra">Other details</p>                    
-                  </div>
-                                     
-  
-                </div>
-                <!-- Card Body END -->
-  
-  
-              </div>
-            </div>
-          </div>
-
-          <!-- CARD Infromation 6 -->
-          <div class="col s12">
+        <!-- CARD Infromation 4 Itinerary -->
+        <div class="col s12">
           <div class="card">
-              <div class="card-content">
-                <p>Wht's Include in this package.</p>
-              </div>
-              <div class="card-tabs">
-                <ul class="tabs tabs-fixed-width">
-                  <li class="tab"><a  class="active" href="#pkg_inclusions">Inclusions</a></li>
-                  <li class="tab"><a href="#pkg_exclusions">Exclusions</a></li>                  
+            <div class="card-content black-text">
+              <span class="card-title"><b>Itinerary</b></span>
+
+              <!-- Card Body START -->
+              <div id="pkg_itinerary">
+
+                <ul class="collapsible popout">
+
+
+                  <!-- itinerary_1 Card START -->
+                  <li id="itinerary_1">
+                    <div class="collapsible-header">
+                      <!-- Header -->
+                      <b>
+                        <div id="itinerary_1_day" class="col s1">#</div>
+                      </b>
+                      <div class="col s11">
+                        <p id="itinerary_1_header">#</p>
+                        <div id="itinerary_1_tags"></div>
+                      </div>
+                      <!-- end -->
+                    </div>
+                    <div id="itinerary_1_body" class="collapsible-body"></div>
+                  </li>
+                  <!-- itinerary_1 END -->
+
+                  <!-- itinerary_2 Card START -->
+                  <li id="itinerary_2">
+                    <div class="collapsible-header">
+                      <!-- Header -->
+                      <b>
+                        <div id="itinerary_2_day" class="col s1">#</div>
+                      </b>
+                      <div class="col s11">
+                        <p id="itinerary_2_header">#</p>
+                        <div id="itinerary_2_tags"></div>
+                      </div>
+                      <!-- end -->
+                    </div>
+                    <div id="itinerary_2_body" class="collapsible-body"></div>
+                  </li>
+                  <!-- itinerary_2 END -->
+
+                  <!-- itinerary_3 Card START -->
+                  <li id="itinerary_3">
+                    <div class="collapsible-header">
+                      <!-- Header -->
+                      <b>
+                        <div id="itinerary_3_day" class="col s1">#</div>
+                      </b>
+                      <div class="col s11">
+                        <p id="itinerary_3_header">#</p>
+                        <div id="itinerary_3_tags"></div>
+                      </div>
+                      <!-- end -->
+                    </div>
+                    <div id="itinerary_3_body" class="collapsible-body"></div>
+                  </li>
+                  <!-- itinerary_3 END -->
+
+                  <!-- itinerary_4 Card START -->
+                  <li id="itinerary_4">
+                    <div class="collapsible-header">
+                      <!-- Header -->
+                      <b>
+                        <div id="itinerary_4_day" class="col s1">#</div>
+                      </b>
+                      <div class="col s11">
+                        <p id="itinerary_4_header">#</p>
+                        <div id="itinerary_4_tags"></div>
+                      </div>
+                      <!-- end -->
+                    </div>
+                    <div id="itinerary_4_body" class="collapsible-body"></div>
+                  </li>
+                  <!-- itinerary_4 END -->
+
+                  <!-- itinerary_5 Card START -->
+                  <li id="itinerary_5">
+                    <div class="collapsible-header">
+                      <!-- Header -->
+                      <b>
+                        <div id="itinerary_5_day" class="col s1">#</div>
+                      </b>
+                      <div class="col s11">
+                        <p id="itinerary_5_header">#</p>
+                        <div id="itinerary_5_tags"></div>
+                      </div>
+                      <!-- end -->
+                    </div>
+                    <div id="itinerary_5_body" class="collapsible-body"></div>
+                  </li>
+                  <!-- itinerary_5 END -->
+
+                  <!-- itinerary_6 Card START -->
+                  <li id="itinerary_6">
+                    <div class="collapsible-header">
+                      <!-- Header -->
+                      <b>
+                        <div id="itinerary_6_day" class="col s1">#</div>
+                      </b>
+                      <div class="col s11">
+                        <p id="itinerary_6_header">#</p>
+                        <div id="itinerary_6_tags"></div>
+                      </div>
+                      <!-- end -->
+                    </div>
+                    <div id="itinerary_6_body" class="collapsible-body"></div>
+                  </li>
+                  <!-- itinerary_6 END -->
+
+                  <!-- itinerary_7 Card START -->
+                  <li id="itinerary_7">
+                    <div class="collapsible-header">
+                      <!-- Header -->
+                      <b>
+                        <div id="itinerary_7_day" class="col s1">#</div>
+                      </b>
+                      <div class="col s11">
+                        <p id="itinerary_7_header">#</p>
+                        <div id="itinerary_7_tags"></div>
+                      </div>
+                      <!-- end -->
+                    </div>
+                    <div id="itinerary_7_body" class="collapsible-body"></div>
+                  </li>
+                  <!-- itinerary_7 END -->
+
+
                 </ul>
+
+
+
               </div>
-              <div class="card-content grey lighten-4">
-                <div id="pkg_inclusions">
+              <!-- Card Body END -->
 
-                    <div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>First</div>
-                    <div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>First</div>
-                    <div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>First</div>
-                
-                  </div>
 
-                <div id="pkg_exclusions">
+            </div>
+          </div>
+        </div>
 
-                    <div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>First</div>
-                    <div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>First</div>
-                    <div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>First</div>
-                
-                  </div>                
+        <!-- CARD Infromation 5 Hotels -->
+        <div class="col s12">
+          <div class="card grey lighten-5">
+            <div class="card-content black-text">
+              <span class="card-title"><b>Hotels</b></span>
+
+              <!-- Card Body START -->
+              <div class="row" id="pkg_hotels">
+
+                <div class="col s12">
+                  <b id="hotel_name">Hotel Name</b>
+                  <p id="hotel_days">Days Details</p>
+                </div>
+
+                <div class="col s6">
+                  <img id="hotel_image" class="materialboxed" data-caption="Click on screen to close it." width="250"
+                    src="Images/default.jpg">
+
+                </div>
+
+
+                <div class="col s12">
+                  <p id="hotel_star">Hotel Star</p>
+                  <p id="hotel_extra">Other details</p>
+                </div>
+
+
+              </div>
+              <!-- Card Body END -->
+
+
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD Infromation 6 what's Includes -->
+        <div class="col s12">
+          <div class="card">
+            <div class="card-content">
+              <p>Wht's Include in this package.</p>
+            </div>
+            <div class="card-tabs">
+              <ul class="tabs tabs-fixed-width">
+                <li class="tab"><a class="active" href="#pkg_inclusions">Inclusions</a></li>
+                <li class="tab"><a href="#pkg_exclusions">Exclusions</a></li>
+              </ul>
+            </div>
+            <div class="card-content grey lighten-4">
+              <div id="pkg_inclusions">
+
+                <div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>First</div>
+                <div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>First</div>
+                <div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>First</div>
+
+              </div>
+
+              <div id="pkg_exclusions">
+
+                <div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>First</div>
+                <div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>First</div>
+                <div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>First</div>
+
               </div>
             </div>
           </div>
+        </div>
 
 
-      <!-- END -->
+        <!-- END -->
       </div>
 
 
@@ -533,7 +615,7 @@
   <!-- **************************************** -->
   <!-- Footer -->
   <!-- **************************************** -->
-  <footer class="page-footer teal">
+  <footer class="page-footer fresh-content  white-text">
     <div class="container">
       <div class="row">
         <div class="col l6 s12">
@@ -547,19 +629,17 @@
         <div class="col l3 s12">
           <h5 class="white-text">Settings</h5>
           <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
+            <li><a class="white-text" href="#!">About</a></li>
+            <li><a class="white-text" href="#!">Terms & Conditions</a></li>
+            <li><a class="white-text" href="#!">Privacy and Cookie Police</a></li>
+            <li><a class="white-text" href="#!">Support</a></li>
           </ul>
         </div>
         <div class="col l3 s12">
           <h5 class="white-text">Connect</h5>
           <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
+            <li><a class="white-text" href="#!">Facebook</a></li>
+            <li><a class="white-text" href="#!">Instgram</a></li>
           </ul>
         </div>
       </div>

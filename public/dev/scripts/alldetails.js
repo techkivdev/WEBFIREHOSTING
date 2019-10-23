@@ -202,11 +202,17 @@ function updateCardLayout(htmlID) {
 
   switch (document_ID) {
     case "DESTINATIONS":
-      base_layout = 'CARD_ROW_HORIZ'
-      model_layout = 'SQUARE_CARD_HORIZ'
+      base_layout = 'CARD_ROW'
+      model_layout = 'SQUARE_CARD_IMAGE'
       base_title = 'All Destinations'
 
       // Here also you can update other html pages also
+      $("#banner_main_header").html("Best Destinations");
+      $("#banner_small_header").html("Enjoy your choice");
+
+      document.getElementById('banner_main_image').src = getDirectImageUrl("Images/destinations_bkg.jpg")
+
+      
       break;
 
     case "PACKAGES":
@@ -215,6 +221,12 @@ function updateCardLayout(htmlID) {
       base_title = 'All Packages'
 
       // Here also you can update other html pages also
+
+      $("#banner_main_header").html("Best Packages");
+      $("#banner_small_header").html("Enjoy your choice");
+
+      document.getElementById('banner_main_image').src = getDirectImageUrl("Images/packages_bkg.jpg")
+
       break;
 
     default:
@@ -261,16 +273,51 @@ function getCompleteModelContentDetails(doc_details) {
       var header = doc_details['INFO2']
       var content = doc_details['INFO2']
 
-      html_div_line = '<b>' + header + '</b><br>' + content
+      html_div_line = '<b>' + header
 
       break;
 
     case "PACKAGES":
 
       var header = doc_details['INFO1']
-      var content = doc_details['INFO1']
+      var sub_header = doc_details['INFO11']
+      var ratings = doc_details['INFO66']
+      var price = doc_details['INFO7']
+      var cut_price = doc_details['INFO8']
+     
+      // Update Ratings
+      //ratings = '2.5#(18,560)'
+      if(!ratings.includes("#")) {
+        ratings = '1#(1)'
+      }
 
-      html_div_line = '<b>' + header + '</b><br>' + content
+
+      var rating_num = ratings.split('#')[0]
+      
+      var ratings_line = ''
+      for (i = 0; i < Number(rating_num.split('.')[0]); i++) {
+        ratings_line += '<i class="fas fa-star text-warning"></i>';
+      }
+
+      if(rating_num.includes(".5")) {
+        ratings_line += '<i class="fas fa-star-half text-warning"></i>';
+      }
+
+      ratings_line += rating_num + ' ' + ratings.split('#')[1]
+
+
+
+
+      html_div_line = '<div class="black-text"><h6>'+ header +'</h6>\
+                  <p class="card-text" style="font-size: 11px;">'+ sub_header +'</p>\
+                  <p><small class="text-muted">' +  ratings_line  + '\
+                      </small>\
+                  <br>\
+                  <span class="right"> \
+                    <small style="text-decoration: line-through;" class="text-muted">\
+                      ($'+ cut_price +')</small>$'+ price +' </span>\
+                      <br>\
+                </p></div>';
       break;
 
     default:
@@ -309,6 +356,16 @@ function modelLayoutSelector_local(mdl_layout, doc_details, mdl_action_details) 
   if (mdl_layout == 'SQUARE_CARD') {
 
     mdl_html_line = modelLytSquareCard_local(
+      doc_details['IMAGE'],
+      complete_content,
+      mdl_action_details
+    )
+  }
+
+  // SQUARE_CARD Layout
+  if (mdl_layout == 'SQUARE_CARD_IMAGE') {
+
+    mdl_html_line = modelLytSquareCardImage_local(
       doc_details['IMAGE'],
       complete_content,
       mdl_action_details
@@ -354,6 +411,22 @@ function modelLytSquareCard_local(image_ref, complete_content, mdl_action_detail
                   </div>\
                 </a>\
               </div>';
+
+  return htmlLine;
+
+}
+
+// Model Square Card with Image Only
+function modelLytSquareCardImage_local(image_ref, complete_content, mdl_action_details) {
+
+  var htmlLine = '<div class="col s12 m6"><a href="' + clickHandling(mdl_action_details.split(',')[0], mdl_action_details.split(',')[1], mdl_action_details.split(',')[2], mdl_action_details.split(',')[3], mdl_action_details.split(',')[4]) + '">\
+                  <div class="card hoverable">\
+                    <div class="card-image">\
+                      <img src="' + getModelImageRef(image_ref) + '">\
+                      <span class="card-title">' + complete_content + '</span>\
+                    </div></div>\
+                </a>\
+              </div>';            
 
   return htmlLine;
 

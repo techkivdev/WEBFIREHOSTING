@@ -55,7 +55,7 @@ function getImageUrl(details) {
 
   } else {
     // Return Collection Default Image Url
-    final_image_ref = mainDocMapDetails['DEF_IMG']
+    final_image_ref = "NOK"
   }
 
   return getDirectImageUrl(final_image_ref)
@@ -71,6 +71,7 @@ function getImageDesc(details) {
 }
 
 // Get Model Image ref details
+// IDX 0 is Image url and 1 is DB id
 function getModelImageRef(details) {
   return getDirectImageUrl(details[0])
 }
@@ -234,7 +235,7 @@ function getBaseLayoutHTML(mdl_coll,base_layout, header, model_content) {
                       if(show_model_base_button){
                         base_layout_html += '<div class="col s12">\
                           <div class="' + header_button_layout_position + '">\
-                            <a class="waves-effect waves-light btn">View All</a>\
+                            <a class="waves-effect waves-light btn blue">View All</a>\
                           </div>\
                         </div>'
                       }
@@ -243,6 +244,7 @@ function getBaseLayoutHTML(mdl_coll,base_layout, header, model_content) {
                       </div>\
                   </div><div class="row">' + model_content + '</div>';
   }
+
 
   // **********************************************************************
   // ---------------------- CARD_ROW_HORIZ -------------------------------
@@ -271,7 +273,7 @@ function getBaseLayoutHTML(mdl_coll,base_layout, header, model_content) {
                       if(show_model_base_button){
                         base_layout_html += '<div class="col s12">\
                           <div class="' + header_button_layout_position + '">\
-                            <a class="waves-effect waves-light btn">View All</a>\
+                            <a class="waves-effect waves-light btn blue">View All</a>\
                           </div>\
                         </div>'
                       }
@@ -310,6 +312,16 @@ function modelLayoutSelector(mdl_coll, mdl_layout, doc_details, all_doc_info_lis
     )
   }
 
+  // SQUARE_CARD_IMAGE Layout
+  if (mdl_layout == 'SQUARE_CARD_IMAGE') {
+
+    mdl_html_line = modelLytSquareCardImage(
+      doc_details['IMAGE'],
+      complete_content,
+      mdl_action_details
+    )
+  }
+
   // SQUARE_CARD_HORIZ Layout
   if (mdl_layout == 'SQUARE_CARD_HORIZ') {
 
@@ -325,6 +337,9 @@ function modelLayoutSelector(mdl_coll, mdl_layout, doc_details, all_doc_info_lis
 }
 
 // Model Square Card
+// Important Point :
+// : col s12 m6 - Desktop layout is same but in mobile layout one below to another one
+// : col s6 m6  - Same in desktop and mobile also
 function modelLytSquareCard(image_ref, complete_content, mdl_action_details) {
 
   var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_action_details.split(',')[0], mdl_action_details.split(',')[1], mdl_action_details.split(',')[2], mdl_action_details.split(',')[3], mdl_action_details.split(',')[4]) + '">\
@@ -333,11 +348,27 @@ function modelLytSquareCard(image_ref, complete_content, mdl_action_details) {
                       <img src="' + getModelImageRef(image_ref) + '">\
                     </div>\
                     <div class="card-content">\
-                      <span class="blue-grey-text text-lighten-2">' + complete_content + '</span>\
+                      <div>' + complete_content + '</div>\
                     </div>\
                   </div>\
                 </a>\
               </div>';
+
+  return htmlLine;
+
+}
+
+// Model Square Card with Image Only
+function modelLytSquareCardImage(image_ref, complete_content, mdl_action_details) {
+
+  var htmlLine = '<div class="col s12 m6"><a href="' + clickHandling(mdl_action_details.split(',')[0], mdl_action_details.split(',')[1], mdl_action_details.split(',')[2], mdl_action_details.split(',')[3], mdl_action_details.split(',')[4]) + '">\
+                  <div class="card hoverable">\
+                    <div class="card-image">\
+                      <img src="' + getModelImageRef(image_ref) + '">\
+                      <span class="card-title">' + complete_content + '</span>\
+                    </div></div>\
+                </a>\
+              </div>';            
 
   return htmlLine;
 

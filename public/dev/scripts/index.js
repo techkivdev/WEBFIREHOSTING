@@ -352,17 +352,54 @@ function getModelCompleteContent(mdl_coll, all_doc_info_list, doc_data) {
       var content = doc_data[all_doc_info_list[1]]
       var content_1 = doc_data[all_doc_info_list[2]]
 
-      html_div_line = '<b>' + header + '</b><br>' + content + '<br>' + content_1
+      html_div_line = '<b>' + header
 
       break;
 
     case "PACKAGES":
 
       var header = doc_data[all_doc_info_list[0]]
-      var content = doc_data[all_doc_info_list[1]]
-      var content_1 = doc_data[all_doc_info_list[2]]
+      var sub_header = doc_data[all_doc_info_list[1]]
+      var ratings = doc_data[all_doc_info_list[2]]
+      var price = doc_data[all_doc_info_list[3]]
+      var cut_price = doc_data[all_doc_info_list[4]]
 
-      html_div_line = '<b>' + header + '</b><br>' + content + '<br>' + content_1
+      //html_div_line = '<b>' + header + '</b><br>' + content + '<br>' + content_1
+
+      // Update Ratings
+      //ratings = '2.5#(18,560)'
+      if(!ratings.includes("#")) {
+        ratings = '1#(1)'
+      }
+
+
+      var rating_num = ratings.split('#')[0]
+      
+      var ratings_line = ''
+      for (i = 0; i < Number(rating_num.split('.')[0]); i++) {
+        ratings_line += '<i class="fas fa-star text-warning"></i>';
+      }
+
+      if(rating_num.includes(".5")) {
+        ratings_line += '<i class="fas fa-star-half text-warning"></i>';
+      }
+
+      ratings_line += rating_num + ' ' + ratings.split('#')[1]
+
+
+
+
+      html_div_line = '<div class="black-text"><h6>'+ header +'</h6>\
+                  <p class="card-text" style="font-size: 11px;">'+ sub_header +'</p>\
+                  <p><small class="text-muted">' +  ratings_line  + '\
+                      </small>\
+                  <br>\
+                  <span class="right"> \
+                    <small style="text-decoration: line-through;" class="text-muted">\
+                      ($'+ cut_price +')</small>$'+ price +' </span>\
+                      <br>\
+                </p></div>';
+
       break;
 
     default:
@@ -379,6 +416,14 @@ function startUpCalls() {
 
   $(document).ready(function () {
     $('.modal').modal();
+  });
+
+  $(document).ready(function(){
+    $('.slider').slider();
+  });
+
+  $(document).ready(function(){
+    $('.fixed-action-btn').floatingActionButton();
   });
 
 }
