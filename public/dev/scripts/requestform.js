@@ -7,10 +7,10 @@
 // *******************************************************************************
 
 // ---------- Main Variables ---------
-var coll_base_path = basePath
+var coll_base_path = basePrivatePath
 
 if (is_production_mode) {
-  coll_base_path = baseProductionPath
+  coll_base_path = baseProductionPrivatePath
 }
 
 // -------- Link Page with Collection and Documents -----
@@ -19,6 +19,10 @@ var coll_name = 'LIST_DATA';
 var document_ID = 'NA';
 var filter = 'NA';
 var extra = 'NA';
+
+var uuid = 'NA'
+
+var quotesPath = coll_base_path+'COMMON/QUOTES'
 
 // Global Data variables
 // All documents data
@@ -54,79 +58,28 @@ function getParams() {
 
 }
 
-// *************************************************
-// Read Data form Database and create HTML Page
-// *************************************************
-function readCompleateCollection() {
+// Check Session Data is Correct or Not
+function checkLoginData(){
 
-  showPleaseWait();
+  // Check Session Data
+  let status = getLoginUserStatus()
+  displayOutput('Check Session Data ...')
+  displayOutput(status)
+  
+  if(status == 'true') {
+    let userLoginData = getLoginUserData()
+    displayOutput(userLoginData)
 
-  var totaldocCount = 0;
+    uuid = userLoginData['UUID']
 
-  db.collection(coll_base_path + coll_lang + '/' + coll_name).get().then((querySnapshot) => {
-    displayOutput("SIZE : " + querySnapshot.size);
+    // Profile Details
+  document.getElementById("name_txt").value = userLoginData['NAME']
+  document.getElementById("mobile_txt").value = userLoginData['MOBILE']
+  document.getElementById("email_txt").value = userLoginData['EMAIL']
 
-    if (querySnapshot.size == 0) {
-      // ------ No Details Present -------------  
-      displayOutput('No Record Found !!')
-      hidePleaseWait();
-
-    } else {
-
-      totaldocCount = querySnapshot.size
-      var docCount = 0;
-
-      // Read Each Documents
-      querySnapshot.forEach((doc) => {
-        displayOutput(`${doc.id} =>`, doc.data());
-
-        allDocCmpData[doc.id] = doc.data()
-
-        // Check Document count
-        docCount++;
-        if (totaldocCount == docCount) {
-          hidePleaseWait();
-        }
-
-      });
-
-      // Update HTML Page
-      updateHTMLPage();
-
-    }
-
-  });
-
-} // EOF
-
-
-// Read Document Data in async mode
-async function readDocumentDataAsync(docID) {
-
-  showPleaseWait()
-
-  await db.collection(coll_base_path + coll_lang + '/' + coll_name).doc(docID).get()
-    .then(doc => {
-      if (!doc.exists) {
-        showAlert('No Record Found!!');
-        hidePleaseWait()
-
-      } else {
-        displayOutput(docID + ' - Document data Read Done.');
-        allDocCmpData[docID] = doc.data()
-
-        updateHTMLPage()
-      }
-    })
-    .catch(err => {
-      displayOutput('Error getting document', err);
-
-      hidePleaseWait()
-    });
+  }
 
 }
-
-
 
 // ******************************************************
 // --------------- START UP CODE -----------------------
@@ -138,11 +91,7 @@ startUpCalls();
 // Get Parameters details
 getParams();
 
-// Read All Documents from Collection
-//readCompleateCollection();
-
-// Async Mode
-//readDocumentDataAsync(document_ID)
+checkLoginData()
 
 // *******************************************************
 // --------------- Functions -----------------------------
@@ -157,13 +106,185 @@ function updateHTMLPage() {
 // - Sequence of all HTML modification code
 // *******************************************************
 
+function submitDetails() {
+  displayOutput('Submit All Details ..')
+
+  // Read All Inputs Details
+  var destination = document.getElementById("autocomplete-input-destination").value;
+  displayOutput('Destination : ' + destination)
+  var departurecity = document.getElementById("autocomplete-input-from").value;
+  displayOutput('Departure City : ' + departurecity)
+  var startdate = document.getElementById("start_date").value;
+  displayOutput('Start Date : ' + startdate)
+  var enddate = document.getElementById("end_date").value;
+  displayOutput('End Date : ' + enddate)
+
+  let dateOptionsValues = ["","FIXED","FLEXIBLE","ANYTIME"]
+  var dateoptions = dateOptionsValues[document.getElementById("date_options").value];
+  displayOutput('Date Options : ' + dateoptions)
+  
+
+
+  var name = document.getElementById("name_txt").value;
+  displayOutput('Name : ' + name)
+  var mobileno = document.getElementById("mobile_txt").value;
+  displayOutput('Mobile Number : ' + mobileno)
+  var emailid = document.getElementById("email_txt").value;
+  displayOutput('Email ID : ' + emailid)
+
+  // Check all Inputs
+  var validation = false
+
+  if((destination != '') && 
+  (departurecity != '') &&
+  (startdate != '') &&
+  (enddate != '') &&
+  (dateoptions != '') &&
+  (name != '') &&
+  (mobileno != '') &&
+  (emailid != '')) {
+
+    
+    // Check mobile number validation
+    var mbcnt = mobileno.length;
+    if(mbcnt != 10){
+      validation = false
+      toastMsg('Your mobile number is not correct !!')
+    } else {
+      validation = true
+    }
+
+    // Check email id
+    if(emailid.includes('@') && emailid.includes('.com')){
+      validation = true
+    } else {
+      validation = false
+      toastMsg('Your Email ID is not correct !!')
+    }
+
+  } else {
+
+    validation = false
+    toastMsg('Please fill all fields details !!')
+
+  }
+
+
+  // Update All Details
+  if(validation) {
+    displayOutput('All Details are OK.')
+
+    let customedata = {}
+    customedata['DESTINATION'] =  destination
+    customedata['FROM'] = departurecity
+    customedata['STARTDATE'] = startdate
+    customedata['ENDDATE'] = enddate
+    customedata['DATEOPTION'] = dateoptions
+    customedata['NAME'] = name
+    customedata['MOBILENO'] = mobileno
+    customedata['EMAILID'] = emailid
+
+    customedata['ADMINSTAGE'] = 'NEW'
+    customedata['ADMINCOMMENT'] = ''
+
+    customedata['USERUUID'] = uuid
+    customedata['USERCOMMENT'] = ''
+
+    
+
+    writeDocument(customedata)
+
+
+
+  }
+
+  
+
+}
+
+// Write Document to Database
+function writeDocument(data) {    
+
+  // Update common doc 
+  let comdata = {
+    name: 'common'
+  };
+  
+  // Add a new document in collection
+  let setDoc = db.collection(coll_base_path).doc('COMMON').set(comdata);
+  
+  // Add a new document with a generated id.
+  let addDoc = db.collection(quotesPath).add(data).then(ref => {
+    displayOutput('Added document with ID: ', ref.id);
+
+    updateUserBookingSection(ref.id,data)
+
+    document.getElementById("col_section_1").style.display = 'none';
+    document.getElementById("col_section_2").style.display = 'block';
+  });
+
+}
+
+// Update User Booking Section
+function updateUserBookingSection(bookingid,submitdata) {  
+
+  // Check Session Data
+  let status = getLoginUserStatus()
+  if(status == 'true') {
+    let userLoginData = getLoginUserData()
+    
+    // Profile Details
+    let uuid = userLoginData['UUID']
+
+    var userBookingPath = coll_base_path + 'USER/ALLUSER/' + uuid + '/BOOKINGS'
+
+    let data = {
+      BOOKINGID: quotesPath+'/' + bookingid,
+      DESTINATION: submitdata['DESTINATION'],
+      FROM: submitdata['FROM'],
+      STARTDATE: submitdata['STARTDATE'],
+      ENDDATE: submitdata['ENDDATE']
+    };
+
+    // Add a new document with a generated id.
+  let addDoc = db.collection(userBookingPath).add(data).then(ref => {
+    displayOutput('Added document with ID: ', ref.id);
+    displayOutput('User Booking Added !!')
+    
+  });
+ 
+
+  }
+
+}
 
 
 // ----------- START UP CALLS ----------------
 function startUpCalls() {
 
+  displayOutput('Startup Calls')
+
   $(document).ready(function () {
     $('.modal').modal();
+  });
+
+  $(document).ready(function(){
+    $('input.autocomplete').autocomplete({
+      data: {
+        "Apple": null,
+        "Microsoft": null,
+        "Google": 'https://placehold.it/250x250'
+      },
+    });
+  });
+
+
+  $(document).ready(function(){
+    $('.datepicker').datepicker();
+  });
+
+  $(document).ready(function(){
+    $('select').formSelect();
   });
 
 }

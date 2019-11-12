@@ -10,8 +10,14 @@
 // *********************************************
 // ------------- CONFIGURATION ----------------
 var basePath = '/DATABASE/DEVELOPMENT/PUBLIC/';
+var basePrivatePath = '/DATABASE/DEVELOPMENT/PRIVATE/';
 var baseProductionPath = '/DATABASE/PRODUCTION/PUBLIC/';
+var baseProductionPrivatePath = '/DATABASE/PRODUCTION/PRIVATE/';
+
 var baseTestingPath = '/DATABASE/TESTING/PUBLIC/';
+
+var imagebasePath = '/DATABASE/DEVELOPMENT/PUBLIC/';
+var imagebaseProductionPath = '/DATABASE/PRODUCTION/PUBLIC/';
 // *********************************************
 
 
@@ -251,10 +257,86 @@ function createLanguageHTMLtabsFormat(docID, docData) {
 
 }//EOF
 
+// ************************************************
+// Validate Admin role first
+// ************************************************
+function validateAdminRoles() {
+
+  showPleaseWait()
+
+  // Change Path According to the project
+  var userDataPath = basePrivatePath + 'USER/ALLUSER'
+
+  firebase.auth().onAuthStateChanged(function (user) {
+
+    // Is user login or not
+    if (user) {
+      console.log('User login !!')
+      let uuid = user.uid;
+
+      // Check User Doc Exist or Not
+      let ref = db.collection(userDataPath).doc(uuid);
+      let getDoc = ref.get()
+        .then(doc => {
+
+          if (!doc.exists) {
+            console.log('No such document!');
+            validationFailed()
+
+          } else {
+            console.log('User Data already present.');
+            let userData = doc.data()
+
+            // Only for ADMIN and DEV
+            if (userData['ROLE'] != 'USER') {
+              // Validation Done
+              console.log('Validation Passed !!')
+
+              readProjectDataFromDatabase()
+
+
+            } else {
+              validationFailed()
+            }
+
+
+
+
+          }
+        })
+        .catch(err => {
+          console.log('Error getting document', err);
+          validationFailed()
+
+        });
+
+
+    } else {
+      // User is signed out.
+      console.log('User logout !!')
+      validationFailed()
+
+    }
+  }, function (error) {
+    console.log(error);
+    validationFailed()
+
+  });
+
+}
+
+// Validation Failed
+function validationFailed() {
+  console.log('Validation Failed !!')
+  hidePleaseWait();  
+
+  document.getElementById("project_content_container").style.display = 'none';
+}
+
 // ************************************
 // Call Function when page loaded
 // ************************************
-readProjectDataFromDatabase();
+validateAdminRoles();
 
 
 // ***************************************************

@@ -246,7 +246,7 @@ function updateCardLayout(htmlID) {
     var doc_data = coll_list_data[each_doc_id]
 
     // Create Layout according to the Model Layouts  
-    var currentmdlContent = modelLayoutSelector_local(model_layout, doc_data, 'NEWPAGE,eachdetails,' + document_ID + ',' + each_doc_id + ',NA')
+    var currentmdlContent = modelLayoutSelector_local(model_layout, doc_data, 'STATICPAGE,eachdetails,' + document_ID + ',' + each_doc_id + ',NA')
     each_list_ref_div_content += currentmdlContent
 
   }
@@ -341,35 +341,29 @@ function modelLayoutSelector_local(mdl_layout, doc_details, mdl_action_details) 
   //Information Details
   var complete_content = getCompleteModelContentDetails(doc_details)
 
+  var mdl_map_details = {}
+  mdl_map_details['ID'] = doc_details['ID']
+  mdl_map_details['IMAGE'] = doc_details['IMAGE']
+  mdl_map_details['CONTENT'] = complete_content
+  mdl_map_details['ACTION'] = mdl_action_details
+
 
   // SQUARE_CARD_HORIZ Layout
   if (mdl_layout == 'SQUARE_CARD_HORIZ') {
 
-    mdl_html_line = modelLytSquareHoriCard_local(
-      doc_details['IMAGE'],
-      complete_content,
-      mdl_action_details
-    )
+    mdl_html_line = modelLytSquareHoriCard_local(mdl_map_details)
   }
 
   // SQUARE_CARD Layout
   if (mdl_layout == 'SQUARE_CARD') {
 
-    mdl_html_line = modelLytSquareCard_local(
-      doc_details['IMAGE'],
-      complete_content,
-      mdl_action_details
-    )
+    mdl_html_line = modelLytSquareCard_local(mdl_map_details)
   }
 
   // SQUARE_CARD Layout
   if (mdl_layout == 'SQUARE_CARD_IMAGE') {
 
-    mdl_html_line = modelLytSquareCardImage_local(
-      doc_details['IMAGE'],
-      complete_content,
-      mdl_action_details
-    )
+    mdl_html_line = modelLytSquareCardImage_local(mdl_map_details)
   }
 
   return mdl_html_line;
@@ -377,9 +371,12 @@ function modelLayoutSelector_local(mdl_layout, doc_details, mdl_action_details) 
 }
 
 // Model Square Card Horizontal
-function modelLytSquareHoriCard_local(image_ref, complete_content, mdl_action_details) {
+function modelLytSquareHoriCard_local(mdl_map_details) {
 
-  var htmlLine = '<div class="col s12 m7"><a href="' + clickHandling(mdl_action_details.split(',')[0], mdl_action_details.split(',')[1], mdl_action_details.split(',')[2], mdl_action_details.split(',')[3], mdl_action_details.split(',')[4]) + '">\
+  var image_ref = mdl_map_details['IMAGE']
+  var complete_content = mdl_map_details['CONTENT'] 
+
+  var htmlLine = '<div class="col s12 m7"><a href="' + clickHandling(mdl_map_details) + '">\
             <div class="card horizontal hoverable">\
               <div class="card-image">\
                 <img src="' + getModelImageRef(image_ref) + '">\
@@ -398,9 +395,12 @@ function modelLytSquareHoriCard_local(image_ref, complete_content, mdl_action_de
 }
 
 // Model Square Card
-function modelLytSquareCard_local(image_ref, complete_content, mdl_action_details) {
+function modelLytSquareCard_local(mdl_map_details) {
 
-  var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_action_details.split(',')[0], mdl_action_details.split(',')[1], mdl_action_details.split(',')[2], mdl_action_details.split(',')[3], mdl_action_details.split(',')[4]) + '">\
+  var image_ref = mdl_map_details['IMAGE']
+  var complete_content = mdl_map_details['CONTENT'] 
+
+  var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_map_details) + '">\
                   <div class="card hoverable">\
                     <div class="card-image">\
                       <img src="' + getModelImageRef(image_ref) + '">\
@@ -417,9 +417,12 @@ function modelLytSquareCard_local(image_ref, complete_content, mdl_action_detail
 }
 
 // Model Square Card with Image Only
-function modelLytSquareCardImage_local(image_ref, complete_content, mdl_action_details) {
+function modelLytSquareCardImage_local(mdl_map_details) {
 
-  var htmlLine = '<div class="col s12 m6"><a href="' + clickHandling(mdl_action_details.split(',')[0], mdl_action_details.split(',')[1], mdl_action_details.split(',')[2], mdl_action_details.split(',')[3], mdl_action_details.split(',')[4]) + '">\
+  var image_ref = mdl_map_details['IMAGE']
+  var complete_content = mdl_map_details['CONTENT'] 
+
+  var htmlLine = '<div class="col s12 m6"><a href="' + clickHandling(mdl_map_details) + '">\
                   <div class="card hoverable">\
                     <div class="card-image">\
                       <img src="' + getModelImageRef(image_ref) + '">\

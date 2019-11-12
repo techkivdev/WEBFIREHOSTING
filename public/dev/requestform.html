@@ -32,7 +32,7 @@
           <li><a href="index.html">Home</a></li>   
           <li><a href="alldetails.html?detail1=DESTINATIONS&detail2=NA&detail3=NA">Destinations</a></li>
           <li><a href="alldetails.html?detail1=PACKAGES&detail2=NA&detail3=NA">Packages</a></li>
-          <li><a href="#">Login</a></li>       
+          <li><a href="login.html">Profile</a></li>       
         </ul>
 
         <!-- Mobile Navigation List -->
@@ -40,7 +40,7 @@
             <li><a href="index.html">Home</a></li>   
             <li><a href="alldetails.html?detail1=DESTINATIONS&detail2=NA&detail3=NA">Destinations</a></li>
             <li><a href="alldetails.html?detail1=PACKAGES&detail2=NA&detail3=NA">Packages</a></li>
-            <li><a href="#">Login</a></li> 
+            <li><a href="login.html">Profile</a></li> 
         </ul>
 
         <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>        
@@ -79,24 +79,128 @@
       <div id="col_section_1" >
          
           <div class="row">
+
               <div class="col s12 m12">
+
                 <div class="card">
                   <div class="card-content">  
                     
                       <div class="row">
 
                         <!-- form sec 1 -->
-                          <form class="col s12">
+                          <div class="col s12">
                             <div class="row">
                               <div class="input-field col s12">
-                                <i class="material-icons prefix">mode_edit</i>
-                                <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
-                                <label for="icon_prefix2">First Name</label>
+                                <i class="material-icons prefix">location_on</i>
+                                <input placeholder="Select Destination" type="text" id="autocomplete-input-destination" class="autocomplete">
+                                <label for="autocomplete-input-destination">Destination</label>
                               </div>
                             </div>
-                          </form>
-                          <!-- end -->
+                          </div>
+                          <!-- end -->    
+                          
+                          
+                           <!-- form sec 2 -->
+                           <div class="col s12">
+                              <div class="row">
+                                <div class="input-field col s12">
+                                  <i class="material-icons prefix">location_on</i>
+                                  <input placeholder="Enter your departure city" type="text" id="autocomplete-input-from" class="autocomplete">
+                                  <label for="autocomplete-input-from">Departure City</label>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- end --> 
 
+                            <!-- form sec 3 -->
+                           <div class="col s12">
+                              <div class="row">
+                                <div class="input-field col s6">
+                                  <i class="material-icons prefix">date_range</i>
+                                  <input type="text" id="start_date" class="datepicker">
+                                  <label for="start_date">Start Date</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">date_range</i>
+                                    <input type="text" id="end_date" class="datepicker">
+                                    <label for="end_date">End Date</label>
+                                  </div>
+                              </div>
+                            </div>
+                            
+
+                            <div class="col s12">
+                                <div class="row">
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">date_range</i>
+                                    <select id="date_options">
+                                      <option value="" disabled selected>Choose your option</option>
+                                      <option value="1">FIXED</option>
+                                      <option value="2">FLEXIBLE</option>
+                                      <option value="3">ANYTIME</option>
+                                    </select>
+                                    <label>Date Options</label>
+                                  </div>
+                            </div>
+                          </div>
+
+                              <!-- end -->
+
+
+                              <!-- form sec 4 -->
+                              <form class="col s12">
+                                  <div class="row">
+                                    <div class="input-field col s12">
+                                      <i class="material-icons prefix">account_circle</i>
+                                      <input value=" " id="name_txt" type="text" class="validate">
+                                      <label class="active" for="name_txt">Name</label>
+                                    </div>                                   
+                                  </div>
+                                </form>
+
+                                <!-- end -->
+
+                                 <!-- form sec 5 -->
+                              <form class="col s12">
+                                  <div class="row">                                   
+                                    <div class="input-field col s12">
+                                      <i class="material-icons prefix">phone</i>
+                                      <input value=" "id="mobile_txt" type="number" class="validate">
+                                      <label class="active" for="mobile_txt">Telephone</label>
+                                      <span class="helper-text" data-error="wrong" data-success=""></span>
+                                    </div>
+                                  </div>
+                                </form>
+
+                                <!-- end -->
+
+                                 <!-- form sec 6 -->
+                              <form class="col s12">
+                                  <div class="row">
+                                    <div class="input-field col s12">
+                                      <i class="material-icons prefix">email</i>
+                                      <input value=" " id="email_txt" type="email" class="validate">
+                                      <label class="active" for="email_txt">Email</label>
+                                      <span class="helper-text" data-error="wrong" data-success=""></span>
+                                    </div>                                   
+                                  </div>
+                                </form>
+
+                                <!-- end -->
+
+                                <!-- form sec 7 -->
+                              <form class="col s12">  
+                                  <div class="row">                                
+                                      <div class="center-align">
+                                      <a onclick="submitDetails()" class="waves-effect waves-light btn-large pink">Submit</a>
+                                      </div>
+                                    </div> 
+                                </form>
+
+                                <!-- end -->                                
+
+                            <!-- end -->
+                          
                         </div>
                     
 
@@ -108,6 +212,14 @@
 
 
       </div>
+
+      <!-- **************************************** -->
+      <!--   Coloum Section 2  --> 
+      <div id="col_section_2" style="display: none;">
+        <h1>Thanks</h1>
+        </div>
+
+
     </div> 
 
   </div>
@@ -164,6 +276,7 @@
  
 
   <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-storage.js"></script>
   <script src="../app/firestore.js"></script>

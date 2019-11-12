@@ -9,7 +9,9 @@
 // *********************************************
 // ------------- CONFIGURATION ----------------
 var basePath = '/DATABASE/DEVELOPMENT/PUBLIC/';
+var basePrivatePath = '/DATABASE/DEVELOPMENT/PRIVATE/';
 var baseProductionPath = '/DATABASE/PRODUCTION/PUBLIC/';
+var baseProductionPrivatePath = '/DATABASE/PRODUCTION/PRIVATE/';
 
 var imagebasePath = '/DATABASE/DEVELOPMENT/PUBLIC/';
 var imagebaseProductionPath = '/DATABASE/PRODUCTION/PUBLIC/';
@@ -144,15 +146,36 @@ function displayOutput(details) {
   }
 }
 
-// ----- Click Handling Operation --------
-function clickHandling(action, page_name, name, filter, extra) {
+// Display Toast Message
+function toastMsg(msg) {
+  M.toast({html: msg})
+}
 
-  if (action == 'NEWPAGE') {
+// ----- Click Handling Operation --------
+function clickHandling(mdl_map_details) {
+
+  var mdl_action_details = mdl_map_details['ACTION']
+  var id = mdl_map_details['ID']
+
+  var action = mdl_action_details.split(',')[0]
+  var page_name = mdl_action_details.split(',')[1]
+  var name = mdl_action_details.split(',')[2]
+  var filter = mdl_action_details.split(',')[3]
+  var extra = mdl_action_details.split(',')[4]
+
+
+  if (action == 'STATICPAGE') {
     var url = page_name + '.html?detail1=' + encodeURIComponent(name) + '&detail2=' + encodeURIComponent(filter) + '&detail3=' + encodeURIComponent(extra);
 
     //document.location.href = url;
     return url
-  } else {
+  } else if (action == 'FILTERPAGE') {
+
+    var url = page_name + '.html?detail1=' + encodeURIComponent(name) + '&detail2=' + encodeURIComponent(id) + '&detail3=' + encodeURIComponent(extra);
+
+    return url
+
+  }  else {
     return 'NA'
   }
 
@@ -302,34 +325,29 @@ function modelLayoutSelector(mdl_coll, mdl_layout, doc_details, all_doc_info_lis
   var complete_content = getModelCompleteContent(mdl_coll, all_doc_info_list, doc_details)
 
 
+  var mdl_map_details = {}
+  mdl_map_details['ID'] = doc_details['ID']
+  mdl_map_details['IMAGE'] = doc_details['IMAGE']
+  mdl_map_details['CONTENT'] = complete_content
+  mdl_map_details['ACTION'] = mdl_action_details
+
+
   // SQUARE_CARD Layout
   if (mdl_layout == 'SQUARE_CARD') {
 
-    mdl_html_line = modelLytSquareCard(
-      doc_details['IMAGE'],
-      complete_content,
-      mdl_action_details
-    )
+    mdl_html_line = modelLytSquareCard(mdl_map_details)
   }
 
   // SQUARE_CARD_IMAGE Layout
   if (mdl_layout == 'SQUARE_CARD_IMAGE') {
 
-    mdl_html_line = modelLytSquareCardImage(
-      doc_details['IMAGE'],
-      complete_content,
-      mdl_action_details
-    )
+    mdl_html_line = modelLytSquareCardImage(mdl_map_details)
   }
 
   // SQUARE_CARD_HORIZ Layout
   if (mdl_layout == 'SQUARE_CARD_HORIZ') {
 
-    mdl_html_line = modelLytSquareHoriCard(
-      doc_details['IMAGE'],
-      complete_content,
-      mdl_action_details
-    )
+    mdl_html_line = modelLytSquareHoriCard(mdl_map_details)
   }
 
   return mdl_html_line;
@@ -340,9 +358,12 @@ function modelLayoutSelector(mdl_coll, mdl_layout, doc_details, all_doc_info_lis
 // Important Point :
 // : col s12 m6 - Desktop layout is same but in mobile layout one below to another one
 // : col s6 m6  - Same in desktop and mobile also
-function modelLytSquareCard(image_ref, complete_content, mdl_action_details) {
+function modelLytSquareCard(mdl_map_details) {
+  
+  var image_ref = mdl_map_details['IMAGE']
+  var complete_content = mdl_map_details['CONTENT']  
 
-  var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_action_details.split(',')[0], mdl_action_details.split(',')[1], mdl_action_details.split(',')[2], mdl_action_details.split(',')[3], mdl_action_details.split(',')[4]) + '">\
+  var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_map_details) + '">\
                   <div class="card hoverable">\
                     <div class="card-image">\
                       <img src="' + getModelImageRef(image_ref) + '">\
@@ -359,9 +380,12 @@ function modelLytSquareCard(image_ref, complete_content, mdl_action_details) {
 }
 
 // Model Square Card with Image Only
-function modelLytSquareCardImage(image_ref, complete_content, mdl_action_details) {
+function modelLytSquareCardImage(mdl_map_details) {
 
-  var htmlLine = '<div class="col s12 m6"><a href="' + clickHandling(mdl_action_details.split(',')[0], mdl_action_details.split(',')[1], mdl_action_details.split(',')[2], mdl_action_details.split(',')[3], mdl_action_details.split(',')[4]) + '">\
+  var image_ref = mdl_map_details['IMAGE']
+  var complete_content = mdl_map_details['CONTENT']
+
+  var htmlLine = '<div class="col s12 m6"><a href="' + clickHandling(mdl_map_details) + '">\
                   <div class="card hoverable">\
                     <div class="card-image">\
                       <img src="' + getModelImageRef(image_ref) + '">\
@@ -375,9 +399,12 @@ function modelLytSquareCardImage(image_ref, complete_content, mdl_action_details
 }
 
 // Model Square Card Horizontal
-function modelLytSquareHoriCard(image_ref, complete_content, mdl_action_details) {
+function modelLytSquareHoriCard(mdl_map_details) {
 
-  var htmlLine = '<div class="col s12 m7"><a href="' + clickHandling(mdl_action_details.split(',')[0], mdl_action_details.split(',')[1], mdl_action_details.split(',')[2], mdl_action_details.split(',')[3], mdl_action_details.split(',')[4]) + '">\
+  var image_ref = mdl_map_details['IMAGE']
+  var complete_content = mdl_map_details['CONTENT']
+
+  var htmlLine = '<div class="col s12 m7"><a href="' + clickHandling(mdl_map_details) + '">\
             <div class="card horizontal hoverable">\
               <div class="card-image">\
                 <img src="' + getModelImageRef(image_ref) + '">\
@@ -414,4 +441,78 @@ function hidePleaseWait() {
 // ------------- Show Alert ----------------------------
 function showAlert(details) {
   alert(details)
+}
+
+
+// ==============================================================
+// ---------- Login User Validation -----------------------------
+// ==============================================================
+
+function getUseruuid() {
+  firebase.auth().onAuthStateChanged(function (user) {
+
+    // Is user login or not
+    if (user) {
+      displayOutput('User login !!') 
+      return user.uid;      
+    } else {
+      // User is signed out.
+      displayOutput('User logout !!') 
+      return 'NA' 
+    }
+  }, function (error) {
+    displayOutput(error);
+    return 'NA'
+  });
+}
+
+// Store Data for one session
+function localStorageData(key,value) {
+
+  if (typeof(Storage) !== "undefined") {
+    // Code for localStorage/sessionStorage.
+    
+    sessionStorage.setItem(key, value);
+  } else {
+    // Sorry! No Web Storage support..
+    displayOutput('Sorry! No Web Storage support..')
+  }
+
+}
+
+// Get Login User Status
+function getLoginUserStatus() {
+
+  if (typeof(Storage) !== "undefined") {
+    // Code for localStorage/sessionStorage.
+    return sessionStorage.getItem('ISUSER');
+  } else {
+    // Sorry! No Web Storage support..
+    displayOutput('Sorry! No Web Storage support..')
+    return false
+  }
+
+}
+
+// Get Login User Status
+function getLoginUserData() {
+
+  if (typeof(Storage) !== "undefined") {
+    // Code for localStorage/sessionStorage.
+    let userData = {}
+    userData['ISUSER'] = sessionStorage.getItem('ISUSER');
+    userData['UUID'] = sessionStorage.getItem('UUID');
+    userData['NAME'] = sessionStorage.getItem('NAME');
+    userData['EMAIL'] = sessionStorage.getItem('EMAIL');
+    userData['MOBILE'] = sessionStorage.getItem('MOBILE');
+    userData['ROLE'] = sessionStorage.getItem('ROLE');
+
+
+    return userData;
+  } else {
+    // Sorry! No Web Storage support..
+    displayOutput('Sorry! No Web Storage support..')
+    return false
+  }
+
 }

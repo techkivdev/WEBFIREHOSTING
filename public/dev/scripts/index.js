@@ -9,9 +9,11 @@
 
 // ---------- Main Variables ---------
 var coll_base_path = basePath
+var coll_base_path_P = basePrivatePath
 
 if (is_production_mode) {
   coll_base_path = baseProductionPath
+  coll_base_path_P = baseProductionPrivatePath
 }
 
 // -------- Link Page with Collection and Documents -----
@@ -135,6 +137,8 @@ function readDocumentData(docID) {
 // Read Document Data in async mode
 async function readDocumentDataAsync(docID) {
 
+  checkLoginData()
+ 
   showPleaseWait()
 
   await db.collection(coll_base_path + coll_lang + '/' + coll_name).doc(docID).get()
@@ -202,7 +206,8 @@ getParams();
 //readDocumentData(document_ID);
 
 // Async Mode
-readDocumentDataAsync(document_ID)
+//readDocumentDataAsync(document_ID)
+checkUserDetailsAndSTART()
 
 // *******************************************************
 // --------------- Functions -----------------------------
@@ -427,6 +432,94 @@ function startUpCalls() {
   });
 
 }
+
+
+// =====================================================
+// ----- Local Storage ----------
+// =====================================================
+
+function checkUserDetailsAndSTART() {
+
+  var userDataPath = coll_base_path_P + 'USER/ALLUSER'
+
+  firebase.auth().onAuthStateChanged(function (user) {
+
+    // Is user login or not
+    if (user) {
+      displayOutput('User login !!')
+      let uuid = user.uid;
+
+      // Check User Doc Exist or Not
+      let ref = db.collection(userDataPath).doc(uuid);
+      let getDoc = ref.get()
+        .then(doc => {
+
+          if (!doc.exists) {
+            displayOutput('No such document!');
+            validationFailed()
+
+          } else {
+            displayOutput('User Data already present.');
+            let userData = doc.data()
+
+            // Update Session Data
+            localStorageData('ISUSER',true)
+            localStorageData('UUID',userData['UUID'])
+            localStorageData('NAME',userData['NAME'])
+            localStorageData('EMAIL',userData['EMAIL'])
+            localStorageData('MOBILE',userData['MOBILE'])
+            localStorageData('ROLE',userData['ROLE']) 
+            
+            displayOutput('Session Data Updated ...')
+            
+            readDocumentDataAsync(document_ID)
+
+          }
+        })
+        .catch(err => {
+          displayOutput('Error getting document', err);
+          validationFailed()
+
+        });
+
+
+    } else {
+      // User is signed out.
+      displayOutput('User logout !!')
+      validationFailed()
+
+    }
+  }, function (error) {
+    displayOutput(error);
+    validationFailed()
+
+  });
+
+}
+
+function validationFailed() {
+  displayOutput('Validation Failed !!')
+
+  localStorageData('ISUSER',false)
+
+  readDocumentDataAsync(document_ID)
+}
+
+// Check Session Data is Correct or Not
+function checkLoginData(){
+
+   // Check Session Data
+   let status = getLoginUserStatus()
+   displayOutput('Check Session Data ...')
+   displayOutput(status)
+   if(status == 'true') {
+     let userLoginData = getLoginUserData()
+     displayOutput(userLoginData)
+   }
+
+}
+
+
 
 
 

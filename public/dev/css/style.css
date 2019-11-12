@@ -50,3 +50,13 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
+  .img-circle {
+    border-radius: 50%;
+    height: 250px;
+}
+
+.header-margin {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
