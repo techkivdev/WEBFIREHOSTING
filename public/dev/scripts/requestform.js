@@ -175,6 +175,7 @@ function submitDetails() {
     displayOutput('All Details are OK.')
 
     let customedata = {}
+    customedata['ID'] =  ''
     customedata['DESTINATION'] =  destination
     customedata['FROM'] = departurecity
     customedata['STARTDATE'] = startdate
@@ -184,11 +185,17 @@ function submitDetails() {
     customedata['MOBILENO'] = mobileno
     customedata['EMAILID'] = emailid
 
-    customedata['ADMINSTAGE'] = 'NEW'
-    customedata['ADMINCOMMENT'] = ''
+    customedata['ADMINSTAGE'] = 'OPEN'
+    customedata['ADMINCOMMENT'] = 'NA'
+    customedata['FINALMESSAGE'] = 'NA'
 
     customedata['USERUUID'] = uuid
-    customedata['USERCOMMENT'] = ''
+    customedata['USERCOMMENT'] = 'NA'
+
+    // Get Today Date    
+    customedata['BOOKINGDATE'] = getTodayDate()
+    customedata['VENDORID'] = 'NA'
+    customedata['DEALPRICE'] = 'NA'
 
     
 
@@ -204,14 +211,13 @@ function submitDetails() {
 
 // Write Document to Database
 function writeDocument(data) {    
-
-  // Update common doc 
-  let comdata = {
-    name: 'common'
-  };
   
   // Add a new document in collection
-  let setDoc = db.collection(coll_base_path).doc('COMMON').set(comdata);
+  if(first_time_operation) {
+    // Update common doc 
+    let comdata = {NAME: 'COMMON'};
+    let setDoc = db.collection(coll_base_path).doc('COMMON').set(comdata);
+  }
   
   // Add a new document with a generated id.
   let addDoc = db.collection(quotesPath).add(data).then(ref => {
@@ -247,7 +253,7 @@ function updateUserBookingSection(bookingid,submitdata) {
     };
 
     // Add a new document with a generated id.
-  let addDoc = db.collection(userBookingPath).add(data).then(ref => {
+  let addDoc = db.collection(userBookingPath).doc(bookingid).set(data).then(ref => {
     displayOutput('Added document with ID: ', ref.id);
     displayOutput('User Booking Added !!')
     

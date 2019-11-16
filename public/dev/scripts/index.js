@@ -219,6 +219,11 @@ function updateHTMLPage() {
   displayOutput(mainDocMapDetails)
   displayOutput(docMapDetails)
 
+  // Update Header Images
+  document.getElementById('hdr_img_1').src = getImageUrl(getInfoDetailsC("HDR IMG1"))
+  document.getElementById('hdr_img_2').src = getImageUrl(getInfoDetailsC("HDR IMG2"))
+  document.getElementById('hdr_img_3').src = getImageUrl(getInfoDetailsC("HDR IMG3"))
+
   // HTML Modification functions
   updateListRefDetails()
 
@@ -236,7 +241,7 @@ function updateHTMLPage() {
 //**************** Mapping Function ***************************
 // Update Mapping Data Sets details
 function updateMappingDetails(docID) {
-  if ("MAIN" in allDocCmpData) {
+  if("MAIN" in allDocCmpData) {
     mainDocMapDetails["ID"] = allDocCmpData["MAIN"]["INFO0"]
     mainDocMapDetails["NAME"] = allDocCmpData["MAIN"]["INFO1"]
     mainDocMapDetails["DESC"] = allDocCmpData["MAIN"]["INFO2"]
@@ -266,34 +271,39 @@ function updateMappingDetails(docID) {
 
 
 
-  if (docID in allDocCmpData) {
-    docMapDetails["header_bold"] = allDocCmpData[docID]["INFO0"]
-    docMapDetails["top_destination"] = docID + "#INFO10"
-    docMapDetails["top_packages"] = docID + "#INFO11"
-    docMapDetails["application_name"] = allDocCmpData[docID]["INFO12"]
-    docMapDetails["header_text"] = allDocCmpData[docID]["INFO2"]
-    docMapDetails["footer_bold"] = allDocCmpData[docID]["INFO3"]
-    docMapDetails["footer_content"] = allDocCmpData[docID]["INFO4"]
-    docMapDetails["extra"] = allDocCmpData[docID]["INFO5"]
+if(docID in allDocCmpData) {
+docMapDetails["header_bold"] = allDocCmpData[docID]["INFO0"]
+docMapDetails["top_destination"] = docID + "#INFO10"
+docMapDetails["top_packages"] = docID + "#INFO11"
+docMapDetails["application_name"] = allDocCmpData[docID]["INFO12"]
+docMapDetails["header_text"] = allDocCmpData[docID]["INFO2"]
+docMapDetails["footer_bold"] = allDocCmpData[docID]["INFO3"]
+docMapDetails["footer_content"] = allDocCmpData[docID]["INFO4"]
+docMapDetails["extra"] = allDocCmpData[docID]["INFO5"]
 
-    // MAP Development and Production Image correctly .....
-    if (is_production_mode) {
+// MAP Development and Production Image correctly .....
+if(is_production_mode) {
 
-      // IMAGES Production Information
+// IMAGES Production Information
 
-      docMapDetails["header_image"] = docID + "#INFO7"
-      docMapDetails["footer_image"] = docID + "#INFO9"
+docMapDetails["hdr_img1"] = docID + "#INFO14"
+docMapDetails["hdr_img2"] = docID + "#INFO16"
+docMapDetails["hdr_img3"] = docID + "#INFO7"
+docMapDetails["footer_image"] = docID + "#INFO9"
 
-    } else {
-      // IMAGES Information
+} else {
+// IMAGES Information
 
-      docMapDetails["header_image"] = docID + "#INFO6"
-      docMapDetails["footer_image"] = docID + "#INFO8"
+docMapDetails["hdr_img1"] = docID + "#INFO13"
+docMapDetails["hdr_img2"] = docID + "#INFO15"
+docMapDetails["hdr_img3"] = docID + "#INFO6"
+docMapDetails["footer_image"] = docID + "#INFO8"
 
-    }
-  } else {
+}    
+} else {
     displayOutput(docID + " Data not found !!")
-  }
+}
+
 
 }
 //**************** END ***************************
@@ -313,8 +323,7 @@ function updateListRefDetails() {
   // Collect List Ref Details and Display Into HTML
   displayOutput('Update List view ...')
   getListRefDetails(docMapDetails['top_destination'], 'col_section_1')
-  getListRefDetails(docMapDetails['top_packages'], 'col_section_2')
-  //getListRefDetails(docMapDetails['LIST_2'], 'col_section_3')
+  getListRefDetails(docMapDetails['top_packages'], 'col_section_2')  
 
 }
 
@@ -474,6 +483,8 @@ function checkUserDetailsAndSTART() {
             
             readDocumentDataAsync(document_ID)
 
+            document.getElementById("main_container").style.display = 'block';
+
           }
         })
         .catch(err => {
@@ -503,6 +514,8 @@ function validationFailed() {
   localStorageData('ISUSER',false)
 
   readDocumentDataAsync(document_ID)
+
+  document.getElementById("main_container").style.display = 'block';
 }
 
 // Check Session Data is Correct or Not

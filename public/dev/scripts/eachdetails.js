@@ -511,6 +511,15 @@ function genHTMLContentType1() {
    // Update Image View
    updateImageView("dest_image_view",["Image 1","Image 2","Image 3","Image 4","Image 5"])
 
+   // Get All Header Details
+  let headerData = getHashDataList(mainDocMapDetails["COMMON_DATA"]) 
+  
+  $("#dest_header_1").html(headerData["HEADER_1"]);
+  $("#dest_header_2").html(headerData["HEADER_2"]);
+  $("#dest_header_3").html(headerData["HEADER_3"]);
+  $("#dest_header_4").html(headerData["HEADER_4"]);
+  $("#dest_header_5").html(headerData["HEADER_5"]);
+
   $("#banner_main_header").html(docMapDetails[getKeyDetails("Name")]);
   $("#banner_small_header").html(" ");
  
@@ -547,6 +556,30 @@ function genHTMLContentType2() {
 
   // Update Image View
   updateImageView("pkg_image_view",["Image 1","Image 2","Image 3","Image 4","Image 5"])
+
+
+  // Get All Header Details
+  let headerData = getHashDataList(mainDocMapDetails["COMMON_DATA"]) 
+  
+  $("#pkg_header_1").html(headerData["HEADER_1"]);
+  $("#pkg_header_2").html(headerData["HEADER_2"]);
+  $("#pkg_header_3").html(headerData["HEADER_3"]);
+  $("#pkg_header_4").html(headerData["HEADER_4"]);
+  $("#pkg_header_5").html(headerData["HEADER_5"]);
+  $("#pkg_header_6").html(headerData["HEADER_6"]);
+  $("#pkg_header_7").html(headerData["HEADER_7"]);
+  $("#pkg_header_8").html(headerData["HEADER_8"]);
+  $("#pkg_header_9").html(headerData["HEADER_9"]);
+  //$("#pkg_header_10").html(headerData["HEADER_10"]);
+  $("#pkg_header_11").html(headerData["HEADER_11"]);
+  $("#pkg_header_12").html(headerData["HEADER_12"]);
+  $("#pkg_header_13").html(headerData["HEADER_13"]);
+  $("#pkg_header_14").html(headerData["HEADER_14"]);
+  $("#pkg_header_15").html(headerData["HEADER_15"]);
+  $("#pkg_header_16").html(headerData["HEADER_16"]);
+  $("#pkg_header_17").html(headerData["HEADER_17"]);
+
+  // -------------------------------------------
   
 
   $("#banner_main_header").html(getInfoDetails("Name"));

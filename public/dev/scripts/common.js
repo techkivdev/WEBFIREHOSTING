@@ -24,6 +24,9 @@ var debug_mode = true
 // Change Mode for Production or Development
 var is_production_mode = false
 
+// First Time Database Operation
+var first_time_operation = false
+
 
 
 // *******************************************************
@@ -186,6 +189,41 @@ function getKeyDetails(key_name) {
   return key_name.replace(' ','_').toLowerCase()
  }
 
+ // Get Info details
+function getInfoDetailsC(key) {
+  return docMapDetails[getKeyDetails(key)]
+}
+
+// Get Hashvalues Details
+function getHashDataList(details) {
+  
+  var dataList = {}
+
+  if(details == "NA") {
+       dataList['STATUS'] = false
+  } else {      
+
+  var all_details_list = details.split('#')
+
+  let dataLine = '{'
+  for(each_idx in all_details_list) {
+    if(each_idx == 0){continue}
+    var idx_data = all_details_list[each_idx]
+    dataLine += '"' + idx_data.split(':')[0].trim() + '"'  + ':' + '"' + idx_data.split(':')[1].trim() +'",'
+    
+  }
+
+  dataLine = dataLine.slice(0, -1) + '}'
+
+  dataList = JSON.parse(dataLine)
+  dataList['STATUS'] = true
+  
+}
+
+return dataList
+
+}
+
 
 
 // ---------------------------------------------------------------
@@ -258,7 +296,7 @@ function getBaseLayoutHTML(mdl_coll,base_layout, header, model_content) {
                       if(show_model_base_button){
                         base_layout_html += '<div class="col s12">\
                           <div class="' + header_button_layout_position + '">\
-                            <a class="waves-effect waves-light btn blue">View All</a>\
+                            <a onclick="clickViewAll(\'' + mdl_coll + '\')" class="waves-effect waves-light btn blue">View All</a>\
                           </div>\
                         </div>'
                       }
@@ -296,7 +334,7 @@ function getBaseLayoutHTML(mdl_coll,base_layout, header, model_content) {
                       if(show_model_base_button){
                         base_layout_html += '<div class="col s12">\
                           <div class="' + header_button_layout_position + '">\
-                            <a class="waves-effect waves-light btn blue">View All</a>\
+                            <a onclick="clickViewAll(\'' + mdl_coll + '\')" class="waves-effect waves-light btn blue">View All</a>\
                           </div>\
                         </div>'
                       }
@@ -309,6 +347,17 @@ function getBaseLayoutHTML(mdl_coll,base_layout, header, model_content) {
 
 
   return base_layout_html;
+
+
+}
+
+// Click View All , Open new Page
+function clickViewAll(details){
+  displayOutput('Click : ' + details)
+
+  var url = 'alldetails.html?detail1=' + encodeURIComponent(details) + '&detail2=' + encodeURIComponent('NA') + '&detail3=' + encodeURIComponent('NA');
+
+  document.location.href = url;
 
 
 }
@@ -441,6 +490,29 @@ function hidePleaseWait() {
 // ------------- Show Alert ----------------------------
 function showAlert(details) {
   alert(details)
+}
+
+// Get Current Date
+function getTodayDate() {
+
+  var month = new Array();
+  month[0] = "January";
+  month[1] = "February";
+  month[2] = "March";
+  month[3] = "April";
+  month[4] = "May";
+  month[5] = "June";
+  month[6] = "July";
+  month[7] = "August";
+  month[8] = "September";
+  month[9] = "October";
+  month[10] = "November";
+  month[11] = "December";
+
+  var today = new Date();
+  var date = month[today.getMonth()].substring(0, 3)+' '+today.getDate() +', ' + today.getFullYear();
+
+  return date
 }
 
 

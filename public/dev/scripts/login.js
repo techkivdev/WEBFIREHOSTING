@@ -241,7 +241,7 @@ function updateHTMLPage() {
     <div class="collection">\
         <a href="#!" class="collection-item">User Managment</a>\
         <a href="managedetails.html" class="collection-item">Booking Managment</a>\
-        <a href="../project_settings.html" class="collection-item">Content Managment</a> </div>\
+        <a href="project_settings.html" class="collection-item">Content Managment</a> </div>\
   </div>'
 
 

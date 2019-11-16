@@ -8,8 +8,8 @@
 
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="../external/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
-  <link href="../external/css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+  <link href="external/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+  <link href="external/css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
   <link href="css/style.css" type="text/css" rel="stylesheet" />
 </head>
 
@@ -61,7 +61,7 @@
   <!-- Main Banner -->
   <!-- **************************************** -->
 
-  <div class="new-container">
+  <div class="new-container z-depth-2">
 
     <img id="banner_main_image" class="responsive-img" src="Images/default.jpg" alt="Snow"
       style="height: 500px; width:100%; background-size: 100%;">
@@ -123,11 +123,11 @@
                 <br>
                 <div class="row">
                   <div class="col s6">
-                    <b>Base Price</b>
+                    <b id="dest_header_1">Base Price</b>
                     <p id="dest_price">12000</p>
                   </div>
                   <div class="col s6">
-                    <b>Best Time</b>
+                    <b id="dest_header_2">Best Time</b>
                     <p id="dest_best_time">Sept - Oct</p>
                   </div>
                 </div>
@@ -135,7 +135,7 @@
 
                 <div class="row">
                   <div class="col s12">
-                    <b>Activities : </b>
+                    <b id="dest_header_3">Activities : </b>
 
                     <div id="dest_activities">
 
@@ -154,7 +154,7 @@
 
                 <div class="row">
                   <div class="col s12">
-                    <b>Ratings</b>
+                    <b id="dest_header_4">Ratings</b>
                     <p id="dest_ratings">rated 4.2/5 (based on 6658 reviews) </p>
                   </div>
                 </div>
@@ -169,7 +169,7 @@
           <div class="col s12">
             <div class="card grey lighten-5">
               <div class="card-content black-text">
-                <span class="card-title"><b>Description</b></span>
+                <span class="card-title"><b id="dest_header_5">Description</b></span>
 
                 <!-- Card Body START -->
                 <div id="dest_description">
@@ -234,15 +234,15 @@
               <br>
               <div class="row">
                 <div class="col s6">
-                  <p>Base Price</p>
+                  <p id="pkg_header_1">Base Price</p>
                   <b>
                     <p id="pkg_price"># </p>
                   </b>
-                  <p>/ Per Person</p>
+                  <p id="pkg_header_2">/ Per Person</p>
 
                 </div>
                 <div class="col s6">
-                  <p>Best Time</p>
+                  <p id="pkg_header_3">Best Time</p>
                   <b>
                     <p id="pkg_best_time">#</p>
                   </b>
@@ -251,13 +251,13 @@
 
               <div class="row">
                 <div class="col s6">
-                  <p>Days</p>
+                  <p id="pkg_header_4">Days</p>
                   <b>
                     <p id="pkg_days">#</p>
                   </b>
                 </div>
                 <div class="col s6">
-                  <p>Hotel Included</p>
+                  <p id="pkg_header_5">Hotel Included</p>
                   <b>
                     <p id="pkg_hotel_inc">#</p>
                   </b>
@@ -267,7 +267,7 @@
 
               <div class="row">
                 <div class="col s12">
-                  <p>Cities</p>
+                  <p id="pkg_header_6">Cities</p>
                   <b>
                     <p id="pkg_cities">#</p>
                   </b>
@@ -277,7 +277,7 @@
 
               <div class="row">
                 <div class="col s12">
-                  <p>Activities</p>
+                  <p id="pkg_header_7">Activities</p>
 
                   <div id="pkg_activities">
 
@@ -295,7 +295,7 @@
 
               <div class="row">
                 <div class="col s12">
-                  <p>Includes</p>
+                  <p id="pkg_header_8">Includes</p>
 
                   <div id="pkg_includes">
 
@@ -314,7 +314,7 @@
 
               <div class="row">
                 <div class="col s12">
-                  <p>Ratings</p>
+                  <p id="pkg_header_9">Ratings</p>
                   <b>
                     <p id="pkg_ratings">#</p>
                   </b>
@@ -347,7 +347,7 @@
         <div class="col s12">
           <div class="card grey lighten-5">
             <div class="card-content black-text">
-              <span class="card-title"><b>Overview</b></span>
+              <span class="card-title"><b id="pkg_header_11">Overview</b></span>
 
               <!-- Card Body START -->
               <div id="pkg_description">
@@ -365,7 +365,7 @@
         <div id="card_highlights" class="col s12">
           <div class="card">
             <div class="card-content black-text">
-              <span class="card-title"><b>Highlights</b></span>
+              <span class="card-title"><b id="pkg_header_12">Highlights</b></span>
 
               <!-- Card Body START -->
               <div id="pkg_highlights">
@@ -386,7 +386,7 @@
         <div class="col s12">
           <div class="card">
             <div class="card-content black-text">
-              <span class="card-title"><b>Itinerary</b></span>
+              <span class="card-title"><b id="pkg_header_13">Itinerary</b></span>
 
               <!-- Card Body START -->
               <div id="pkg_itinerary">
@@ -530,7 +530,7 @@
         <div class="col s12">
           <div class="card grey lighten-5">
             <div class="card-content black-text">
-              <span class="card-title"><b>Hotels</b></span>
+              <span class="card-title"><b id="pkg_header_14">Hotels</b></span>
 
               <!-- Card Body START -->
               <div class="row" id="pkg_hotels">
@@ -565,12 +565,12 @@
         <div class="col s12">
           <div class="card">
             <div class="card-content">
-              <p>Wht's Include in this package.</p>
+              <p id="pkg_header_15">Wht's Include in this package.</p>
             </div>
             <div class="card-tabs">
               <ul class="tabs tabs-fixed-width">
-                <li class="tab"><a class="active" href="#pkg_inclusions">Inclusions</a></li>
-                <li class="tab"><a href="#pkg_exclusions">Exclusions</a></li>
+                <li class="tab"><a class="active" href="#pkg_inclusions"><p id="pkg_header_16">Inclusions</p>></a></li>
+                <li class="tab"><a href="#pkg_exclusions"><p id="pkg_header_17">Exclusions</p></a></li>
               </ul>
             </div>
             <div class="card-content grey lighten-4">
@@ -656,15 +656,15 @@
   <!--  Scripts-->
   <!-- **************************************** -->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="../external/js/materialize.js"></script>
-  <script src="../external/js/init.js"></script>
+  <script src="external/js/materialize.js"></script>
+  <script src="external/js/init.js"></script>
 
 
   <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-storage.js"></script>
-  <script src="../app/firestore.js"></script>
+  <script src="app/firestore.js"></script>
   <script src="scripts/common.js"></script>
   <script src="scripts/eachdetails.js"></script>
 

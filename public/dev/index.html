@@ -9,8 +9,8 @@
   <!-- CSS  --> 
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="../external/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
-  <link href="../external/css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+  <link href="external/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+  <link href="external/css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
   <link href="css/style.css" type="text/css" rel="stylesheet" />
 </head>
 
@@ -56,7 +56,8 @@
 
     </nav> 
     
-    
+    <!-- Main Container -->
+  <div class="container-fluid" id="main_container" style="display: none;">
   <!-- **************************************** -->
   <!-- Main Banner -->
   <!-- **************************************** 
@@ -86,27 +87,27 @@
   <!-- Slider and Fresh Content -->
   <!-- **************************************** -->
 
-  <div class="fresh-content  white-text py-3" >
+  <div class="fresh-content z-depth-2 white-text py-3" >
 
     <!-- Slider START -->
   <div class="slider">
       <ul class="slides">
         <li>
-          <img src="https://images.unsplash.com/photo-1464817739973-0128fe77aaa1?dpr=1&auto=compress,format&fit=crop&w=1199&h=799&q=80&cs=tinysrgb&crop="> <!-- random image -->
+          <img id="hdr_img_1" src="https://images.unsplash.com/photo-1464817739973-0128fe77aaa1?dpr=1&auto=compress,format&fit=crop&w=1199&h=799&q=80&cs=tinysrgb&crop="> <!-- random image -->
           <div class="caption center-align">
             <h3>This is our big Tagline!</h3>
             <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
           </div>
         </li>
         <li>
-          <img src="https://ununsplash.imgix.net/photo-1414849424631-8b18529a81ca?q=75&fm=jpg&s=0e993004a2f3704e8f2ad5469315ccb7"> <!-- random image -->
+          <img id="hdr_img_2" src="https://ununsplash.imgix.net/photo-1414849424631-8b18529a81ca?q=75&fm=jpg&s=0e993004a2f3704e8f2ad5469315ccb7"> <!-- random image -->
           <div class="caption left-align">
             <h3>Left Aligned Caption</h3>
             <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
           </div>
         </li>
         <li>
-          <img src="https://ununsplash.imgix.net/uploads/1413259835094dcdeb9d3/6e609595?q=75&fm=jpg&s=6a4fc66161293fc4a43a6ca6f073d1c5"> <!-- random image -->
+          <img id="hdr_img_3" src="https://ununsplash.imgix.net/uploads/1413259835094dcdeb9d3/6e609595?q=75&fm=jpg&s=6a4fc66161293fc4a43a6ca6f073d1c5"> <!-- random image -->
           <div class="caption right-align">
             <h3>Right Aligned Caption</h3>
             <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
@@ -243,16 +244,19 @@
 
    -->
 
+   <div class="row">
 
+    <!-- Left Section -->
+    <div class="col s12 m11">
   <!-- **************************************** -->
   <!-- Container Section 1 -->
   <!-- **************************************** -->
-  <div class="container">
+  <div class="container-fluid">
     <div class="section">
 
       <!-- **************************************** -->
       <!--   Coloum Section 1  --> 
-      <div id="col_section_1" >
+      <div class="container" id="col_section_1" >
          <!-- **************************************** -->
         <!--   Script Code  --> 
         <!-- **************************************** --> 
@@ -267,28 +271,17 @@
   <!-- Container Section 2 -->
   <!-- **************************************** -->
 
-  <div class="container">
+  <div class="container-fluid">
     <div class="section">
 
      
       <!-- **************************************** -->
       <!--   Coloum Section 2  --> 
-      <div id="col_section_2" >
+      <div class="container" id="col_section_2" >
            <!-- **************************************** -->
            <!--   Script Code  --> 
             <!-- **************************************** -->        
       </div>
-
-      <!-- **************** END ********************* -->
-
-
-       <!-- **************************************** -->
-      <!--   Coloum Section 3  --> 
-      <div id="col_section_3" >
-        <!-- **************************************** -->
-        <!--   Script Code  --> 
-         <!-- **************************************** -->        
-   </div>
 
    <!-- **************** END ********************* -->
 
@@ -296,13 +289,20 @@
   </div>
 
   <!-- ***************** END ******************* -->
+    </div>
+
+    <!-- Right Section -->
+    <div class="col s12 m1">
+      <p> </p>
+    </div>
 
 
+</div>
   <!-- **************************************** -->
   <!-- Information Section -->
   <!-- **************************************** -->
 
-  <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px;">
+  <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px; display: none;">
 
       <div class="row">
         
@@ -334,15 +334,9 @@
   <!-- **************************************** -->
 
   <div class="fixed-action-btn">
-      <a class="btn-floating btn-large red">
-        <i class="large material-icons">mode_edit</i>
-      </a>
-      <ul>
-        <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
-        <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
-        <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
-        <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
-      </ul>
+      <a href="requestform.html" class="btn-floating btn-large  orange">
+        <i class="large material-icons">message</i>
+      </a>      
     </div>
 
 
@@ -388,20 +382,21 @@
     </div>
   </footer>
 
+</div>
 
   <!-- **************************************** -->
   <!--  Scripts-->
   <!-- **************************************** -->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="../external/js/materialize.js"></script>
-  <script src="../external/js/init.js"></script>
+  <script src="external/js/materialize.js"></script>
+  <script src="external/js/init.js"></script>
  
 
   <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-storage.js"></script>
-  <script src="../app/firestore.js"></script>
+  <script src="app/firestore.js"></script>
   <script src="scripts/common.js"></script>
   <script src="scripts/index.js"></script>
 
