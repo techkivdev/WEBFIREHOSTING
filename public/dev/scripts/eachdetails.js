@@ -194,10 +194,20 @@ function updateHTMLPage() {
   // HTML Modification functions  
   if (coll_name == 'DESTINATIONS') {
     document.getElementById("col_section_1").style.display = 'block';
+    document.getElementById("header_section").style.display = 'block';
+    document.getElementById("header_btn_options").style.display = 'none';
+
     genHTMLContentType1('col_section_1')
+
   } else if (coll_name == 'PACKAGES') {
     document.getElementById("col_section_2").style.display = 'block';
+    document.getElementById("header_section").style.display = 'block';
+
+    // Hide
+    document.getElementById("pkg_image_view_section").style.display = 'none';
+
     genHTMLContentType2('col_section_2')
+
   }
 
   startUpCalls()
@@ -205,6 +215,60 @@ function updateHTMLPage() {
 
 
 }
+
+// Update Card Details
+// Show Details Cards
+function showDetailsCard() {
+  displayOutput("Show All Section.")
+
+  // Show
+  document.getElementById("pkgcard_basic_information").style.display = 'block';  
+  document.getElementById("pkgcard_overview").style.display = 'block';
+  document.getElementById("card_highlights").style.display = 'block';
+  document.getElementById("pkgcard_itinerary").style.display = 'block';
+  document.getElementById("pkgcard_hotels").style.display = 'block';
+  document.getElementById("pkgcard_includes").style.display = 'block';
+
+  // Hide
+  document.getElementById("pkg_image_view_section").style.display = 'none';
+
+}
+
+// Show Images Cards
+function showImagesCard() {
+
+  displayOutput("Show Images Section.")
+
+  // Hide
+  document.getElementById("pkgcard_basic_information").style.display = 'none';  
+  document.getElementById("pkgcard_overview").style.display = 'none';
+  document.getElementById("card_highlights").style.display = 'none';
+  document.getElementById("pkgcard_itinerary").style.display = 'none';
+  document.getElementById("pkgcard_hotels").style.display = 'none';
+  document.getElementById("pkgcard_includes").style.display = 'none';
+
+  // Show
+  document.getElementById("pkg_image_view_section").style.display = 'block';
+
+}
+
+// Show Details in Model
+// Show Review Details
+function viewReviewDetails() {
+  viewModel('All Review' ,'All Review Content')
+}
+
+// Show Overview details
+function viewOverview() {
+
+  if(coll_name == 'DESTINATIONS') {
+    viewModel('Overview' ,getInfoDetails("Description"))
+  } else if(coll_name == 'PACKAGES') {
+    viewModel('Overview' ,getInfoDetails("Overview"))
+  }
+ 
+}
+
 
 // *******************************************************
 // --------------- Mapping Functions ---------------------
@@ -520,18 +584,18 @@ function genHTMLContentType1() {
   $("#dest_header_4").html(headerData["HEADER_4"]);
   $("#dest_header_5").html(headerData["HEADER_5"]);
 
-  $("#banner_main_header").html(docMapDetails[getKeyDetails("Name")]);
-  $("#banner_small_header").html(" ");
+  //$("#banner_main_header").html(getInfoDetails("Name"));
+  //$("#banner_small_header").html(" ");
  
-  // Update HTML Page Details
-  $("#dest_title").html(docMapDetails["name"]);
-  $("#dest_price").html(docMapDetails["price"]);
-  $("#dest_best_time").html(docMapDetails["best_times"]);  
-  $("#dest_ratings").html(docMapDetails["ratings"]);
-  $("#dest_description").html(docMapDetails["description"]);
+  // Update HTML Page Details getInfoDetails("Name")
+  $("#dest_title").html(getInfoDetails("Name"));
+  $("#dest_price").html(getInfoDetails("Price"));
+  $("#dest_best_time").html(getInfoDetails("Best Times"));  
+  $("#dest_ratings").html(getInfoDetails("Ratings"));
+  $("#dest_description").html(getInfoDetails("Description"));
 
   // Update Activities
-  var all_activities_list = docMapDetails["activities"].split(',')
+  var all_activities_list = getInfoDetails("Activities").split(',')
 
   var activities_html_line = ''
   for(each_act_idx in all_activities_list) {
@@ -543,7 +607,7 @@ function genHTMLContentType1() {
   $("#dest_activities").html(activities_html_line);
 
   // Update List Ref Details
-  getListRefDetails(docMapDetails['packages_details'], 'all_packages_list_ref')
+  getListRefDetails(getInfoDetails("Packages Details"), 'all_packages_list_ref')
 
 }
 
@@ -561,7 +625,7 @@ function genHTMLContentType2() {
   // Get All Header Details
   let headerData = getHashDataList(mainDocMapDetails["COMMON_DATA"]) 
   
-  $("#pkg_header_1").html(headerData["HEADER_1"]);
+  //$("#pkg_header_1").html(headerData["HEADER_1"]);  - Price
   $("#pkg_header_2").html(headerData["HEADER_2"]);
   $("#pkg_header_3").html(headerData["HEADER_3"]);
   $("#pkg_header_4").html(headerData["HEADER_4"]);
@@ -582,11 +646,12 @@ function genHTMLContentType2() {
   // -------------------------------------------
   
 
-  $("#banner_main_header").html(getInfoDetails("Name"));
-  $("#banner_small_header").html(" ");
+  //$("#banner_main_header").html(getInfoDetails("Name"));
+  //$("#banner_small_header").html(" ");
 
   // Update HTML Page Details
-  $("#pkg_price").html(getInfoDetails("Name"));
+  $("#pkg_title").html(getInfoDetails("Name"));
+  $("#pkg_price").html(getInfoDetails("Price"));
   $("#pkg_best_time").html(getInfoDetails("Best Time"));
   $("#pkg_days").html(getInfoDetails("Days"));
   $("#pkg_hotel_inc").html(getInfoDetails("Hotel Star"));

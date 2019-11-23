@@ -102,9 +102,8 @@
                               <option value="2">OPEN</option>
                               <option value="3">PROGRESS</option>
                               <option value="4">SUCCESS</option>
-                              <option value="5">ADMIN_CANCELED</option>
-                              <option value="6">USER_CANCELED</option>
-                              <option value="7">DELETED</option>
+                              <option value="5">CANCEL</option>
+                              <option value="6">DELETED</option>
                             </select>
                             <label></label>
                           </div>
@@ -211,13 +210,14 @@
                     <div class="row" style="margin-top: 2%;">
                         <div class="col s12">
                           <ul class="tabs tabs-fixed-width tab-demo z-depth-1">
-                            <li class="tab col s3"><a class="active" href="#options">Options</a></li>
-                            <li class="tab col s3"><a href="#inputs">Input</a></li>                            
+                            <li class="tab col s3"><a class="active" href="#Control">Control</a></li>
+                            <li class="tab col s3"><a href="#Options">Options</a></li>   
+                            <li class="tab col s3"><a href="#Comment">Comment</a></li>                          
                           </ul>
                         </div>
 
-                        <!-- Options -->
-                        <div id="options" class="col s12">  
+                        <!-- Control -->
+                        <div id="Control" class="col s12">  
                         
                               <div id="footer_content" style="margin-top: 2%;">
                                   <!-- Script Code  -->  
@@ -225,38 +225,78 @@
                           
                         </div>
 
-                        <!-- Inputs -->
-                        <div id="inputs" class="col s12">
+                        <!-- Options -->
+                        <div id="Options" class="col s12">
                             <br>
                             <div class="row">
+
                                 <div class="input-field col s12">                                  
-                                  <input value=" " id="input_vendor" type="text" class="validate">
+                                    <input value="nav-mobile" id="input_pkgid"  onkeyup="this.value = this.value.toUpperCase();" type="text" class="validate">
+                                    <label class="active" for="input_pkgid">Package ID</label>
+                                  </div>
+
+                                  <div class="input-field col s12">                                  
+                                      <input value="NA" id="input_destid"  onkeyup="this.value = this.value.toUpperCase();" type="text" class="validate">
+                                      <label class="active" for="input_destid">Destination ID</label>
+                                    </div>
+
+                                    <div class="input-field col s12">                                  
+                                        <input value="0" id="input_priority" type="number" class="validate">
+                                        <label class="active" for="input_priority">Priority</label>
+                                      </div>
+
+                                      <div class="input-field col s12">                                  
+                                          <input value=" " id="input_dissstatus" type="text" class="validate">
+                                          <label class="active" for="input_dissstatus">Disscustion Status</label>
+                                        </div>
+
+
+                                        <div class="input-field col s12">
+                                            <input value=" " type="text" id="input_dissdate" class="datepicker">
+                                           <label class="active" for="input_dissdate">Disscustion Date</label>
+                                          </div>
+
+                                          <div class="input-field col s12">                                  
+                                              <input value=" " id="input_usermood" type="text" class="validate">
+                                              <label class="active" for="input_usermood">User Mood</label>
+                                            </div>
+
+
+                                <div class="input-field col s12">                                  
+                                  <input value=" " id="input_vendor"  onkeyup="this.value = this.value.toUpperCase();" type="text" class="validate">
                                   <label class="active" for="input_vendor">Vendor ID</label>
                                 </div>
 
                                 <div class="input-field col s12">                                  
-                                  <input value=" " id="input_deal_price" type="tel" class="validate">
+                                  <input value="0" id="input_deal_price" type="number" class="validate">
                                   <label class="active" for="input_deal_price">Deal Price</label>
-                                </div>
-
-                               
-                                <div class="input-field col s12">
-                                    <i class="material-icons prefix">verified_user</i>
-                                    <textarea value="NA" id="admin_comment" class="materialize-textarea" data-length="300"></textarea>
-                                    <label class="active" for="admin_comment"></label>
-                                  </div>                                  
-                                 
-                                  
-                                    <div class="input-field col s12">
-                                        <i class="material-icons prefix">message</i>
-                                        <textarea value="NA" id="finalmessage_comment" class="materialize-textarea" data-length="300"></textarea>
-                                        <label class="active" for="finalmessage_comment"></label>
-                                      </div>                                     
+                                </div>                              
+                                                                     
 
                               </div>                          
                             
                               
                         </div> 
+
+                         <!-- Comment -->
+                         <div id="Comment" class="col s12">  
+
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">verified_user</i>
+                                <textarea value="NA" id="admin_comment" class="materialize-textarea" data-length="300"></textarea>
+                                <label class="active" for="admin_comment"></label>
+                              </div>                                  
+                             
+                              
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">message</i>
+                                    <textarea value="NA" id="finalmessage_comment" class="materialize-textarea" data-length="300"></textarea>
+                                    <label class="active" for="finalmessage_comment"></label>
+                                  </div>
+                        
+                           
+                        
+                      </div>
 
                       </div>
 

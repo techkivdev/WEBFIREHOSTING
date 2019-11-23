@@ -26,6 +26,7 @@ var quotesPath = coll_base_path + 'COMMON/QUOTES'
 // Global Data variables
 // All documents data
 var allDocCmpData = {}
+var current_id = ''
 
 var bookingStatus = ''
 var filter_options = 'OPEN'
@@ -73,14 +74,14 @@ function getParams() {
 // *************************************************
 function readCompleateCollection() {
 
-  showPleaseWait();  
+  showPleaseWait();
 
   var totaldocCount = 0;
 
   // Create a query against the collection
-let queryRef = getQueryResult();
+  let queryRef = getQueryResult();
 
-queryRef.get().then((querySnapshot) => {
+  queryRef.get().then((querySnapshot) => {
     displayOutput("SIZE : " + querySnapshot.size);
 
     if (querySnapshot.size == 0) {
@@ -130,45 +131,45 @@ function getQueryResult() {
   let queryRef = ''
 
   displayOutput(filter_options)
-  if(filter_options == 'ALL') {
+  if (filter_options == 'ALL') {
     queryRef = db.collection(quotesPath);
 
   } else {
-    queryRef = db.collection(quotesPath).where('ADMINSTAGE', '==', filter_options);
+    queryRef = db.collection(quotesPath).where('ADMINSTATUS', '==', filter_options);
   }
 
   // Other Options
-  if(filter_none) {
+  if (filter_none) {
     // Nothing
-  } 
+  }
 
   displayOutput(filter_input)
 
-  if(filter_id) {    
+  if (filter_id) {
     queryRef = queryRef.where('ID', '==', filter_input);
-  } 
+  }
 
-  if(filter_email) {    
+  if (filter_email) {
     queryRef = queryRef.where('EMAILID', '==', filter_input);
-  } 
+  }
 
-  if(filter_mobile) {    
+  if (filter_mobile) {
     queryRef = queryRef.where('MOBILENO', '==', filter_input);
-  } 
+  }
 
   displayOutput(filter_date_options)
 
   // Date Options
-  if(filter_date_options == 'START_DATE') {
+  if (filter_date_options == 'START_DATE') {
     queryRef = queryRef.where('STARTDATE', '==', filter_date_input);
   }
 
-  if(filter_date_options == 'BOOKING_DATE') {
+  if (filter_date_options == 'BOOKING_DATE') {
     queryRef = queryRef.where('BOOKINGDATE', '==', filter_date_input);
   }
 
 
-return queryRef
+  return queryRef
 
 }
 
@@ -272,11 +273,11 @@ function updateHTMLPage(active_id) {
 
   let active = false
   for (eachid in allDocCmpData) {
-    var eachData = allDocCmpData[eachid] 
+    var eachData = allDocCmpData[eachid]
     active = false
-    if(active_id == eachid){active = true}
-    allhtmlDetails += createBookingCollection(eachid,active, eachData)
-    
+    if (active_id == eachid) { active = true }
+    allhtmlDetails += createBookingCollection(eachid, active, eachData)
+
   }
 
   // Update HTML Page
@@ -317,33 +318,33 @@ function createCard(id, data) {
 // Create Booking Collection
 function createBookingCollection(id, active, data) {
 
-  var collectionDetails = ''  
-  let status = data['ADMINSTAGE']
+  var collectionDetails = ''
+  let status = data['ADMINSTATUS']
   let color = 'blue'
-  if(status == 'PROGRESS') {
+  if (status == 'PROGRESS') {
     color = 'orange'
-  } else if(status == 'SUCCESS') {
+  } else if (status == 'SUCCESS') {
     color = 'green'
-  } else if(status == 'OPEN') {
+  } else if (status == 'OPEN') {
     color = 'blue'
   } else {
     color = 'red'
   }
 
-  if(active) {
-  //  Active
-  collectionDetails = '<li class="collection-item avatar active">\
+  if (active) {
+    //  Active
+    collectionDetails = '<li class="collection-item avatar active">\
   <a href="#!" onclick="openBookingDetails(\'' + id + '\')">\
-  <i class="material-icons circle ' + color +'">insert_chart</i>\
-  <span class="white-text" class="title"><b>' + data['DESTINATION'] +'</b></span>\
-  <p class="white-text">' + data['STARTDATE'] +'</p></a></li>'
+  <i class="material-icons circle ' + color + '">insert_chart</i>\
+  <span class="white-text" class="title"><b>' + data['DESTINATION'] + '</b></span>\
+  <p class="white-text">' + data['STARTDATE'] + '</p></a></li>'
   } else {
     // Non- Active
-  collectionDetails = '<li class="collection-item avatar">\
+    collectionDetails = '<li class="collection-item avatar">\
   <a href="#!" onclick="openBookingDetails(\'' + id + '\')">\
-  <i class="material-icons circle ' + color +'">insert_chart</i>\
-  <span class="black-text" class="title"><b>' + data['DESTINATION'] +'</b></span>\
-  <p class="black-text">' + data['STARTDATE'] +'</p></a></li>'
+  <i class="material-icons circle ' + color + '">insert_chart</i>\
+  <span class="black-text" class="title"><b>' + data['DESTINATION'] + '</b></span>\
+  <p class="black-text">' + data['STARTDATE'] + '</p></a></li>'
 
   }
 
@@ -364,13 +365,15 @@ function openAdminDialog(id) {
 function openBookingDetails(id) {
   displayOutput('Open Booking Details')
 
+  current_id = id
+
   document.getElementById("section_2").style.display = 'block';
 
   // First Update Page
   updateHTMLPage(id)
 
   var data = allDocCmpData[id]
-  
+
   // Create Html Content
   // Create Details
   let booking_content = ''
@@ -392,41 +395,52 @@ function openBookingDetails(id) {
   <p>'+ data['EMAILID'] + '</p>\
   </div> '
 
-  quotesContent += '<div><a onclick="viewUserMessage(\'' + id + '\')" class="waves-effect waves-teal btn-flat blue-text" >view User Message</a><div>'
+  quotesContent += '<div><a onclick="viewUserMessage()" class="waves-effect waves-teal btn-flat blue-text" >View Comments</a><div>'
 
-  quotesContent +=  '<li class="divider"></li>'
+  quotesContent += '<li class="divider"></li>'
 
   // Admin Content
-  bookingStatus = data['ADMINSTAGE']
+  bookingStatus = data['ADMINSTATUS']
 
   // Update Input Section
   document.getElementById("input_vendor").value = data['VENDORID']
   document.getElementById("input_deal_price").value = data['DEALPRICE']
-  document.getElementById("admin_comment").value = data['ADMINCOMMENT']  
-  document.getElementById("finalmessage_comment").value = data['FINALMESSAGE']  
+
+  $('#admin_comment').val(data['ADMINCOMMENT']);
+      M.textareaAutoResize($('#admin_comment'));
+
+      $('#finalmessage_comment').val(data['FINALMESSAGE']);
+      M.textareaAutoResize($('#finalmessage_comment'));
+
+  
+  document.getElementById("input_pkgid").value = data['PKGID']
+  document.getElementById("input_destid").value = data['DESTID']
+  document.getElementById("input_priority").value = data['PRIORITY']
+  document.getElementById("input_dissstatus").value = data['DISSSTATUS']
+  document.getElementById("input_dissdate").value = data['DISSDATE']
+  document.getElementById("input_usermood").value = data['USERMOOD']
 
   let adminContent = ''
 
   adminContent += '<div class="row"><b>Booking Status : </b><br><!-- Dropdown Trigger -->\
-  <a id="booking_status_btn" class="dropdown-trigger btn green" href="#" data-target="booking_status_drop" style="width:250px">'+ data['ADMINSTAGE'] +'</a>\
+  <a id="booking_status_btn" class="dropdown-trigger btn green" href="#" data-target="booking_status_drop" style="width:250px">'+ data['ADMINSTATUS'] + '</a>\
   <!-- Dropdown Structure -->\
   <ul id="booking_status_drop" class="dropdown-content">\
     <li><a onclick="changeBookingStatus(\'' + 'OPEN' + '\')" >OPEN</a></li>\
     <li><a onclick="changeBookingStatus(\'' + 'PROGRESS' + '\')" >PROGRESS</a></li>\
     <li><a onclick="changeBookingStatus(\'' + 'SUCCESS' + '\')" >SUCCESS</a></li>\
-    <li><a onclick="changeBookingStatus(\'' + 'ADMIN_CANCELED' + '\')" >ADMIN_CANCELED</a></li>\
-    <li><a onclick="changeBookingStatus(\'' + 'USER_CANCELED' + '\')" >USER_CANCELED</a></li>\
+    <li><a onclick="changeBookingStatus(\'' + 'CANCEL' + '\')" >CANCEL</a></li>\
     <li class="divider" tabindex="-1"></li>\
     <li><a onclick="changeBookingStatus(\'' + 'DELETED' + '\')" class="red-text">DELETED</a></li>\
-    </ul><br>'    
+    </ul><br>'
 
-    adminContent += '<br><div class="right-align"><a onclick="updateBookingStatus(\'' + id + '\')" class="waves-effect waves-light btn blue" style="width:150px">Update</a><div>'
+  adminContent += '<br><div class="right-align"><a onclick="updateBookingStatus(\'' + id + '\')" class="waves-effect waves-light btn blue" style="width:150px">Update</a><div>'
 
-    adminContent += '<br><div class="right-align"><a onclick="deleteBooking(\'' + id + '\')" class="waves-effect waves-light btn red" style="width:150px">delete booking</a><div>'
+  adminContent += '<br><div class="right-align"><a onclick="deleteBooking(\'' + id + '\')" class="waves-effect waves-light btn red" style="width:150px">delete booking</a><div>'
 
-    adminContent += '</div>'
+  adminContent += '</div>'
 
-    booking_content = quotesContent + adminContent
+  booking_content = quotesContent + adminContent
 
 
   // Update HTML Page
@@ -441,30 +455,19 @@ function openBookingDetails(id) {
 }
 
 // VIew User Message In Model
-function viewUserMessage(id) {
+function viewUserMessage() {
 
-  let usercomment = allDocCmpData[id]['USERCOMMENT']
+  displayOutput(current_id)
 
-  var model = '<!-- Modal Structure -->\
-  <div id="messagemodel" class="modal modal-fixed-footer">\
-    <div class="modal-content">\
-      <h4> User Comment </h4>\
-      <p>'+ usercomment + '</p>\
-    </div>\
-    <div class="modal-footer">\
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>\
-    </div>\
-  </div>'
-  
-  
-    $(document.body).append(model);
-  
-    $(document).ready(function () {
-      $('.modal').modal();
-    }); 
-    
-  
-    $('#messagemodel').modal('open');
+  let comment = ''
+  comment += '<h5><b>User Comment</b></h5>'+allDocCmpData[current_id]['USERCOMMENT']
+
+  comment += '<br><br><li class="divider" tabindex="-1"></li><h5 class="red-text"><b>Admin Comment</b></h5>'+allDocCmpData[current_id]['ADMINCOMMENT']
+
+  comment += '<br><br><li class="divider" tabindex="-1"></li><h5 class ="green-text"><b>Final Message</b></h5>'+allDocCmpData[current_id]['FINALMESSAGE']
+
+
+  viewModel('Comment',comment)
 
 }
 
@@ -492,22 +495,21 @@ function createModel(id, data) {
   </div>'
 
   // Admin Content
-  bookingStatus = data['ADMINSTAGE']
+  bookingStatus = data['ADMINSTATUS']
 
   let adminContent = '<br><br><h5>Select Booking Status : </h5><!-- Dropdown Trigger -->\
-  <a id="booking_status_btn" class="dropdown-trigger btn" href="#" data-target="booking_status_drop">'+ data['ADMINSTAGE'] +'</a>\
+  <a id="booking_status_btn" class="dropdown-trigger btn" href="#" data-target="booking_status_drop">'+ data['ADMINSTATUS'] + '</a>\
   <!-- Dropdown Structure -->\
   <ul id="booking_status_drop" class="dropdown-content">\
     <li><a onclick="changeBookingStatus(\'' + 'OPEN' + '\')" >OPEN</a></li>\
     <li><a onclick="changeBookingStatus(\'' + 'PROGRESS' + '\')" >PROGRESS</a></li>\
     <li><a onclick="changeBookingStatus(\'' + 'SUCCESS' + '\')" >SUCCESS</a></li>\
-    <li><a onclick="changeBookingStatus(\'' + 'ADMIN_CANCELED' + '\')" >ADMIN_CANCELED</a></li>\
-    <li><a onclick="changeBookingStatus(\'' + 'USER_CANCELED' + '\')" >USER_CANCELED</a></li>\
+    <li><a onclick="changeBookingStatus(\'' + 'CANCEL' + '\')" >CANCEL</a></li>\
     <li class="divider" tabindex="-1"></li>\
     <li><a onclick="changeBookingStatus(\'' + 'DELETED' + '\')" >DELETED</a></li>\
     </ul>'
 
-    adminContent += '<a onclick="updateBookingStatus(\'' + id + '\')" class="waves-effect waves-light btn blue">Update</a>'
+  adminContent += '<a onclick="updateBookingStatus(\'' + id + '\')" class="waves-effect waves-light btn blue">Update</a>'
 
 
 
@@ -558,7 +560,7 @@ function createModel(id, data) {
 // Change Booking Status
 function changeBookingStatus(status) {
   //displayOutput(status)
-  $("#booking_status_btn").html(status);  
+  $("#booking_status_btn").html(status);
 
   bookingStatus = status
 
@@ -568,30 +570,73 @@ function changeBookingStatus(status) {
 function updateBookingStatus(id) {
 
   displayOutput('Update : ' + id)
-  var admin_comment = document.getElementById("admin_comment").value; 
+
+  var userBookingPath = coll_base_path + 'USER/ALLUSER/' + allDocCmpData[id]['USERUUID'] + '/BOOKINGS'
+
+  var admin_comment = document.getElementById("admin_comment").value;
   var input_vendor = document.getElementById("input_vendor").value;
   var input_deal_price = document.getElementById("input_deal_price").value;
   var finalmessage_comment = document.getElementById("finalmessage_comment").value;
-  
 
-    db.collection(quotesPath).doc(id).update({
-      ID: id,
-      ADMINSTAGE: bookingStatus,
-      ADMINCOMMENT: admin_comment,
-      VENDORID: input_vendor,
-      DEALPRICE: input_deal_price,
-      FINALMESSAGE: finalmessage_comment
+  var input_pkgid = document.getElementById("input_pkgid").value
+  var input_destid = document.getElementById("input_destid").value
+  var input_priority = document.getElementById("input_priority").value
+  var input_dissstatus = document.getElementById("input_dissstatus").value
+  var input_dissdate = document.getElementById("input_dissdate").value
+  var input_usermood = document.getElementById("input_usermood").value
+
+
+  db.collection(quotesPath).doc(id).update({
+    ID: id,
+    ADMINSTATUS: bookingStatus,
+    ADMINCOMMENT: admin_comment,
+    VENDORID: input_vendor,
+    DEALPRICE: input_deal_price,
+    FINALMESSAGE: finalmessage_comment,
+    USERCANCEL: true,
+    PKGID: input_pkgid,
+    DESTID: input_destid,
+    PRIORITY: input_priority,
+    DISSSTATUS: input_dissstatus,
+    DISSDATE: input_dissdate,
+    USERMOOD: input_usermood,
+
+
+
+
+  }).then(function () {
+    displayOutput("STATUS details Updated ..");
+    
+
+    allDocCmpData[id]['ADMINSTATUS'] = bookingStatus
+    allDocCmpData[id]['ADMINCOMMENT'] = admin_comment
+    allDocCmpData[id]['VENDORID'] = input_vendor
+    allDocCmpData[id]['DEALPRICE'] = input_deal_price
+    allDocCmpData[id]['FINALMESSAGE'] = finalmessage_comment
+
+    allDocCmpData[id]['PKGID'] = input_pkgid
+    allDocCmpData[id]['DESTID'] = input_destid
+    allDocCmpData[id]['PRIORITY'] = input_priority
+    allDocCmpData[id]['DISSSTATUS'] = input_dissstatus
+    allDocCmpData[id]['DISSDATE'] = input_dissdate
+    allDocCmpData[id]['USERMOOD'] = input_usermood
+
+    // Update User Section also
+
+    db.collection(userBookingPath).doc(id).update({
+      EXTRA: {
+        ADMINSTATUS: bookingStatus,
+        FINALMESSAGE: finalmessage_comment
+      }  
     }).then(function () {
-      displayOutput("STATUS details Updated ..");
+      displayOutput("User STATUS details Updated ..");
       toastMsg('Status updated !!')
-
-      allDocCmpData[id]['ADMINSTAGE'] = bookingStatus
-      allDocCmpData[id]['ADMINCOMMENT'] = admin_comment
-      allDocCmpData[id]['VENDORID'] = input_vendor
-      allDocCmpData[id]['DEALPRICE'] = input_deal_price
-      allDocCmpData[id]['FINALMESSAGE'] = finalmessage_comment
-
     });
+
+
+
+
+  });
 
 }
 
@@ -599,7 +644,7 @@ function updateBookingStatus(id) {
 function filterOperation() {
   displayOutput('Filter Operation ..')
 
-  let dateOptionsValues = ["OPEN","ALL","OPEN","PROGRESS","SUCCESS","ADMIN_CANCELED","USER_CANCELED","DELETED"]  
+  let dateOptionsValues = ["OPEN", "ALL", "OPEN", "PROGRESS", "SUCCESS", "CANCEL", "DELETED"]
   filter_options = dateOptionsValues[document.getElementById("filter_state_options").value];
   displayOutput('Filter Options : ' + filter_options)
 
@@ -611,27 +656,27 @@ function filterOperation() {
 
   filter_input = document.getElementById("filter_input").value
 
- // Date Options
- let filterDateOptionsValues = ["NA","START_DATE","BOOKING_DATE","NA"]  
+  // Date Options
+  let filterDateOptionsValues = ["NA", "START_DATE", "BOOKING_DATE", "NA"]
   filter_date_options = filterDateOptionsValues[document.getElementById("filter_date_options").value];
 
   filter_date_input = document.getElementById("input_date").value
-  
+
   document.getElementById("section_2").style.display = 'none';
-  
-// Update complete page
+
+  // Update complete page
   allDocCmpData = {}
 
   readCompleateCollection()
-  
-  
+
+
 }
 
 // RESET Filter operation
 function resetfilterOperation() {
 
   location.reload();
-  
+
 }
 
 // Referesh Section
@@ -643,25 +688,38 @@ function refereshSection() {
   allDocCmpData = {}
 
   readCompleateCollection()
-  
+
 }
 
 // DELETE Booking
 function deleteBooking(id) {
   displayOutput('Delete Booking  : ' + id)
 
-  let stage = allDocCmpData[id]['ADMINSTAGE']
+  let stage = allDocCmpData[id]['ADMINSTATUS']
 
-  if(stage == 'DELETED') {
+  var userBookingPath = coll_base_path + 'USER/ALLUSER/' + allDocCmpData[id]['USERUUID'] + '/BOOKINGS'
+
+  if (stage == 'DELETED') {
     db.collection(quotesPath).doc(id).delete().then(function () {
-      displayOutput("Document Deleted !!");
-      toastMsg('Booking Deleted !!')
+      displayOutput("Document Main Deleted !!");
 
-      
-      // Update complete page
-  allDocCmpData = {}
+      // Delete From User Side also
+      db.collection(userBookingPath).doc(id).delete().then(function () {
+        displayOutput("Document User Deleted !!");
 
-  readCompleateCollection()
+
+        toastMsg('Booking Deleted !!')
+
+
+        // Update complete page
+        allDocCmpData = {}
+
+        readCompleateCollection()
+
+      });
+
+
+
 
     });
 
@@ -683,19 +741,19 @@ function startUpCalls() {
     $('.modal').modal();
   });
 
-  $(document).ready(function(){
+  $(document).ready(function () {
     $('.collapsible').collapsible();
   });
 
-  $(document).ready(function(){
+  $(document).ready(function () {
     $('select').formSelect();
   });
 
-  $(document).ready(function(){
+  $(document).ready(function () {
     $('.datepicker').datepicker();
   });
 
-  $(document).ready(function(){
+  $(document).ready(function () {
     $('.tabs').tabs();
   });
 

@@ -516,6 +516,62 @@ function getTodayDate() {
 }
 
 
+// View Model to show Information
+function viewModel(header, content) {
+
+  var model = '<!-- Modal Structure -->\
+  <div id="messagemodel" class="modal modal-fixed-footer">\
+    <div class="modal-content">\
+      <h4> '+ header +'</h4>\
+      <p>'+ content + '</p>\
+    </div>\
+    <div class="modal-footer">\
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>\
+    </div>\
+  </div>'
+
+  var elem = document.getElementById('messagemodel');
+  if (elem) { elem.parentNode.removeChild(elem); }
+  
+  
+    $(document.body).append(model);
+  
+    $(document).ready(function () {
+      $('.modal').modal();
+    }); 
+    
+  
+    $('#messagemodel').modal('open');
+
+
+}
+
+function viewModelNF(header, content) {
+
+  var model = '<!-- Modal Structure -->\
+  <div id="messagemodel" class="modal">\
+    <div class="modal-content">\
+      <p>'+ content + '</p>\
+    </div>\
+  </div>'
+
+  var elem = document.getElementById('messagemodel');
+  if (elem) { elem.parentNode.removeChild(elem); }
+  
+  
+    $(document.body).append(model);
+  
+    $(document).ready(function () {
+      $('.modal').modal();
+    }); 
+    
+  
+    $('#messagemodel').modal('open');
+
+
+}
+
+
 // ==============================================================
 // ---------- Login User Validation -----------------------------
 // ==============================================================

@@ -155,6 +155,8 @@ function updateHTMLPage() {
   hidePleaseWait()
 
   // HTML Modification functions
+  document.getElementById("header_section").style.display = 'block';
+  document.getElementById("main_section").style.display = 'block';
   updateCardLayout('col_section_1')
 
 
@@ -178,10 +180,10 @@ function getModelLayoutConfig(mdl_coll){
 
  switch (mdl_coll) {
   case "DESTINATIONS":
-    return [true,false,'left','center']
+    return [false,false,'left','center']
     
   case "PACKAGES":
-    return [true,false,'left','center']
+    return [false,false,'left','center']
 
   default:
     return [true,false,'left','center']
@@ -204,11 +206,12 @@ function updateCardLayout(htmlID) {
     case "DESTINATIONS":
       base_layout = 'CARD_ROW'
       model_layout = 'SQUARE_CARD_IMAGE'
-      base_title = 'All Destinations'
+      base_title = ''
 
       // Here also you can update other html pages also
       $("#banner_main_header").html("Best Destinations");
-      $("#banner_small_header").html("Enjoy your choice");
+      //$("#banner_small_header").html("Enjoy your choice");
+      $("#heading_title").html("Destinations");
 
       document.getElementById('banner_main_image').src = getDirectImageUrl("Images/destinations_bkg.jpg")
 
@@ -218,12 +221,13 @@ function updateCardLayout(htmlID) {
     case "PACKAGES":
       base_layout = 'CARD_ROW'
       model_layout = 'SQUARE_CARD'
-      base_title = 'All Packages'
+      base_title = ''
 
       // Here also you can update other html pages also
 
       $("#banner_main_header").html("Best Packages");
-      $("#banner_small_header").html("Enjoy your choice");
+      //$("#banner_small_header").html("Enjoy your choice");
+      $("#heading_title").html("Packages");
 
       document.getElementById('banner_main_image').src = getDirectImageUrl("Images/packages_bkg.jpg")
 
@@ -252,7 +256,7 @@ function updateCardLayout(htmlID) {
   }
 
   // Get BASE Layout content 
-  var base_layout_content = getBaseLayoutHTML(model_layout,base_layout, base_title, each_list_ref_div_content)
+  var base_layout_content = getBaseLayoutHTML_local(model_layout,base_layout, base_title, each_list_ref_div_content)
 
 
   // Update HTML Page
@@ -333,7 +337,7 @@ function getCompleteModelContentDetails(doc_details) {
 // ----------------------------------------------------------------
 // ----------- MDOEL Layout's -------------------------------------
 
-// Model Layout Selector
+// Model Layout Selector - Local
 function modelLayoutSelector_local(mdl_layout, doc_details, mdl_action_details) {
 
   var mdl_html_line = ''
@@ -370,7 +374,7 @@ function modelLayoutSelector_local(mdl_layout, doc_details, mdl_action_details) 
 
 }
 
-// Model Square Card Horizontal
+// Model Square Card Horizontal - Local
 function modelLytSquareHoriCard_local(mdl_map_details) {
 
   var image_ref = mdl_map_details['IMAGE']
@@ -394,7 +398,7 @@ function modelLytSquareHoriCard_local(mdl_map_details) {
 
 }
 
-// Model Square Card
+// Model Square Card - Local
 function modelLytSquareCard_local(mdl_map_details) {
 
   var image_ref = mdl_map_details['IMAGE']
@@ -416,7 +420,7 @@ function modelLytSquareCard_local(mdl_map_details) {
 
 }
 
-// Model Square Card with Image Only
+// Model Square Card with Image Only - Local
 function modelLytSquareCardImage_local(mdl_map_details) {
 
   var image_ref = mdl_map_details['IMAGE']
@@ -432,6 +436,63 @@ function modelLytSquareCardImage_local(mdl_map_details) {
               </div>';            
 
   return htmlLine;
+
+}
+
+// Create Base Layout - Local
+function getBaseLayoutHTML_local(mdl_coll,base_layout, header, model_content) {
+
+  var base_layout_html = ''
+
+  var show_model_base_header = true
+  var show_model_base_button = true
+  var header_text_layout_position = 'center'
+  var header_button_layout_position = 'center'
+
+  // **********************************************************************
+  // ---------------------- CARD_ROW -------------------------------
+  // *********************************************************************
+
+  if (base_layout == 'CARD_ROW') {
+    
+    // ------------- Configuration -------------------------
+    var mdl_lyt_config = getModelLayoutConfig(mdl_coll)
+    show_model_base_header = mdl_lyt_config[0]
+    show_model_base_button = mdl_lyt_config[1]
+    header_text_layout_position = mdl_lyt_config[2]
+    header_button_layout_position = mdl_lyt_config[3]
+    // -----------------------------------------------------
+
+    base_layout_html = '<div class="row">\
+                    <div class="col s12 ' + header_text_layout_position + '">\
+                      </div>\
+                  </div><div class="row">' + model_content + '</div>';
+  }
+
+
+  // **********************************************************************
+  // ---------------------- CARD_ROW_HORIZ -------------------------------
+  // **********************************************************************
+
+  if (base_layout == 'CARD_ROW_HORIZ') {
+
+     // ------------- Configuration -------------------------
+     var mdl_lyt_config = getModelLayoutConfig(mdl_coll)
+    show_model_base_header = mdl_lyt_config[0]
+    show_model_base_button = mdl_lyt_config[1]
+    header_text_layout_position = mdl_lyt_config[2]
+    header_button_layout_position = mdl_lyt_config[3]
+     // -----------------------------------------------------
+     base_layout_html = '<div class="row">\
+                    <div class="col s12 ' + header_text_layout_position + '">\
+                    </div>\
+                  </div>' + model_content;    
+
+  }
+
+
+  return base_layout_html;
+
 
 }
 

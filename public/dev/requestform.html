@@ -16,6 +16,8 @@
 
 <body>
 
+    <div class="bg">
+
   <!-- **************************************** -->
   <!-- Navigation Sectione -->
   <!-- **************************************** 
@@ -56,16 +58,7 @@
 
   <!-- **************************************** -->
   <!-- Main Banner -->
-  <!-- **************************************** -->
-
-  <div class="new-container">
-    <img id="banner_main_image" class="responsive-img" src="Images/default.jpg" alt="Snow" style="height: 250px; width:100%; background-size: 100%;">
-    
-      <div class="centered">
-        <h1 id="banner_main_header">Quote Preferences</h1>
-        <p id="banner_small_header">Our Expert agents will get back to you with quotes in 24-48 hours</p> 
-      </div>
-  </div>
+  <!-- **************************************** -->  
 
 
   <!-- **************************************** -->
@@ -76,7 +69,12 @@
 
       <!-- **************************************** -->
       <!--   Coloum Section 1  --> 
-      <div id="col_section_1" >
+      <div id="col_section_1" style="display: block;">
+
+          <div> 
+              <h3 class="white-text">Request Quote</h3> 
+          </div>
+
          
           <div class="row">
 
@@ -95,10 +93,22 @@
                                 <input placeholder="Select Destination" type="text" id="autocomplete-input-destination" class="autocomplete">
                                 <label for="autocomplete-input-destination">Destination</label>
                               </div>
+
+                              <div class ="right-align col s12">                                  
+                                  <p>
+                                      <label>
+                                        <input id="exploreDest" type="checkbox" />
+                                        <span>I want to explore Destination</span>
+                                      </label>
+                                    </p>                                    
+                                </div>
+
                             </div>
                           </div>
-                          <!-- end -->    
+                          <!-- end -->   
                           
+                          
+                         
                           
                            <!-- form sec 2 -->
                            <div class="col s12">
@@ -146,6 +156,25 @@
 
                               <!-- end -->
 
+                               <!-- user comment -->
+                               <form class="col s12">
+                                  <div class="row">
+                                      <div class="input-field col s12">
+                                          <i class="material-icons prefix">message</i>
+                                          <textarea value=" " id="user_comment" class="materialize-textarea" data-length="300"></textarea>
+                                          <label class="active" for="user_comment">Any Comment ?</label>
+                                        </div>                                  
+                                  </div>
+                                </form>
+
+                                <form class="col s12">
+                                    <div class="row">
+                                        <li class="divider"></li>                                
+                                    </div>
+                                  </form>
+
+                               
+
 
                               <!-- form sec 4 -->
                               <form class="col s12">
@@ -192,7 +221,8 @@
                               <form class="col s12">  
                                   <div class="row">                                
                                       <div class="center-align">
-                                      <a onclick="submitDetails()" class="waves-effect waves-light btn-large pink">Submit</a>
+                                      <a onclick="submitDetails()" class="waves-effect waves-light btn-large pink rcorners" 
+                                      style="width: 300px;">Submit</a>
                                       </div>
                                     </div> 
                                 </form>
@@ -215,8 +245,9 @@
 
       <!-- **************************************** -->
       <!--   Coloum Section 2  --> 
-      <div id="col_section_2" style="display: none;">
-        <h1>Thanks</h1>
+      <div id="col_section_2" style="display: none; margin-bottom: 30%;">          
+              <h3 class="white-text">Thanks for your Quote.</h3>     
+              <h5 class="white-text">Our Team will contact you soon.</h5>     
         </div>
 
 
@@ -265,6 +296,8 @@
         </div>
       </div>
     </footer>
+
+  </div>
 
 
   <!-- **************************************** -->

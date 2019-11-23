@@ -13,6 +13,8 @@
   <link href="css/style.css" type="text/css" rel="stylesheet" />
   <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.2.0/firebase-ui-auth.css" />
 
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
 </head>
 
 
@@ -52,72 +54,29 @@
 
   <div id="spinner" class="center-align header-margin">
 
-      <div class="preloader-wrapper active">
-          <div class="spinner-layer spinner-red-only">
-            <div class="circle-clipper left">
-              <div class="circle"></div>
-            </div><div class="gap-patch">
-              <div class="circle"></div>
-            </div><div class="circle-clipper right">
-              <div class="circle"></div>
-            </div>
-          </div>
+    <div class="preloader-wrapper active">
+      <div class="spinner-layer spinner-red-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
         </div>
-
-  </div>
-  
-
-       <!-- **************************************** -->
-      <!--   Coloum Section 1  -->     
-
-      <!-- Login Header -->
-
-  <div id = "login_header_section" class="fresh-content  white-text py-3" style="display: none; margin-top: 1px;">
-
-      <div class="container">
-        <br>
-  
-        <div class="row">
-  
-          <!-- User Image -->
-          <div class="col s6">
-  
-            <div class="row">
-  
-              <div class="col s12 m7">
-                <h1>Login</h1>
-                
-              </div>
-            </div>
-          </div>
-  
-  
-          <!-- User Content -->
-          <div class="col s6">
-  
-            <div class="row">
-
-                <div id="firebaseui-auth-container"></div>
-                <div id="loader">Loading...</div>
-
-                
-            </div>  
-          </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
         </div>
-        <br>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
       </div>
     </div>
 
-  <!-- ***************** END ******************* -->
+  </div>
 
 
   <!-- **************************************** -->
-  <!--   Profile Section  -->
+  <!--   Coloum Section 1  -->
 
-  <!-- Header -->
-  <div id= "main_profile_section" style="display: none; margin-top: 1px;">
+  <!-- Login Header -->
 
-  <div id = "profile_header_section" class="fresh-content  white-text py-3">
+  <div id="login_header_section" class="fresh-content  white-text py-3" style="display: none; margin-top: 1px;">
 
     <div class="container">
       <br>
@@ -130,20 +89,10 @@
           <div class="row">
 
             <div class="col s12 m7">
-              <div class="card">
-                <div class="card-image">
-                  <img id="user_profile_image" width="250" height="250" src="Images/default.jpg">
-                </div>
-              </div>
+              <h1>Login</h1>
+
             </div>
-
-
-
-
-
           </div>
-
-
         </div>
 
 
@@ -152,174 +101,212 @@
 
           <div class="row">
 
-            <div class="col s12 m7" id="user_content">
-                <!-- Script Code -->                
-            </div>
+            <div id="firebaseui-auth-container"></div>
+            <div id="loader">Loading...</div>
 
 
-            <div class="col s12 m7">
-              <br><br><br>
-              <a onclick="signout()" class="waves-effect waves-light btn-large pink">Signout</a>
-            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+    </div>
+  </div>
+
+  <!-- ***************** END ******************* -->
 
 
+  <!-- **************************************** -->
+  <!--   Profile Section  -->
+
+  <!-- Testing Profile Header -->
+
+
+
+  <!-- ***************** END ******************* -->
+
+  <!-- Header -->
+  <div id="main_profile_section" style="display: none; margin-top: 1px;">
+
+    <div id="profile_header_section">
+
+      <div class="container-fluid">
+        <div class="fb-profile">
+          <img class="fb-image-lg left-align z-depth-2" src="Images/profile_background.jpg" alt="Profile image example" />
+          <div class="center-align">
+            <img id="user_profile_image" class="fb-image-profile thumbnail z-depth-2" src="Images/default.jpg"
+              alt="Profile image example" />
+          </div>
+
+          <!--
+          <div class="center-align" style="margin-top: 2%;">
+            <a onclick="signout()" class="waves-effect waves-light btn red rcorners" style="width: 150px;"><i
+                class="material-icons right">exit_to_app</i>Signout</a>
+          </div>
+          -->
+
+          <div id="user_content" class="center-align">
+            <!-- Script Code -->>
           </div>
 
         </div>
 
-
+       
 
       </div>
 
 
-      <br>
+
+
     </div>
 
 
-  </div>
+    <!-- Profile Content -->
+    <div class="container-fluid" id="profile_content_section" style="margin: 4% 5% 0px 5%;;">
+
+      <div class="row">
 
 
-  <!-- Profile Content -->
-  <div class="container" id="profile_content_section">
+        <div class="col s12 m12">
 
-    <div class="row">
+          <!-- Tab Section -->
+          <div class="row" style="margin-top: 3%;">
+            <div class="col s12">
+              <ul class="tabs tabs-fixed-width tab-demo z-depth-1 white lighten-5">
+                <li class="tab col s3"><a class="active blue-text" href="#Profile"><b>Profile</b></a></li>
+                <li class="tab col s3"><a class="blue-text" href="#Bookings"><b>Bookings</b></a></li>                
+                <li class="tab col s3"><a class="blue-text" href="#Options"><b>Options</b></a></li>
+              </ul>
+            </div>
 
+            <!--Edit Profile -->
+            <div id="Profile" class="col s12">
+              <div id="user_profile">
+                <!-- form -->
 
-      <div class="col s12 m12">
-        <div class="card">
-          <div class="card-stacked">
-            <div class="card-content">
-
-
-              <!-- Tab Section -->
-
-              <div class="row">
-                <div class="col s12">
-                  <ul class="tabs tabs-fixed-width tab-demo z-depth-1">
-                    <li class="tab col s3"><a class="active" href="#Profile">Profile</a></li>
-                    <li class="tab col s3"><a href="#Bookings">Bookings</a></li>
-                    <li class="tab col s3"><a href="#Wishlist">Wishlist</a></li>
-                    <li class="tab col s3"><a href="#Options">Options</a></li>
-                  </ul>
-                </div>
-
-                <!--Edit Profile -->
-                <div id="Profile" class="col s12">
-                  <div id="user_profile">
-                    <!-- form -->
-
-                    <br>
-                    <div class="row">
-                      <form class="col s12">
-                        <div class="row">
-                          <div class="input-field col s12">
-                            <i class="material-icons prefix">account_circle</i>
-                            <input disabled value="abc" id="user_name" type="text" class="validate">
-                            <label for="user_name">Name</label>
-                          </div>
+                <div class="row" style="margin-top:1%;">
+                  <div class="col s12 m12">
+                    <div class="card" style="border-radius: 25px;">
+                      
+                        <div class="red-card-content white-text z-depth-2" style="border-radius: 25px 25px 0px 0px; height: 100px;">
+                          <p class="card-content" style="font-size: 40px;">Profile</p>
                         </div>
-                      </form>
+                         
+                        <div class="card-content">
+                          <div class="row">
+                            <form class="col s12">
+                              <div class="row">
+                                <div class="input-field col s12">
+                                  <i class="material-icons prefix">account_circle</i>
+                                  <input disabled value="abc" id="user_name" type="text" class="validate">
+                                  <label for="user_name">Name</label>
+                                </div>
+                              </div>
+                            </form>
 
 
-                      <form class="col s12">
-                        <div class="row">
-                          <div class="input-field col s12">
-                            <i class="material-icons prefix">email</i>
-                            <input disabled value="abc@gmail.com" id="user_email" type="text" class="validate">
-                            <label for="user_email">Email ID</label>
+                            <form class="col s12">
+                              <div class="row">
+                                <div class="input-field col s12">
+                                  <i class="material-icons prefix">email</i>
+                                  <input disabled value="abc@gmail.com" id="user_email" type="text" class="validate">
+                                  <label for="user_email">Email ID</label>
+                                </div>
+                              </div>
+                            </form>
+
+
+                            <form class="col s12">
+                              <div class="row">
+                                <div class="input-field col s12">
+                                  <i class="material-icons prefix">phone</i>
+                                  <input value="0" id="user_mobile" type="number" class="validate">
+                                  <label class="active" for="user_mobile">Mobile Number</label>
+                                </div>
+                              </div>
+                            </form>
+
+                            <form class="col s12">
+                              <div class="row">
+                                <div class="left-align" style="margin-left: 2%;">
+                                  <a onclick="saveprofiledata()" class="waves-effect waves-light btn blue rcorners z-depth-2" style="width: 150px; font-size: 20px;">Update</a>
+                                </div>
+                              </div>
+                            </form>
+
                           </div>
+
                         </div>
-                      </form>
 
-
-                      <form class="col s12">
-                        <div class="row">
-                          <div class="input-field col s12">
-                            <i class="material-icons prefix">phone</i>
-                            <input value="0" id="user_mobile" type="number" class="validate">
-                            <label class="active" for="user_mobile">Mobile Number</label>
-                          </div>
-                        </div>
-                      </form>
-
-                      <form class="col s12">
-                        <div class="row">
-                          <div class="center-align">
-                            <a onclick="saveprofiledata()" class="waves-effect waves-light btn pink">Save</a>
-                          </div>
-                        </div>
-                      </form>
-
-                    </div>
-
-
-                  </div>
-
-                </div>
-
-                <!--Bookings -->
-                <div id="Bookings" class="col s12">
-                  <div id="user_bookings">
-                    <!-- Script Code -->
-                  </div>
-                </div>
-
-
-                <!--Wishlist -->
-                <div id="Wishlist" class="col s12">
-                  <div id="user_wishlist">
-                    <!-- Script Code -->
-                  </div>
-
-                </div>
-
-                <!--Options -->
-                <div id="Options" class="col s12">
-                  <div id="user_options">
-
-                    <!-- Create Option -->
-
-                    <div id="user_options">
-                    <div class="collection">
-                        <a href="#!" class="collection-item">User Option 1</a>
-                        <a href="#!" class="collection-item">User Option 2</a>
-                        
+                      </div>
                     </div>
                   </div>
-
-                  <div id="admin_options">
-                    <!-- Script Code -->                   
-
-                  </div>
-
                 </div>
 
 
               </div>
 
+            </div>
 
-              <!-- tab end -->
+            <!--Bookings -->
+            <div id="Bookings" class="col s12 m12">
+              <div id="user_bookings" style="margin-top:2%;">
+                <!-- Script Code -->
+              </div>
+            </div>
+           
 
+            <!--Options -->
+            <div id="Options" class="col s12 m12">
 
+              <div class="row" style="margin-top:1%;">
+                <div class="col s12 m12">
+                  <div class="card" style="border-radius: 25px;">
+
+                      <div class="red-card-content white-text z-depth-2" style="border-radius: 25px 25px 0px 0px; height: 100px;">
+                          <p class="card-content" style="font-size: 40px;">Options</p>
+                        </div>
+
+                    <div class="card-content">
+                        <div id="user_options">
+
+                          <!-- Create Option -->
+
+                          <div id="user_options">
+                            <div class="collection">
+                              <a href="#!" class="collection-item">Your Wishlist</a>
+                            </div>
+                          </div>
+
+                          <div class="center-align" style="margin-top: 15%;">
+                            <a onclick="signout()" class="waves-effect waves-light btn red rcorners" style="width: 150px; font-size: 20px;">Signout</a>
+                          </div>
+
+                          <div id="admin_options">
+                            <!-- Script Code -->
+
+                          </div>
+
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
 
             </div>
 
+
+            <!-- tab end -->
+
           </div>
+
         </div>
+
       </div>
-
-
-
-
 
     </div>
 
   </div>
-
-</div>
-
-</div>
 
 
 

@@ -112,6 +112,8 @@ function submitDetails() {
   // Read All Inputs Details
   var destination = document.getElementById("autocomplete-input-destination").value;
   displayOutput('Destination : ' + destination)
+  var exploreDest = document.getElementById("exploreDest").checked;
+  displayOutput('exploreDest : ' + exploreDest)
   var departurecity = document.getElementById("autocomplete-input-from").value;
   displayOutput('Departure City : ' + departurecity)
   var startdate = document.getElementById("start_date").value;
@@ -122,6 +124,9 @@ function submitDetails() {
   let dateOptionsValues = ["","FIXED","FLEXIBLE","ANYTIME"]
   var dateoptions = dateOptionsValues[document.getElementById("date_options").value];
   displayOutput('Date Options : ' + dateoptions)
+
+  var user_comment = document.getElementById("user_comment").value;
+  displayOutput('User Comment : ' + user_comment)
   
 
 
@@ -178,6 +183,7 @@ function submitDetails() {
     customedata['ID'] =  ''
     customedata['DESTINATION'] =  destination
     customedata['FROM'] = departurecity
+    customedata['EXPLORE'] = exploreDest
     customedata['STARTDATE'] = startdate
     customedata['ENDDATE'] = enddate
     customedata['DATEOPTION'] = dateoptions
@@ -185,17 +191,39 @@ function submitDetails() {
     customedata['MOBILENO'] = mobileno
     customedata['EMAILID'] = emailid
 
-    customedata['ADMINSTAGE'] = 'OPEN'
+    customedata['ADMINSTATUS'] = 'OPEN'
     customedata['ADMINCOMMENT'] = 'NA'
     customedata['FINALMESSAGE'] = 'NA'
 
     customedata['USERUUID'] = uuid
-    customedata['USERCOMMENT'] = 'NA'
+    customedata['USERCOMMENT'] = user_comment
+    customedata['USERCANCEL'] = false
+    customedata['USERMOOD'] = 'OPEN'
 
     // Get Today Date    
     customedata['BOOKINGDATE'] = getTodayDate()
     customedata['VENDORID'] = 'NA'
     customedata['DEALPRICE'] = 'NA'
+
+    customedata['PKGID'] = 'NA'
+    customedata['DESTID'] = 'NA'
+    customedata['PRIORITY'] = 'HIGH'
+
+    // Disscussion Details
+    customedata['DISSSTATUS'] = 'OPEN'
+    customedata['DISSDATE'] = ''
+
+    // Extra Options
+    customedata['OPTION1'] = 'NA'
+    customedata['OPTION2'] = 'NA'
+    customedata['OPTION3'] = 'NA'
+
+    // Extra Parameters
+    let extraParm = {}
+    extraParm['EXTRA'] = 'NA'
+    
+    customedata['EXTRAPARM'] = extraParm
+
 
     
 
@@ -249,11 +277,16 @@ function updateUserBookingSection(bookingid,submitdata) {
       DESTINATION: submitdata['DESTINATION'],
       FROM: submitdata['FROM'],
       STARTDATE: submitdata['STARTDATE'],
-      ENDDATE: submitdata['ENDDATE']
+      ENDDATE: submitdata['ENDDATE'],
+      // Common Details
+      EXTRA: {
+        ADMINSTATUS: submitdata['ADMINSTATUS'],
+        FINALMESSAGE: submitdata['FINALMESSAGE']
+      }
     };
 
     // Add a new document with a generated id.
-  let addDoc = db.collection(userBookingPath).doc(bookingid).set(data).then(ref => {
+    db.collection(userBookingPath).doc(bookingid).set(data).then(ref => {
     displayOutput('Added document with ID: ', ref.id);
     displayOutput('User Booking Added !!')
     

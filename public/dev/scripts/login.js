@@ -19,6 +19,8 @@ var userDataPath = coll_base_path + 'USER/ALLUSER'
 var uuid = ''
 var allDocCmpData = {}
 
+var bookingData = ''
+
 // Startup Call
 startupcalls()
 
@@ -215,9 +217,9 @@ function updateHTMLPage() {
   collectBookingDetails()
 
   // Create User Content
-  let user_content = '<h5>' + userData['NAME'] + '</h5>\
-                       <h5>' + userData['EMAIL'] + '</h5>\
-                       <h5>' + userData['MOBILE'] + '</h5>'
+  let user_content = '<h3>' + userData['NAME'] + '</h3>\
+                       <h5 class="grey-text">' + userData['EMAIL'] + '</h5>\
+                       <h5  class="grey-text">' + userData['MOBILE'] + '</h5>'
 
   $("#user_content").html(user_content)
 
@@ -240,8 +242,8 @@ function updateHTMLPage() {
   <h5>Admin Options</h5>\
     <div class="collection">\
         <a href="#!" class="collection-item">User Managment</a>\
-        <a href="managedetails.html" class="collection-item">Booking Managment</a>\
-        <a href="project_settings.html" class="collection-item">Content Managment</a> </div>\
+        <a href="managedetails.html" class="collection-item blue-text">Booking Managment</a>\
+        <a href="project_settings.html" class="collection-item red-text">Content Managment</a> </div>\
   </div>'
 
 
@@ -299,7 +301,7 @@ function saveprofiledata() {
     }).then(function () {
       displayOutput("Mobile details Updated ..");
 
-      toastMsg('Mobile details updated !!')
+      toastMsg('Profile Updated !!')
 
       // Update Session Data Also
       localStorageData('MOBILE',mobileno)
@@ -378,23 +380,225 @@ function createCard(id, data) {
   // Create Details
   let details = ''
 
-  details += '<div class="left-align">\
-  <p>'+ data['FROM'] + '  ->  ' + data['DESTINATION'] + '</p>\
-  <p>'+ data['STARTDATE'] + '  ->  ' + data['ENDDATE'] + '</p>\
-  \
-  </div>'
+  let status = data['EXTRA']['ADMINSTATUS']
+
+  let carb_back_color = 'blue-card-content'
+
+  if(status == 'CANCEL') {
+    carb_back_color = 'red-card-content'
+  } else if(status == 'SUCCESS') {
+    carb_back_color = 'green-card-content'
+  }
+  
+
+  details += '<div class="left-align ' + carb_back_color + '  white-text z-depth-2" style="border-radius: 25px 25px 0px 0px;">\
+  <div class="card-content">\
+  <div class="right-align"><b style="font-size: 20px;">' + data['EXTRA']['ADMINSTATUS']+ '</b></div>\
+  <div class="row">\
+  <div class="col s12 m3"><b style="font-size: 30px;">'+ data['FROM'] + '</b><p>'+ data['STARTDATE'] + '</p></div>\
+  <div class="col s12 m3" style="margin-top: 20px;"><i class="material-icons circle white black-text" style="font-size: 40px;">chevron_right</i></div>\
+  <div class="col s12 m3"><b style="font-size: 30px;">'+ data['DESTINATION'] + '</b><p>'+ data['ENDDATE'] + '</p></div>\
+  </div>\
+  </div></div>'
+
+  details += '<div class="card-content"><b class="grey-text">Message</b><p>' + data['EXTRA']['FINALMESSAGE']+ '</p>\</div>'
 
 
-  var cardDetails = '<div class="col s12 m4">\
-  <div class="card">\
-    <div class="card-content">\
-      <span class="card-title"><b>'+ data['DESTINATION'] + '</b></span>' + details
-    + '<br><a onclick="openViewDialog(\'' + id + '\')" class="waves-effect waves-light btn blue">View</a></div> </div></div>'
+  var cardDetails = '<div class="col s12 m12">\
+  <div class="card" style="border-radius: 25px;">\
+    <div>\
+      ' + details
 
+      if(data['EXTRA']['ADMINSTATUS'] != 'CANCEL') {
+        //cardDetails += '<div class="card-content"><a onclick="openViewDialog(\'' + id + '\')" class="waves-effect waves-light btn blue">View</a></div>'
+        
+        cardDetails += '<div class="card-content right-align"><a href="#!" onclick="openViewDialog(\'' + id + '\')"><i class="material-icons circle blue white-text z-depth-2" style="font-size: 40px;">arrow_drop_down</i></a></div>'
+     
+      }
+
+      cardDetails += '</div> </div></div>'
+    
   return cardDetails
 
 }
 
+
+// Open Booking Details in Model
 function openViewDialog(id) {
   displayOutput(id)
+   
+  let quotPath = allDocCmpData[id]['BOOKINGID']
+
+  
+  // Read Data from DB
+  let docRef = db.doc(quotPath);
+  docRef.get()
+  .then(doc => {
+    if (!doc.exists) {
+      displayOutput('No such document!');
+
+      viewModel('Message','No Details Found !!')
+    } else {
+      displayOutput('Document data');
+
+      // Show Complete Details
+
+      let data = doc.data()
+      bookingData = data
+
+      // Create Content
+      let mdlContent = ''   
+     
+
+     // mdlContent += '<br><b class="grey-text">Message to You</b><p>' + data['FINALMESSAGE'] + '</p><br>'
+
+     let status = data['ADMINSTATUS']
+
+     let carb_back_color = 'blue-card-content'
+   
+     if(status == 'CANCEL') {
+       carb_back_color = 'red-card-content'
+     } else if(status == 'SUCCESS') {
+       carb_back_color = 'green-card-content'
+     }
+
+     // User Explore Option
+     let userExploreOption = 'I do not want to explore Destination'
+     if(data['EXPLORE']) {userExploreOption = 'I want to explore Destination'}
+
+     // User content
+     let userContent = '<p class="grey-text">' + userExploreOption + '</p>\
+     <p>' + data['NAME']+ '</p>\
+     <p>' + data['MOBILENO']+ '</p>\
+     <p>' + data['EMAILID']+ '</p>\
+     '
+
+     // Create Card
+     let details = '<div class="left-align ' + carb_back_color + '  white-text z-depth-2" style="border-radius: 25px 25px 0px 0px;">\
+     <div class="card-content">\
+     <div class="right-align"><b style="font-size: 20px;">' + data['ADMINSTATUS']+ '</b></div>\
+     <div class="row">\
+     <div class="col s12 m3"><b style="font-size: 30px;">'+ data['FROM'] + '</b><p>'+ data['STARTDATE'] + '</p></div>\
+     <div class="col s12 m3" style="margin-top: 20px;"><i class="material-icons circle white black-text" style="font-size: 40px;">chevron_right</i></div>\
+     <div class="col s12 m3"><b style="font-size: 30px;">'+ data['DESTINATION'] + '</b><p>'+ data['ENDDATE'] + '</p></div>\
+     </div>\
+     <div class="left-align">'+ userContent +'\
+     </div></div></div>'
+
+     details += '<div class="card-content"><div class="row">\
+     <div class="input-field col s12">\
+         <i class="material-icons prefix blue-text">message</i>\
+         <textarea value="'+ data['USERCOMMENT'] + '" id="user_comment" class="materialize-textarea" data-length="300"></textarea>\
+         <label class="active" for="user_comment">Your Comment</label>\
+       </div>'
+
+       details += '<div class="right-align"><a onclick="updateBooking(\'' + id + '#' + quotPath + '\')" class="waves-effect waves-teal btn blue rcorners">Update</a></div>'
+
+       details += '</div>'
+
+    
+
+       details += '<br><br><div class="center-align"><a onclick="cancelBooking(\'' + id + '#' + quotPath + '\')" class="waves-effect waves-teal btn red rcorners">Cancel Booking</a></div>'
+
+       details += '</div></div>'
+
+     mdlContent += '<div class="col s12 m12">\
+     <div class="card" style="border-radius: 25px;">\
+       <div>\
+         ' + details
+
+         mdlContent += '</div> </div></div>'    
+
+    
+    
+      // Display in model
+      viewModelNF('',mdlContent)
+
+      $('#user_comment').val(data['USERCOMMENT']);
+      M.textareaAutoResize($('#user_comment'));
+
+
+    }
+  })
+  .catch(err => {
+    displayOutput('Error getting document');
+    viewModel('Message','No Details Found !!')
+  }); 
+
+
+}
+
+
+// Cancel Booking
+function cancelBooking(details) {
+  
+  let id = details.split('#')[0]
+  let quotePath = details.split('#')[1]
+
+  displayOutput(id)
+  var userBookingPath = coll_base_path + 'USER/ALLUSER/' + uuid + '/BOOKINGS'
+
+  let status= confirm("Are you sure you want to cancel Booking ?");
+
+  displayOutput(status)
+
+  if(status) {
+
+     // Update User Section also
+     db.collection(userBookingPath).doc(id).update({
+      EXTRA: {
+        ADMINSTATUS: 'CANCEL',
+        FINALMESSAGE: bookingData['FINALMESSAGE']
+      }  
+    }).then(function () {
+      displayOutput("Updated user booking..");
+  
+      // Update Status in main Booking also
+
+      db.doc(quotePath).update({
+          ADMINSTATUS: 'CANCEL',
+          USERCANCEL: true
+      }).then(function () {
+        displayOutput("Main booking ..");
+        toastMsg('You booking has been canceled !!')
+
+        allDocCmpData[id]['BOOKINGID'] = 'CANCEL'
+
+        location.reload();
+
+      });
+
+
+
+
+
+    });
+
+
+  }
+
+}
+
+
+// Update Booking
+function updateBooking(details) {
+
+  let id = details.split('#')[0]
+  let quotePath = details.split('#')[1]
+
+  var user_comment = document.getElementById("user_comment").value;
+  displayOutput('User Comment : ' + user_comment)
+
+  // Update Status in main Booking also
+
+  db.doc(quotePath).update({
+      USERCOMMENT: user_comment
+  }).then(function () {
+    displayOutput("Main booking ..");
+    toastMsg('You booking has been Updated !!')
+  });
+
+  
+
+
 }
