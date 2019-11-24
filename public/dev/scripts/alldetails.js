@@ -300,11 +300,12 @@ function getCompleteModelContentDetails(doc_details) {
       
       var ratings_line = ''
       for (i = 0; i < Number(rating_num.split('.')[0]); i++) {
-        ratings_line += '<i class="fas fa-star text-warning"></i>';
+        //ratings_line += '<i class="fas fa-star text-warning"></i>';
+        ratings_line += '<i class="material-icons">star</i>';
       }
 
       if(rating_num.includes(".5")) {
-        ratings_line += '<i class="fas fa-star-half text-warning"></i>';
+        ratings_line += '<i class="material-icons">star_half</i>';
       }
 
       ratings_line += rating_num + ' ' + ratings.split('#')[1]
@@ -312,14 +313,14 @@ function getCompleteModelContentDetails(doc_details) {
 
 
 
-      html_div_line = '<div class="black-text"><h6>'+ header +'</h6>\
+      html_div_line = '<div><p style="font-size: 30px;">'+ header +'</p>\
                   <p class="card-text" style="font-size: 11px;">'+ sub_header +'</p>\
                   <p><small class="text-muted">' +  ratings_line  + '\
                       </small>\
                   <br>\
                   <span class="right"> \
-                    <small style="text-decoration: line-through;" class="text-muted">\
-                      ($'+ cut_price +')</small>$'+ price +' </span>\
+                    <small style="text-decoration: line-through; class="text-muted">\
+                      ($'+ cut_price +')</small><small style="font-size: 40px;">$'+ price +'</small></span>\
                       <br>\
                 </p></div>';
       break;
@@ -405,12 +406,12 @@ function modelLytSquareCard_local(mdl_map_details) {
   var complete_content = mdl_map_details['CONTENT'] 
 
   var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_map_details) + '">\
-                  <div class="card hoverable">\
-                    <div class="card-image">\
-                      <img src="' + getModelImageRef(image_ref) + '">\
+                  <div class="card hoverable" style="border-radius: 25px;">\
+                    <div class="card-image z-depth-2" style="border-radius: 25px 25px 0px 0px;">\
+                      <img src="' + getModelImageRef(image_ref) + '" style="height: 200px; max-height: 200px; border-radius: 25px 25px 0px 0px;">\
                     </div>\
-                    <div class="card-content">\
-                      <span class="blue-grey-text text-lighten-2">' + complete_content + '</span>\
+                    <div class="red-card-content white-text" style="border-radius: 0px 0px 25px 25px;">\
+                      <div class="card-content white-text">' + complete_content + '</div>\
                     </div>\
                   </div>\
                 </a>\
@@ -427,13 +428,13 @@ function modelLytSquareCardImage_local(mdl_map_details) {
   var complete_content = mdl_map_details['CONTENT'] 
 
   var htmlLine = '<div class="col s12 m6"><a href="' + clickHandling(mdl_map_details) + '">\
-                  <div class="card hoverable">\
-                    <div class="card-image">\
-                      <img src="' + getModelImageRef(image_ref) + '">\
-                      <span class="card-title">' + complete_content + '</span>\
-                    </div></div>\
-                </a>\
-              </div>';            
+  <div class="card hoverable" style="border-radius: 25px;">\
+    <div class="card-image" style="border-radius: 25px;">\
+      <img src="' + getModelImageRef(image_ref) + '" style="height: 250px; max-height: 250px; border-radius: 25px;">\
+      <span class="card-title">' + complete_content + '</span>\
+    </div></div>\
+</a>\
+</div>';         
 
   return htmlLine;
 

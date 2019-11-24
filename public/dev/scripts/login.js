@@ -394,7 +394,7 @@ function createCard(id, data) {
   details += '<div class="left-align ' + carb_back_color + '  white-text z-depth-2" style="border-radius: 25px 25px 0px 0px;">\
   <div class="card-content">\
   <div class="right-align"><b style="font-size: 20px;">' + data['EXTRA']['ADMINSTATUS']+ '</b></div>\
-  <div class="row">\
+  <div class="row" style="margin-left:10%;">\
   <div class="col s12 m3"><b style="font-size: 30px;">'+ data['FROM'] + '</b><p>'+ data['STARTDATE'] + '</p></div>\
   <div class="col s12 m3" style="margin-top: 20px;"><i class="material-icons circle white black-text" style="font-size: 40px;">chevron_right</i></div>\
   <div class="col s12 m3"><b style="font-size: 30px;">'+ data['DESTINATION'] + '</b><p>'+ data['ENDDATE'] + '</p></div>\

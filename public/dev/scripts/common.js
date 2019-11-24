@@ -296,7 +296,7 @@ function getBaseLayoutHTML(mdl_coll,base_layout, header, model_content) {
                       if(show_model_base_button){
                         base_layout_html += '<div class="col s12">\
                           <div class="' + header_button_layout_position + '">\
-                            <a onclick="clickViewAll(\'' + mdl_coll + '\')" class="waves-effect waves-light btn blue">View All</a>\
+                            <a onclick="clickViewAll(\'' + mdl_coll + '\')" class="waves-effect waves-light btn blue rcorners">View All</a>\
                           </div>\
                         </div>'
                       }
@@ -407,7 +407,7 @@ function modelLayoutSelector(mdl_coll, mdl_layout, doc_details, all_doc_info_lis
 // Important Point :
 // : col s12 m6 - Desktop layout is same but in mobile layout one below to another one
 // : col s6 m6  - Same in desktop and mobile also
-function modelLytSquareCard(mdl_map_details) {
+function modelLytSquareCardNormal(mdl_map_details) {
   
   var image_ref = mdl_map_details['IMAGE']
   var complete_content = mdl_map_details['CONTENT']  
@@ -428,6 +428,28 @@ function modelLytSquareCard(mdl_map_details) {
 
 }
 
+// Model Square Card - Customize
+function modelLytSquareCard(mdl_map_details) {
+
+  var image_ref = mdl_map_details['IMAGE']
+  var complete_content = mdl_map_details['CONTENT'] 
+
+  var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_map_details) + '">\
+                  <div class="card hoverable" style="border-radius: 25px;">\
+                    <div class="card-image z-depth-2" style="border-radius: 25px 25px 0px 0px;">\
+                      <img src="' + getModelImageRef(image_ref) + '" style="height: 200px; max-height: 200px; border-radius: 25px 25px 0px 0px;">\
+                    </div>\
+                    <div class="red-card-content white-text" style="border-radius: 0px 0px 25px 25px;">\
+                      <div class="card-content white-text">' + complete_content + '</div>\
+                    </div>\
+                  </div>\
+                </a>\
+              </div>';
+
+  return htmlLine;
+
+}
+
 // Model Square Card with Image Only
 function modelLytSquareCardImage(mdl_map_details) {
 
@@ -435,13 +457,13 @@ function modelLytSquareCardImage(mdl_map_details) {
   var complete_content = mdl_map_details['CONTENT']
 
   var htmlLine = '<div class="col s12 m6"><a href="' + clickHandling(mdl_map_details) + '">\
-                  <div class="card hoverable">\
-                    <div class="card-image">\
-                      <img src="' + getModelImageRef(image_ref) + '">\
-                      <span class="card-title">' + complete_content + '</span>\
-                    </div></div>\
-                </a>\
-              </div>';            
+  <div class="card hoverable" style="border-radius: 25px;">\
+    <div class="card-image" style="border-radius: 25px;">\
+      <img src="' + getModelImageRef(image_ref) + '" style="height: 250px; max-height: 250px; border-radius: 25px;">\
+      <span class="card-title">' + complete_content + '</span>\
+    </div></div>\
+</a>\
+</div>';            
 
   return htmlLine;
 

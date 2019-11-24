@@ -20,6 +20,10 @@
   background: linear-gradient(-45deg,#a4ec52,#2e6e1a);
 }
 
+.orange-card-content{
+  background: linear-gradient(-45deg,#ec8f52,#6e401a);
+}
+
 .new-container {
     position: relative;
     text-align: center;
@@ -114,6 +118,7 @@ body
     max-width: 250px;
     max-height: 250px;
     border: solid white 5px;
+    border-radius: 50%;
 }
 
 /* Round Corner */
