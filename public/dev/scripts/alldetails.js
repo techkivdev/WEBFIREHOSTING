@@ -301,28 +301,29 @@ function getCompleteModelContentDetails(doc_details) {
       var ratings_line = ''
       for (i = 0; i < Number(rating_num.split('.')[0]); i++) {
         //ratings_line += '<i class="fas fa-star text-warning"></i>';
-        ratings_line += '<i class="material-icons">star</i>';
+        ratings_line += '<i class="material-icons orange-text">star</i>';
       }
 
       if(rating_num.includes(".5")) {
-        ratings_line += '<i class="material-icons">star_half</i>';
+        ratings_line += '<i class="material-icons orange-text">star_half</i>';
       }
 
-      ratings_line += rating_num + ' ' + ratings.split('#')[1]
+      //ratings_line += rating_num + ' ' + ratings.split('#')[1]
 
 
 
 
-      html_div_line = '<div><p style="font-size: 30px;">'+ header +'</p>\
-                  <p class="card-text" style="font-size: 11px;">'+ sub_header +'</p>\
-                  <p><small class="text-muted">' +  ratings_line  + '\
-                      </small>\
-                  <br>\
-                  <span class="right"> \
-                    <small style="text-decoration: line-through; class="text-muted">\
-                      ($'+ cut_price +')</small><small style="font-size: 40px;">$'+ price +'</small></span>\
-                      <br>\
-                </p></div>';
+      html_div_line = '<div><p style="font-size: 20px;">'+ header +'</p>\
+  <p class="card-text" style="font-size: 10px;">'+ sub_header +'</p>\
+  <p><small class="text-muted">' +  ratings_line  + '\
+      </small>\
+  <br>\
+  <span class="right"> \
+    <small style="text-decoration: line-through; class="text-muted">\
+      ($'+ cut_price +')</small><small style="font-size: 20px;">$'+ price +'</small></span>\
+      <br>\
+</p></div>';
+
       break;
 
     default:
@@ -407,8 +408,8 @@ function modelLytSquareCard_local(mdl_map_details) {
 
   var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_map_details) + '">\
                   <div class="card hoverable" style="border-radius: 25px;">\
-                    <div class="card-image z-depth-2" style="border-radius: 25px 25px 0px 0px;">\
-                      <img src="' + getModelImageRef(image_ref) + '" style="height: 200px; max-height: 200px; border-radius: 25px 25px 0px 0px;">\
+                    <div class="card-image z-depth-2" style="height: 200px; max-height: 200px; widht: 500px; max-width: 500px; border-radius: 25px 25px 0px 0px;">\
+                      <img src="' + getModelImageRef(image_ref) + '" style="height: 200px; max-height: 200px; widht: 400px; max-width: 400px; border-radius: 25px 25px 0px 0px;">\
                     </div>\
                     <div class="red-card-content white-text" style="border-radius: 0px 0px 25px 25px;">\
                       <div class="card-content white-text">' + complete_content + '</div>\

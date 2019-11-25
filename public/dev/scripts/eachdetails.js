@@ -203,9 +203,6 @@ function updateHTMLPage() {
     document.getElementById("col_section_2").style.display = 'block';
     document.getElementById("header_section").style.display = 'block';
 
-    // Hide
-    document.getElementById("pkg_image_view_section").style.display = 'none';
-
     genHTMLContentType2('col_section_2')
 
   }
@@ -213,42 +210,6 @@ function updateHTMLPage() {
   startUpCalls()
 
 
-
-}
-
-// Update Card Details
-// Show Details Cards
-function showDetailsCard() {
-  displayOutput("Show All Section.")
-
-  // Show
-  document.getElementById("pkgcard_basic_information").style.display = 'block';  
-  document.getElementById("pkgcard_overview").style.display = 'block';
-  document.getElementById("card_highlights").style.display = 'block';
-  document.getElementById("pkgcard_itinerary").style.display = 'block';
-  document.getElementById("pkgcard_hotels").style.display = 'block';
-  document.getElementById("pkgcard_includes").style.display = 'block';
-
-  // Hide
-  document.getElementById("pkg_image_view_section").style.display = 'none';
-
-}
-
-// Show Images Cards
-function showImagesCard() {
-
-  displayOutput("Show Images Section.")
-
-  // Hide
-  document.getElementById("pkgcard_basic_information").style.display = 'none';  
-  document.getElementById("pkgcard_overview").style.display = 'none';
-  document.getElementById("card_highlights").style.display = 'none';
-  document.getElementById("pkgcard_itinerary").style.display = 'none';
-  document.getElementById("pkgcard_hotels").style.display = 'none';
-  document.getElementById("pkgcard_includes").style.display = 'none';
-
-  // Show
-  document.getElementById("pkg_image_view_section").style.display = 'block';
 
 }
 
@@ -536,29 +497,28 @@ function getModelCompleteContent(mdl_coll, all_doc_info_list, doc_data) {
       var ratings_line = ''
       for (i = 0; i < Number(rating_num.split('.')[0]); i++) {
         //ratings_line += '<i class="fas fa-star text-warning"></i>';
-        ratings_line += '<i class="material-icons">star</i>';
+        ratings_line += '<i class="material-icons orange-text">star</i>';
       }
 
       if(rating_num.includes(".5")) {
-        ratings_line += '<i class="material-icons">star_half</i>';
+        ratings_line += '<i class="material-icons orange-text">star_half</i>';
       }
 
-      ratings_line += rating_num + ' ' + ratings.split('#')[1]
+     // ratings_line += rating_num + ' ' + ratings.split('#')[1]
 
 
 
 
-  html_div_line = '<div><p style="font-size: 30px;">'+ header +'</p>\
-  <p class="card-text" style="font-size: 11px;">'+ sub_header +'</p>\
-  <p><small class="text-muted">' +  ratings_line  + '\
-      </small>\
-  <br>\
-  <span class="right"> \
-    <small style="text-decoration: line-through; class="text-muted">\
-      ($'+ cut_price +')</small><small style="font-size: 40px;">$'+ price +'</small></span>\
+      html_div_line = '<div><p style="font-size: 20px;">'+ header +'</p>\
+      <p class="card-text" style="font-size: 10px;">'+ sub_header +'</p>\
+      <p><small class="text-muted">' +  ratings_line  + '\
+          </small>\
       <br>\
-</p></div>';
-     
+      <span class="right"> \
+        <small style="text-decoration: line-through; class="text-muted">\
+          ($'+ cut_price +')</small><small style="font-size: 20px;">$'+ price +'</small></span>\
+          <br>\
+    </p></div>';
 
    
 
@@ -590,9 +550,9 @@ function genHTMLContentType1() {
  
   // Update HTML Page Details getInfoDetails("Name")
   $("#dest_title").html(getInfoDetails("Name"));
-  $("#dest_price").html(getInfoDetails("Price"));
+  $("#dest_price").html('&#x20b9;' + getInfoDetails("Price"));
   $("#dest_best_time").html(getInfoDetails("Best Times"));  
-  $("#dest_ratings").html(getInfoDetails("Ratings"));
+  //$("#dest_ratings").html(getInfoDetails("Ratings"));
   $("#dest_description").html(getInfoDetails("Description"));
 
   // Update Activities
@@ -651,8 +611,10 @@ function genHTMLContentType2() {
   //$("#banner_small_header").html(" ");
 
   // Update HTML Page Details
+  $("#pkg_id").html(getInfoDetails("ID"));
   $("#pkg_title").html(getInfoDetails("Name"));
-  $("#pkg_price").html(getInfoDetails("Price"));
+  $("#pkg_price").html('&#x20b9;' + getInfoDetails("Price"));
+  if(getInfoDetails("Cut Price") != '0'){$("#pkg_cut_price").html('&#x20b9;' + getInfoDetails("Cut Price"));}
   $("#pkg_best_time").html(getInfoDetails("Best Time"));
   $("#pkg_days").html(getInfoDetails("Days"));
   $("#pkg_hotel_inc").html(getInfoDetails("Hotel Star"));
@@ -764,6 +726,11 @@ updateMultiInfoDetails(getInfoDetails("Itinerary 5D"),"itinerary_5")
 updateMultiInfoDetails(getInfoDetails("Itinerary 6D"),"itinerary_6")
 updateMultiInfoDetails(getInfoDetails("Itinerary 7D"),"itinerary_7")
 
+
+// Update Bookmark Section
+let bookmark_line ='<a href="#!" onclick="bookmarkHandling(\'' + getInfoDetails("ID")  + '\')"><i class="medium material-icons white-text">favorite_border</i></a>'
+$("#pkg_bookmark_sec").html(bookmark_line);
+
 }
 
 // Get Multi Info details
@@ -871,6 +838,13 @@ function updateImageView(divID,imagesList) {
 
  
 
+
+}
+
+// Book Mark Handling
+function bookmarkHandling(details) {
+
+  displayOutput('Bookmark ID : ' + details)
 
 }
 

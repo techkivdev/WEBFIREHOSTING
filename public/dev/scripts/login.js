@@ -20,6 +20,7 @@ var uuid = ''
 var allDocCmpData = {}
 
 var bookingData = ''
+var cancelDetails = ''
 
 // Startup Call
 startupcalls()
@@ -474,7 +475,7 @@ function openViewDialog(id) {
      '
 
      // Create Card
-     let details = '<div class="left-align ' + carb_back_color + '  white-text z-depth-2" style="border-radius: 25px 25px 0px 0px;">\
+     let details = '<div class="left-align ' + carb_back_color + '  white-text z-depth-2">\
      <div class="card-content">\
      <div class="right-align"><b style="font-size: 20px;">' + data['ADMINSTATUS']+ '</b></div>\
      <div class="row">\
@@ -498,12 +499,14 @@ function openViewDialog(id) {
 
     
 
-       details += '<br><br><div class="center-align"><a onclick="cancelBooking(\'' + id + '#' + quotPath + '\')" class="waves-effect waves-teal btn red rcorners">Cancel Booking</a></div>'
+       details += '<br><br><div class="left-align"><a onclick="validateCancelBooking(\'' + id + '#' + quotPath + '\')" class="waves-effect waves-teal btn red rcorners">Cancel Booking</a></div>'
+       details += '<div class="right-align"><a onclick="closeModel()" class="waves-effect waves-teal btn black white-text rcorners">Close</a></div>'
+
 
        details += '</div></div>'
 
      mdlContent += '<div class="col s12 m12">\
-     <div class="card" style="border-radius: 25px;">\
+     <div class="card">\
        <div>\
          ' + details
 
@@ -512,7 +515,7 @@ function openViewDialog(id) {
     
     
       // Display in model
-      viewModelNF('',mdlContent)
+      viewModelCustom('',mdlContent)
 
       $('#user_comment').val(data['USERCOMMENT']);
       M.textareaAutoResize($('#user_comment'));
@@ -530,17 +533,15 @@ function openViewDialog(id) {
 
 
 // Cancel Booking
-function cancelBooking(details) {
+function cancelBooking() {
   
-  let id = details.split('#')[0]
-  let quotePath = details.split('#')[1]
+  let id = cancelDetails.split('#')[0]
+  let quotePath = cancelDetails.split('#')[1]
 
   displayOutput(id)
   var userBookingPath = coll_base_path + 'USER/ALLUSER/' + uuid + '/BOOKINGS'
-
-  let status= confirm("Are you sure you want to cancel Booking ?");
-
-  displayOutput(status)
+  
+  let status = true
 
   if(status) {
 
@@ -562,20 +563,36 @@ function cancelBooking(details) {
         displayOutput("Main booking ..");
         toastMsg('You booking has been canceled !!')
 
+        askNO()
+
         allDocCmpData[id]['BOOKINGID'] = 'CANCEL'
 
         location.reload();
 
-      });
-
-
-
-
+      });      
 
     });
 
 
+  } else {
+    displayOutput("Admin has disabled Booking Cancel Process !!")
+    askNO()
   }
+
+}
+
+// Validate Cancel Booking
+function validateCancelBooking(details) {
+
+  closeModel()
+
+  cancelDetails = details
+
+  let id = cancelDetails.split('#')[0]
+  let quotePath = cancelDetails.split('#')[1]
+
+   // Open Ask Dialog
+  askModel('red-card-content','Cancel Booking','Are you sure you want to cancel your Booking.<br>Booking Ref. Number : '+id,'cancelBooking')
 
 }
 

@@ -72,14 +72,16 @@
       <br>
       <div style="margin-top: -30%;">
       <a href="requestform.html?detail1=NA&detail2=NA&detail3=NA"
-        class="waves-effect waves-light btn-large pink rcorners">Customize & Get Quotes</a>
+        class="waves-effect waves-light btn-large pink rcorners">Book Now</a>
       </div>
 
         <div id="header_btn_options" style="margin-top: 25%;">
-          <a onclick="showDetailsCard()"
-            class="waves-effect waves-light btn blue rcorners">Details</a>
-            <a onclick="showImagesCard()"
-            class="waves-effect waves-light btn blue rcorners" style="margin-left: 2%;">Images</a>            
+            <div class="col s12">
+                <ul class="tabs tabs-fixed-width tab-demo z-depth-1 white lighten-5 rcorners">
+                  <li class="tab col s3"><a class="active blue-text" href="#details"><b>Details</b></a></li>
+                  <li class="tab col s3"><a class="blue-text" href="#images"><b>Images</b></a></li>
+                </ul>
+              </div>      
         </div>
 
     </div>
@@ -128,7 +130,7 @@
   <!-- Container Section 1 -->
   <!-- **************************************** -->
 
-  <div class="container-fluid" style="margin: 0px 3% 0px 3%">
+  <div class="container-fluid" style="margin: 0px 2% 0px 2%">
     <div class="section">
 
       <!-- **************************************** -->
@@ -140,34 +142,49 @@
 
           <!-- CARD Infromation 1 -->
           <div class="col s12">
-            <div class="card">
-              <div class="card-content black-text">
-                <span class="card-title"><b id="dest_title" style="font-size: 50px;">Destination Name</b></span>
+            <div class="card" style="border-radius: 25px;">
 
-                <!-- Card Body START -->
-                <br>
-                <div class="row">                  
+                <div class="red-card-content white-text z-depth-2" style="border-radius: 25px 25px 0px 0px;">
 
-                   <!-- Price -->
-                 <div class="col s12"> 
-                    <div class="right-align">                  
-                      <p id="dest_header_1" class="grey-text" style="font-size: 10px; margin-left: 1%;">Per Person</p>
-                      <p id="dest_price" class="green-text" style="font-size: 45px;">12,000 /-</p>                  
+                  <div class="card-content">
+                    <p id="dest_title" style="font-size: 25px;">Destination Name</p>
+
+                      <!-- Price -->
+                 <div class="col s12 m12"> 
+                    <div class="right-align">    
+                      
+                        <span>
+                            <small id="dest_price" style="font-size: 30px;">$12000</small>
+                            <small id="dest_header_1" style="font-size: 10px;">Per Person</small><br>
+                           <!-- <small id="pkg_cut_price" style="text-decoration: line-through; font-size: 20px;" class="text-muted"></small>
+                          -->
+                        </span> 
+                                      
                     </div> 
                       
                   </div>
-                 
-                </div>
-
 
                 <div class="row">
-                    <div class="col s6">
+                    <div class="col s12 m12">
                         <p id="dest_header_2" class="grey-text">Best Time</p>
                         <b id="dest_best_time">Sept - Oct</b>
                       </div>
 
                 </div>
 
+              </div>
+
+
+                </div>
+
+
+              <div class="card-content black-text">
+               
+
+                <!-- Card Body START -->                
+                <div class="row">                  
+
+                 
 
                 <div class="row">
                   <div class="col s12">
@@ -187,40 +204,27 @@
                   </div>
                 </div>
 
-
+                <!-- Description -->
                 <div class="row">
                   <div class="col s12">
-                    <p id="dest_header_4" class="grey-text">Ratings</p>
-                    <b id="dest_ratings">rated 4.2/5 (based on 6658 reviews) </b>
+                    <p id="dest_header_5" class="grey-text">Description</p>
+                    <p id="dest_description" class="long-text">#</p>
+                    
+                    <div class="right-align" style="margin-top: 2%;">
+                        <a onclick="viewOverview()" class="waves-effect waves-teal btn-flat blue-text" >Read More</a>
+                      </div>
+
                   </div>
                 </div>
 
+                
+
+              </div>
                 <!-- Card Body END -->
 
               </div>
             </div>
-          </div>
-
-          <!-- CARD Infromation 2 -->
-          <div class="col s12">
-            <div class="card">
-              <div class="card-content black-text">
-                <span class="card-title"><b id="dest_header_5">Description</b></span>
-
-                <!-- Card Body START -->
-                <div>
-                  <p id="dest_description" class="long-text">#</p>                
-                </div>
-                <!-- Card Body END -->
-
-                <div class="right-align" style="margin-top: 2%;">
-                    <a onclick="viewOverview()" class="waves-effect waves-teal btn-flat blue-text" >Read More</a>
-                  </div>
-
-
-              </div>
-            </div>
-          </div>
+          </div>         
 
           <!-- CARD Infromation Images -->
           <div id="dest_image_view_section" class="col s12">
@@ -253,414 +257,467 @@
 
     <!-- **************************************** -->
     <!--   Coloum Section 2  -->
-    <div id="col_section_2" style="display: none; margin: -150px 0px 0px 0px;">
+    <div id="col_section_2" style="display: none;">
 
-      <!-- Row Section 1 -->
-      <div class="row">       
+      <!-- details  -->
+      <div id="details" class="col s12">
 
-        <!-- CARD Infromation 1 Details -->
-        <div id="pkgcard_basic_information" class="col s12">
-          <div class="card">
-            <div class="card-content black-text">
-              <span class="card-title"><b id="pkg_title">Package Name</b></span>
+         <!-- Row Section 1 -->
+        <div class="row" style="margin: -150px 0px 0px 0px;">       
 
-              <!-- Card Body START -->
-              <br>
-              <div class="row">
+          <!-- CARD Infromation 1 Details -->
+          <div id="pkgcard_basic_information" class="col s12">
 
-                 <!-- Days Details -->
-                 <div class="col s6">
-                    <p id="pkg_header_4" class="grey-text" style="margin-left: 1%">Days</p>
-                    <div class="chip black" style="width: 130px; height: 35px; font-size: 20px; padding: 4px;">                       
-                       <p id="pkg_days" class="white-text center-align">12D | 13N</p>
-                     </div>
-               </div>
+            <div class="card" style="border-radius: 25px;">
 
-               <!-- Best Time -->
-               <div class="col s6">                  
-                  <p id="pkg_header_3" class="grey-text" style="margin-left: 1%">Best Time</p>
-                  <div class="chip orange" style="width: 130px; height: 35px; font-size: 20px; padding: 4px;">                       
-                      <p id="pkg_best_time" class="white-text center-align">Oct - Nov</p>
-                    </div>
-                </div>
+              <!-- Custom Content -->
+                <div class="red-card-content white-text z-depth-2" style="border-radius: 25px 25px 0px 0px;">
 
+                  <div class="card-content row">                  
 
-               
+                    <div class="row">
 
-                
+                        <div class="col s6 m6 grey-text">
+                            <p id="pkg_id" style="font-size: 20px;">PKG23</p>
+                          </div>
 
-              </div>
-
-              <div class="row">
-
-                 <!-- Price -->
-                 <div class="col s12"> 
-                    <div class="left-align">                  
-                      <p id="pkg_header_2" class="grey-text" style="font-size: 10px; margin-left: 1%;">Per Person</p>
-                      <p id="pkg_price" class="green-text" style="font-size: 45px;">12,000 /-</p>                  
-                    </div> 
-                      
+                      <div class="col s6 m6">
+                          <div id="pkg_bookmark_sec" class="right-align" style="margin-top: -5%;">
+                              <!-- Script Code -->
+                            </div>
                   </div>
 
+                  </div>
+
+                    <div>
+                        <p id="pkg_title" style="font-size: 25px;">Package Name asdasfd asdfascdas dtsadas dasfdcasd sadasdasd</p>
+                      </div>
+
+                  </div>
+                  
+
+                     <!-- Card Body START -->
+                     <div class="card-content" style="margin: -50px 0px 0px 0px;">
+                        <div class="row">
+          
+                            <!-- Days Details -->
+                            <div class="col s6">
+                              <p id="pkg_header_4" class="white-text" style="margin-left: 1%">Days</p>
+                              <div class="chip black" style="width: 130px; height: 35px; font-size: 20px; padding: 4px;">                       
+                                  <p id="pkg_days" class="white-text center-align">12D | 13N</p>
+                                </div>
+                          </div>
+          
+                          <!-- Best Time -->
+                          <div class="col s6">                  
+                            <p id="pkg_header_3" class="white-text" style="margin-left: 1%">Best Time</p>
+                            <div class="chip orange" style="width: 130px; height: 35px; font-size: 20px; padding: 4px;">                       
+                                <p id="pkg_best_time" class="white-text center-align">Oct - Nov</p>
+                              </div>
+                          </div>
+          
+                        </div>
+          
+                        <div class="row">
+          
+                            <!-- Price -->
+                            <div class="col s12"> 
+                              <div class="left-align">  
+
+                                  <span>
+                                        <small id="pkg_price" style="font-size: 50px;">$12000</small>
+                                        <small id="pkg_header_2" style="font-size: 10px;">Per Person</small><br>
+                                        <small id="pkg_cut_price" style="text-decoration: line-through; font-size: 20px;" class="text-muted"></small>
+                                      
+                                    </span> 
+                                                         
+                              </div> 
+                                
+                            </div>
+          
+                          
+                          
+          
+                        </div>
+
+                    </div>
+   
+
+                  </div>
                
+                  <!-- Normal Content -->
+              <div class="card-content black-text">
                
-
-              </div>
-
-              <div class="row">                
-
-                <!-- City -->
-                <div class="col s6">
-                  <p id="pkg_header_6" class="grey-text" >Cities</p>
-                  <b>
-                    <p id="pkg_cities">#</p>
-                  </b>
-                </div>
-
-                 <!-- Hotels -->
-                 <div class="col s6">
-                    <p id="pkg_header_5" class="grey-text" >Hotel Included</p>
+                <div class="row">                
+  
+                  <!-- City -->
+                  <div class="col s6">
+                    <p id="pkg_header_6" class="grey-text" >Cities</p>
                     <b>
-                      <p id="pkg_hotel_inc">#</p>
+                      <p id="pkg_cities">#</p>
                     </b>
                   </div>
-
-              </div>
-
-
-              <div class="row">
-                <div class="col s12">
-                  <p id="pkg_header_7" class="grey-text">Activities</p>
-
-                  <div id="pkg_activities">
-
-                    <!-- All Activities Details -->
-                    <div class="chip">
-                      <img src="Images/default.jpg" alt="default">
-                      Jane Doe
+  
+                   <!-- Hotels -->
+                   <div class="col s6">
+                      <p id="pkg_header_5" class="grey-text" >Hotel Included</p>
+                      <b>
+                        <p id="pkg_hotel_inc">#</p>
+                      </b>
                     </div>
-
+  
+                </div>
+  
+  
+                <div class="row">
+                  <div class="col s12">
+                    <p id="pkg_header_7" class="grey-text">Activities</p>
+  
+                    <div id="pkg_activities">
+  
+                      <!-- All Activities Details -->
+                      <div class="chip">
+                        <img src="Images/default.jpg" alt="default">
+                        Jane Doe
+                      </div>
+  
+                    </div>
+  
+  
                   </div>
-
-
                 </div>
-              </div>
-
-              <div class="row">
-                <div class="col s12">
-                  <p id="pkg_header_8" class="grey-text">Includes</p>
-
-                  <div id="pkg_includes">
-
-                    <!-- All Activities Details -->
-                    <div class="chip">
-                      <img src="Images/default.jpg" alt="default">
-                      Flight
+  
+                <div class="row">
+                  <div class="col s12">
+                    <p id="pkg_header_8" class="grey-text">Includes</p>
+  
+                    <div id="pkg_includes">
+  
+                      <!-- All Activities Details -->
+                      <div class="chip">
+                        <img src="Images/default.jpg" alt="default">
+                        Flight
+                      </div>
+  
                     </div>
-
+  
+  
                   </div>
-
-
                 </div>
-              </div>
-
-
-              <div class="row">
-                <div class="col s12">
-                  <p id="pkg_header_9" class="grey-text">Ratings</p>
-                  <b>
-                    <p id="pkg_ratings">#</p>
-                  </b>
-
-                  <div style="margin-top: 1%;">
-                  <a onclick="viewReviewDetails()" class="waves-effect waves-light btn blue rcorners" >All Review's</a>
+  
+  
+                <div class="row">
+                  <div class="col s12">
+                    <p id="pkg_header_9" class="grey-text">Ratings</p>
+                    <b>
+                      <p id="pkg_ratings">#</p>
+                    </b>
+  
+                    <div style="margin-top: 1%;">
+                    <a onclick="viewReviewDetails()" class="waves-effect waves-light btn blue rcorners" >All Review's</a>
+                  </div>
+  
+                  </div>
                 </div>
+  
+                <!-- Card Body END -->
+  
+              </div>
 
+            </div>
+
+          </div>
+  
+          <!-- CARD Infromation 2 Overview -->
+          <div id="pkgcard_overview" class="col s12">
+            <div class="card">
+              <div class="card-content black-text">
+                <span class="card-title"><b id="pkg_header_11">Overview</b></span>
+  
+                <!-- Card Body START -->
+                <div>
+                    <p id="pkg_description" class="long-text">#</p>                
                 </div>
+                <!-- Card Body END -->
+                 <div class="right-align" style="margin-top: 2%;">
+                <a onclick="viewOverview()" class="waves-effect waves-teal btn-flat blue-text" >Read More</a>
               </div>
-
-              <!-- Card Body END -->
-
+  
+  
+              </div>
             </div>
           </div>
-        </div>
-
-        <!-- CARD Infromation Images -->
-        <div id="pkg_image_view_section" class="col s12">
-          <div class="card">
-            <div class="card-content black-text">
-              <span class="card-title"><b>Images</b></span>
-
-              <!-- Card Body START -->
-              <div id="pkg_image_view"  class="row">
-                
+  
+          <!-- CARD Infromation 3 Highlights -->
+          <div id="card_highlights" class="col s12">
+            <div class="card">
+              <div class="card-content black-text">
+                <span class="card-title"><b id="pkg_header_12">Highlights</b></span>
+  
+                <!-- Card Body START -->
+                <div id="pkg_highlights">
+  
+                  <blockquote>This is an example quotation that uses the blockquote tag.</blockquote>
+                  <blockquote>This is an example quotation that uses the blockquote tag.</blockquote>
+                  <blockquote>This is an example quotation that uses the blockquote tag.</blockquote>
+  
+                </div>
+                <!-- Card Body END -->
+  
+  
               </div>
-              <!-- Card Body END -->
-
-
             </div>
           </div>
-        </div>
-
-        <!-- CARD Infromation 2 Overview -->
-        <div id="pkgcard_overview" class="col s12">
-          <div class="card">
-            <div class="card-content black-text">
-              <span class="card-title"><b id="pkg_header_11">Overview</b></span>
-
-              <!-- Card Body START -->
-              <div>
-                  <p id="pkg_description" class="long-text">#</p>                
+  
+          <!-- CARD Infromation 4 Itinerary -->
+          <div id="pkgcard_itinerary" class="col s12">
+            <div class="card">
+              <div class="black-text">
+                <div class="card-content">
+                <span class="card-title"><b id="pkg_header_13">Itinerary</b></span>
               </div>
-              <!-- Card Body END -->
-               <div class="right-align" style="margin-top: 2%;">
-              <a onclick="viewOverview()" class="waves-effect waves-teal btn-flat blue-text" >Read More</a>
-            </div>
-
-
+  
+                <!-- Card Body START -->
+                <div id="pkg_itinerary">
+  
+                  <ul class="collapsible popout">
+  
+  
+                    <!-- itinerary_1 Card START -->
+                    <li id="itinerary_1">
+                      <div class="collapsible-header">
+                        <!-- Header -->
+                        <b>
+                          <div id="itinerary_1_day" class="col s1">#</div>
+                        </b>
+                        <div class="col s11">
+                          <p id="itinerary_1_header">#</p>
+                          <div id="itinerary_1_tags"></div>
+                        </div>
+                        <!-- end -->
+                      </div>
+                      <div id="itinerary_1_body" class="collapsible-body"></div>
+                    </li>
+                    <!-- itinerary_1 END -->
+  
+                    <!-- itinerary_2 Card START -->
+                    <li id="itinerary_2">
+                      <div class="collapsible-header">
+                        <!-- Header -->
+                        <b>
+                          <div id="itinerary_2_day" class="col s1">#</div>
+                        </b>
+                        <div class="col s11">
+                          <p id="itinerary_2_header">#</p>
+                          <div id="itinerary_2_tags"></div>
+                        </div>
+                        <!-- end -->
+                      </div>
+                      <div id="itinerary_2_body" class="collapsible-body"></div>
+                    </li>
+                    <!-- itinerary_2 END -->
+  
+                    <!-- itinerary_3 Card START -->
+                    <li id="itinerary_3">
+                      <div class="collapsible-header">
+                        <!-- Header -->
+                        <b>
+                          <div id="itinerary_3_day" class="col s1">#</div>
+                        </b>
+                        <div class="col s11">
+                          <p id="itinerary_3_header">#</p>
+                          <div id="itinerary_3_tags"></div>
+                        </div>
+                        <!-- end -->
+                      </div>
+                      <div id="itinerary_3_body" class="collapsible-body"></div>
+                    </li>
+                    <!-- itinerary_3 END -->
+  
+                    <!-- itinerary_4 Card START -->
+                    <li id="itinerary_4">
+                      <div class="collapsible-header">
+                        <!-- Header -->
+                        <b>
+                          <div id="itinerary_4_day" class="col s1">#</div>
+                        </b>
+                        <div class="col s11">
+                          <p id="itinerary_4_header">#</p>
+                          <div id="itinerary_4_tags"></div>
+                        </div>
+                        <!-- end -->
+                      </div>
+                      <div id="itinerary_4_body" class="collapsible-body"></div>
+                    </li>
+                    <!-- itinerary_4 END -->
+  
+                    <!-- itinerary_5 Card START -->
+                    <li id="itinerary_5">
+                      <div class="collapsible-header">
+                        <!-- Header -->
+                        <b>
+                          <div id="itinerary_5_day" class="col s1">#</div>
+                        </b>
+                        <div class="col s11">
+                          <p id="itinerary_5_header">#</p>
+                          <div id="itinerary_5_tags"></div>
+                        </div>
+                        <!-- end -->
+                      </div>
+                      <div id="itinerary_5_body" class="collapsible-body"></div>
+                    </li>
+                    <!-- itinerary_5 END -->
+  
+                    <!-- itinerary_6 Card START -->
+                    <li id="itinerary_6">
+                      <div class="collapsible-header">
+                        <!-- Header -->
+                        <b>
+                          <div id="itinerary_6_day" class="col s1">#</div>
+                        </b>
+                        <div class="col s11">
+                          <p id="itinerary_6_header">#</p>
+                          <div id="itinerary_6_tags"></div>
+                        </div>
+                        <!-- end -->
+                      </div>
+                      <div id="itinerary_6_body" class="collapsible-body"></div>
+                    </li>
+                    <!-- itinerary_6 END -->
+  
+                    <!-- itinerary_7 Card START -->
+                    <li id="itinerary_7">
+                      <div class="collapsible-header">
+                        <!-- Header -->
+                        <b>
+                          <div id="itinerary_7_day" class="col s1">#</div>
+                        </b>
+                        <div class="col s11">
+                          <p id="itinerary_7_header">#</p>
+                          <div id="itinerary_7_tags"></div>
+                        </div>
+                        <!-- end -->
+                      </div>
+                      <div id="itinerary_7_body" class="collapsible-body"></div>
+                    </li>
+                    <!-- itinerary_7 END -->
+  
+  
+                  </ul>
+  
+  
+  
+                </div>
+                <!-- Card Body END -->
+  
+  
+              </div>
             </div>
           </div>
-        </div>
-
-        <!-- CARD Infromation 3 Highlights -->
-        <div id="card_highlights" class="col s12">
-          <div class="card">
-            <div class="card-content black-text">
-              <span class="card-title"><b id="pkg_header_12">Highlights</b></span>
-
-              <!-- Card Body START -->
-              <div id="pkg_highlights">
-
-                <blockquote>This is an example quotation that uses the blockquote tag.</blockquote>
-                <blockquote>This is an example quotation that uses the blockquote tag.</blockquote>
-                <blockquote>This is an example quotation that uses the blockquote tag.</blockquote>
-
+  
+          <!-- CARD Infromation 5 Hotels -->
+          <div id="pkgcard_hotels" class="col s12">
+            <div class="card">
+              <div class="card-content black-text">
+                <span class="card-title"><b id="pkg_header_14">Hotels</b></span>
+  
+                <!-- Card Body START -->
+                <div class="row" id="pkg_hotels">
+  
+                  <div class="col s12">
+                    <b id="hotel_name">Hotel Name</b>
+                    <p id="hotel_days">Days Details</p>
+                  </div>
+  
+                  <div class="col s6">
+                    <img id="hotel_image" class="materialboxed" data-caption="Click on screen to close it." width="250"
+                      src="Images/default.jpg">
+  
+                  </div>
+  
+  
+                  <div class="col s12">
+                    <p id="hotel_star">Hotel Star</p>
+                    <p id="hotel_extra">Other details</p>
+                  </div>
+  
+  
+                </div>
+                <!-- Card Body END -->
+  
+  
               </div>
-              <!-- Card Body END -->
-
-
             </div>
           </div>
-        </div>
-
-        <!-- CARD Infromation 4 Itinerary -->
-        <div id="pkgcard_itinerary" class="col s12">
-          <div class="card">
-            <div class="card-content black-text">
-              <span class="card-title"><b id="pkg_header_13">Itinerary</b></span>
-
-              <!-- Card Body START -->
-              <div id="pkg_itinerary">
-
-                <ul class="collapsible popout">
-
-
-                  <!-- itinerary_1 Card START -->
-                  <li id="itinerary_1">
-                    <div class="collapsible-header">
-                      <!-- Header -->
-                      <b>
-                        <div id="itinerary_1_day" class="col s1">#</div>
-                      </b>
-                      <div class="col s11">
-                        <p id="itinerary_1_header">#</p>
-                        <div id="itinerary_1_tags"></div>
-                      </div>
-                      <!-- end -->
-                    </div>
-                    <div id="itinerary_1_body" class="collapsible-body"></div>
-                  </li>
-                  <!-- itinerary_1 END -->
-
-                  <!-- itinerary_2 Card START -->
-                  <li id="itinerary_2">
-                    <div class="collapsible-header">
-                      <!-- Header -->
-                      <b>
-                        <div id="itinerary_2_day" class="col s1">#</div>
-                      </b>
-                      <div class="col s11">
-                        <p id="itinerary_2_header">#</p>
-                        <div id="itinerary_2_tags"></div>
-                      </div>
-                      <!-- end -->
-                    </div>
-                    <div id="itinerary_2_body" class="collapsible-body"></div>
-                  </li>
-                  <!-- itinerary_2 END -->
-
-                  <!-- itinerary_3 Card START -->
-                  <li id="itinerary_3">
-                    <div class="collapsible-header">
-                      <!-- Header -->
-                      <b>
-                        <div id="itinerary_3_day" class="col s1">#</div>
-                      </b>
-                      <div class="col s11">
-                        <p id="itinerary_3_header">#</p>
-                        <div id="itinerary_3_tags"></div>
-                      </div>
-                      <!-- end -->
-                    </div>
-                    <div id="itinerary_3_body" class="collapsible-body"></div>
-                  </li>
-                  <!-- itinerary_3 END -->
-
-                  <!-- itinerary_4 Card START -->
-                  <li id="itinerary_4">
-                    <div class="collapsible-header">
-                      <!-- Header -->
-                      <b>
-                        <div id="itinerary_4_day" class="col s1">#</div>
-                      </b>
-                      <div class="col s11">
-                        <p id="itinerary_4_header">#</p>
-                        <div id="itinerary_4_tags"></div>
-                      </div>
-                      <!-- end -->
-                    </div>
-                    <div id="itinerary_4_body" class="collapsible-body"></div>
-                  </li>
-                  <!-- itinerary_4 END -->
-
-                  <!-- itinerary_5 Card START -->
-                  <li id="itinerary_5">
-                    <div class="collapsible-header">
-                      <!-- Header -->
-                      <b>
-                        <div id="itinerary_5_day" class="col s1">#</div>
-                      </b>
-                      <div class="col s11">
-                        <p id="itinerary_5_header">#</p>
-                        <div id="itinerary_5_tags"></div>
-                      </div>
-                      <!-- end -->
-                    </div>
-                    <div id="itinerary_5_body" class="collapsible-body"></div>
-                  </li>
-                  <!-- itinerary_5 END -->
-
-                  <!-- itinerary_6 Card START -->
-                  <li id="itinerary_6">
-                    <div class="collapsible-header">
-                      <!-- Header -->
-                      <b>
-                        <div id="itinerary_6_day" class="col s1">#</div>
-                      </b>
-                      <div class="col s11">
-                        <p id="itinerary_6_header">#</p>
-                        <div id="itinerary_6_tags"></div>
-                      </div>
-                      <!-- end -->
-                    </div>
-                    <div id="itinerary_6_body" class="collapsible-body"></div>
-                  </li>
-                  <!-- itinerary_6 END -->
-
-                  <!-- itinerary_7 Card START -->
-                  <li id="itinerary_7">
-                    <div class="collapsible-header">
-                      <!-- Header -->
-                      <b>
-                        <div id="itinerary_7_day" class="col s1">#</div>
-                      </b>
-                      <div class="col s11">
-                        <p id="itinerary_7_header">#</p>
-                        <div id="itinerary_7_tags"></div>
-                      </div>
-                      <!-- end -->
-                    </div>
-                    <div id="itinerary_7_body" class="collapsible-body"></div>
-                  </li>
-                  <!-- itinerary_7 END -->
-
-
+  
+          <!-- CARD Infromation 6 what's Includes -->
+          <div id="pkgcard_includes" class="col s12">
+            <div class="card">
+              <div class="card-content">
+                <p id="pkg_header_15" class="grey-text">Wht's Include in this package.</p>
+              </div>
+  
+              <div class="card-tabs">
+                <ul class="tabs tabs-fixed-width tab-demo z-depth-1">
+                  <li class="tab"><a class="active" href="#pkg_inclusions">
+                      <p id="pkg_header_16">Inclusions</p>>
+                    </a></li>
+                  <li class="tab"><a href="#pkg_exclusions">
+                      <p id="pkg_header_17">Exclusions</p>
+                    </a></li>
                 </ul>
-
-
-
               </div>
-              <!-- Card Body END -->
-
-
-            </div>
-          </div>
-        </div>
-
-        <!-- CARD Infromation 5 Hotels -->
-        <div id="pkgcard_hotels" class="col s12">
-          <div class="card">
-            <div class="card-content black-text">
-              <span class="card-title"><b id="pkg_header_14">Hotels</b></span>
-
-              <!-- Card Body START -->
-              <div class="row" id="pkg_hotels">
-
-                <div class="col s12">
-                  <b id="hotel_name">Hotel Name</b>
-                  <p id="hotel_days">Days Details</p>
+              <div class="card-content grey lighten-4">
+                <div id="pkg_inclusions">
+  
+                  <div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>First</div>
+                  <div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>First</div>
+                  <div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>First</div>
+  
                 </div>
-
-                <div class="col s6">
-                  <img id="hotel_image" class="materialboxed" data-caption="Click on screen to close it." width="250"
-                    src="Images/default.jpg">
-
+  
+                <div id="pkg_exclusions">
+  
+                  <div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>First</div>
+                  <div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>First</div>
+                  <div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>First</div>
+  
                 </div>
-
-
-                <div class="col s12">
-                  <p id="hotel_star">Hotel Star</p>
-                  <p id="hotel_extra">Other details</p>
-                </div>
-
-
-              </div>
-              <!-- Card Body END -->
-
-
-            </div>
-          </div>
-        </div>
-
-        <!-- CARD Infromation 6 what's Includes -->
-        <div id="pkgcard_includes" class="col s12">
-          <div class="card">
-            <div class="card-content">
-              <p id="pkg_header_15" class="grey-text">Wht's Include in this package.</p>
-            </div>
-
-            <div class="card-tabs">
-              <ul class="tabs tabs-fixed-width tab-demo z-depth-1">
-                <li class="tab"><a class="active" href="#pkg_inclusions">
-                    <p id="pkg_header_16">Inclusions</p>>
-                  </a></li>
-                <li class="tab"><a href="#pkg_exclusions">
-                    <p id="pkg_header_17">Exclusions</p>
-                  </a></li>
-              </ul>
-            </div>
-            <div class="card-content grey lighten-4">
-              <div id="pkg_inclusions">
-
-                <div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>First</div>
-                <div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>First</div>
-                <div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>First</div>
-
-              </div>
-
-              <div id="pkg_exclusions">
-
-                <div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>First</div>
-                <div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>First</div>
-                <div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>First</div>
-
               </div>
             </div>
           </div>
+  
+          <!-- END -->
+        </div>
+       
         </div>
 
-        <!-- END -->
-      </div>
+          <!--images -->
+      <div id="images" class="col s12">
+
+          <!-- Row Section 1 -->
+      <div class="row" style="margin: -150px 0px 0px 0px;"> 
+         <!-- CARD Infromation Images -->
+         <div id="pkg_image_view_section" class="col s12">
+            <div class="card" style="border-radius: 25px;">
+              <div class="card-content black-text">
+                <span class="card-title"><b>Images</b></span>
+  
+                <!-- Card Body START -->
+                <div id="pkg_image_view"  class="row">
+                  
+                </div>
+                <!-- Card Body END -->
+  
+  
+              </div>
+            </div>
+          </div>
+          </div>
+        
+        </div>  
+      
+     
 
 
       <div id="other_packages_list_ref">

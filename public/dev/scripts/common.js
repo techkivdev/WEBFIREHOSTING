@@ -436,8 +436,8 @@ function modelLytSquareCard(mdl_map_details) {
 
   var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_map_details) + '">\
                   <div class="card hoverable" style="border-radius: 25px;">\
-                    <div class="card-image z-depth-2" style="border-radius: 25px 25px 0px 0px;">\
-                      <img src="' + getModelImageRef(image_ref) + '" style="height: 200px; max-height: 200px; border-radius: 25px 25px 0px 0px;">\
+                    <div class="card-image z-depth-2" style="height: 200px; max-height: 200px; widht: 500px; max-width: 500px; border-radius: 25px 25px 0px 0px;">\
+                      <img src="' + getModelImageRef(image_ref) + '" style="height: 200px; max-height: 200px; widht: 400px; max-width: 400px; border-radius: 25px 25px 0px 0px;">\
                     </div>\
                     <div class="red-card-content white-text" style="border-radius: 0px 0px 25px 25px;">\
                       <div class="card-content white-text">' + complete_content + '</div>\
@@ -568,11 +568,11 @@ function viewModel(header, content) {
 
 }
 
-function viewModelNF(header, content) {
+function viewModelCustom(header, content) {
 
   var model = '<!-- Modal Structure -->\
   <div id="messagemodel" class="modal">\
-    <div class="modal-content">\
+    <div style="margin-top: -5%;">\
       <p>'+ content + '</p>\
     </div>\
   </div>'
@@ -591,6 +591,59 @@ function viewModelNF(header, content) {
     $('#messagemodel').modal('open');
 
 
+}
+
+function closeModel() {
+  $('#messagemodel').modal('close');
+}
+
+// Ask Model -  Validate some Information
+function askModel(color,header, content, yesFunctionName) {
+
+  let mdlContent = ''
+
+  mdlContent += '<div class="left-align ' + color + '  white-text z-depth-2" style="border-radius: 25px 25px 0px 0px;">\
+  <div class="card-content" style="padding: 5px;">\
+  <p style="font-size: 30px; margin-left: 30px;">'+ header + '</p>\
+  </div>\
+  </div>'
+
+  mdlContent += '<div class="card-content"><p class="grey-text" style="font-size: 15px; margin-left: 30px;">' + content + '</p>\</div>'
+
+  mdlContent += '<div class="card-content center-align"><a onclick="'+yesFunctionName+'()" class="waves-effect waves-teal btn blue white-text rcorners">Yes</a>\
+  <a onclick="askNO()" class="waves-effect waves-teal btn black white-text rcorners" style="margin-left: 2%;">No</a>\
+  </div>'
+     
+
+
+  var model = '<!-- Modal Structure -->\
+  <div id="askmodel" class="modal" style="border-radius: 25px;">\
+    <div style="margin-top: -4%;">\
+      <p>'+ mdlContent + '</p>\
+    </div>\
+  </div>'
+
+
+
+  var elem = document.getElementById('askmodel');
+  if (elem) { elem.parentNode.removeChild(elem); }
+  
+  
+    $(document.body).append(model);
+  
+    $(document).ready(function () {
+      $('.modal').modal();
+    }); 
+    
+  
+    $('#askmodel').modal('open');
+
+
+}
+
+// Close Ask Model
+function askNO() {
+  $('#askmodel').modal('close');
 }
 
 

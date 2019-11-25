@@ -392,26 +392,26 @@ function getModelCompleteContent(mdl_coll, all_doc_info_list, doc_data) {
       var ratings_line = ''
       for (i = 0; i < Number(rating_num.split('.')[0]); i++) {
         //ratings_line += '<i class="fas fa-star text-warning"></i>';
-        ratings_line += '<i class="material-icons">star</i>';
+        ratings_line += '<i class="material-icons orange-text">star</i>';
       }
 
       if(rating_num.includes(".5")) {
-        ratings_line += '<i class="material-icons">star_half</i>';
+        ratings_line += '<i class="material-icons orange-text">star_half</i>';
       }
 
-      ratings_line += rating_num + ' ' + ratings.split('#')[1]
+      //ratings_line += rating_num + ' ' + ratings.split('#')[1]
 
 
 
 
-  html_div_line = '<div><p style="font-size: 30px;">'+ header +'</p>\
-  <p class="card-text" style="font-size: 11px;">'+ sub_header +'</p>\
+  html_div_line = '<div><p style="font-size: 20px;">'+ header +'</p>\
+  <p class="card-text" style="font-size: 10px;">'+ sub_header +'</p>\
   <p><small class="text-muted">' +  ratings_line  + '\
       </small>\
   <br>\
   <span class="right"> \
     <small style="text-decoration: line-through; class="text-muted">\
-      ($'+ cut_price +')</small><small style="font-size: 40px;">$'+ price +'</small></span>\
+      ($'+ cut_price +')</small><small style="font-size: 20px;">$'+ price +'</small></span>\
       <br>\
 </p></div>';
 
