@@ -224,6 +224,60 @@ return dataList
 
 }
 
+// Get Hash Lines List details
+function getHashLinesList(details,start,end){
+
+  var all_details_list = details.split('#')
+
+  var details_html_line = ''
+  for(each_details_idx in all_details_list) {
+    if(each_details_idx == 0){continue}
+    var details_name = all_details_list[each_details_idx]
+    details_html_line += start + details_name + end
+  }
+
+  return details_html_line
+
+}
+
+// Get Append HTML code lines
+function getAppendHTMLLines(details,start,end){
+
+  var html_line = ''
+  for(each_idx in details) {
+    var name = details[each_idx]
+    html_line += start + name + end
+  }
+
+  return html_line
+
+}
+
+// Get Ratings HTML Code
+function getRatingHTMLCode(ratings,size='small') {
+
+  if(!ratings.includes("#")) {
+    ratings = '1#(1)'
+  }
+
+
+  var rating_num = ratings.split('#')[0]
+      
+      var ratings_line = ''
+      for (i = 0; i < Number(rating_num.split('.')[0]); i++) {
+        //ratings_line += '<i class="fas fa-star text-warning"></i>';
+        ratings_line += '<i class=" '+size+' material-icons orange-text">star</i>';
+      }
+
+      if(rating_num.includes(".5")) {
+        ratings_line += '<i class=" '+size+' material-icons orange-text">star_half</i>';
+      }
+
+     // ratings_line += rating_num + ' ' + ratings.split('#')[1]
+
+     return ratings_line
+}
+
 
 
 // ---------------------------------------------------------------
@@ -435,8 +489,8 @@ function modelLytSquareCard(mdl_map_details) {
   var complete_content = mdl_map_details['CONTENT'] 
 
   var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_map_details) + '">\
-                  <div class="card hoverable" style="border-radius: 25px;">\
-                    <div class="card-image z-depth-2" style="height: 200px; max-height: 200px; widht: 500px; max-width: 500px; border-radius: 25px 25px 0px 0px;">\
+                  <div class="card hoverable" style="border-radius: 25px; widht: 400px; max-width: 400px;">\
+                    <div class="card-image z-depth-2" style="height: 200px; max-height: 200px; widht: 400px; max-width: 400px; border-radius: 25px 25px 0px 0px;">\
                       <img src="' + getModelImageRef(image_ref) + '" style="height: 200px; max-height: 200px; widht: 400px; max-width: 400px; border-radius: 25px 25px 0px 0px;">\
                     </div>\
                     <div class="red-card-content white-text" style="border-radius: 0px 0px 25px 25px;">\
@@ -537,7 +591,9 @@ function getTodayDate() {
   return date
 }
 
-
+// ------------------------------------------------------
+// ----------------- Model ------------------------------
+// ------------------------------------------------------
 // View Model to show Information
 function viewModel(header, content) {
 
@@ -593,6 +649,7 @@ function viewModelCustom(header, content) {
 
 }
 
+// Close Model
 function closeModel() {
   $('#messagemodel').modal('close');
 }
@@ -644,6 +701,51 @@ function askModel(color,header, content, yesFunctionName) {
 // Close Ask Model
 function askNO() {
   $('#askmodel').modal('close');
+}
+
+// Progress Model Show
+function showPleaseWaitModel() {
+
+  let content = '<div class="col s4 m4"><div class="preloader-wrapper active">\
+  <div class="spinner-layer spinner-red-only">\
+    <div class="circle-clipper left">\
+      <div class="circle"></div>\
+    </div><div class="gap-patch">\
+      <div class="circle"></div>\
+    </div><div class="circle-clipper right">\
+      <div class="circle"></div>\
+    </div>\
+  </div>\
+</div></div>\
+<div class="col s8 m8"><h5>Please wait...</h5></div>'
+
+  var model = '<!-- Modal Structure -->\
+  <div id="pleasewaitmodel" class="modal">\
+  <div style="padding: 20px; margin-top: 20px;">\
+    <div class="row">\
+      '+ content + '\
+    </div>\
+  </div></div>'
+
+  var elem = document.getElementById('pleasewaitmodel');
+  if (elem) { elem.parentNode.removeChild(elem); }
+  
+  
+    $(document.body).append(model);
+  
+    $(document).ready(function () {
+      $('.modal').modal();
+    }); 
+    
+  
+    $('#pleasewaitmodel').modal('open');
+
+
+}
+
+// Progress Model Hide
+function hidePleaseWaitModel() {
+  $('#pleasewaitmodel').modal('close');
 }
 
 
@@ -712,6 +814,41 @@ function getLoginUserData() {
 
 
     return userData;
+  } else {
+    // Sorry! No Web Storage support..
+    displayOutput('Sorry! No Web Storage support..')
+    return false
+  }
+
+}
+
+// Get STATUS
+function getLocalSessionIDStatus(id) {
+  if (typeof(Storage) !== "undefined") {
+    // Code for localStorage/sessionStorage.
+    return sessionStorage.getItem(id);
+  } else {
+    // Sorry! No Web Storage support..
+    displayOutput('Sorry! No Web Storage support..')
+    return false
+  }
+}
+
+// Get Login User Status
+function getLocalSessionPkgData() {
+
+  if (typeof(Storage) !== "undefined") {
+    // Code for localStorage/sessionStorage.
+    let data = {}
+    data['ISPKG'] = sessionStorage.getItem('ISPKG');
+    data['PKG_NAME'] = sessionStorage.getItem('PKG_NAME');
+    data['PKG_ID'] = sessionStorage.getItem('PKG_ID');
+    data['PKG_IMG'] = sessionStorage.getItem('PKG_IMG');
+    data['PKG_EXTRA'] = sessionStorage.getItem('PKG_EXTRA');
+    data['PKG_DEST_ID'] = sessionStorage.getItem('PKG_DEST_ID');
+    data['PKG_DEST_NAME'] = sessionStorage.getItem('PKG_DEST_NAME');
+
+    return data;
   } else {
     // Sorry! No Web Storage support..
     displayOutput('Sorry! No Web Storage support..')

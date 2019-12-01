@@ -56,6 +56,7 @@ var currentKeyTableData = 'NA';
 var doc_display_id_info_details = 'NA';  // INFO11
 var doc_publish_info_details = 'NA';     // INFO12
 var doc_listData_info_details = 'NA';     // INFO13
+var doc_config_info_details = 'NA';     // INFO21
 
 // Counter var
 var total_doc_before_del = 0;
@@ -135,6 +136,7 @@ function readDataFromDatabase() {
                     doc_display_id_info_details = allDocData[doc.id]['INFO11']['VALUE'];
                     doc_publish_info_details = allDocData[doc.id]['INFO12']['VALUE'];
                     doc_listData_info_details = allDocData[doc.id]['INFO13']['VALUE'];
+                    doc_config_info_details = allDocData[doc.id]['INFO21']['VALUE'];
 
 
                 } else {
@@ -2031,18 +2033,28 @@ function addNewFieldInCollorDoc() {
                     if (key != 'MAIN') {
                         var docData = allDocData[key];
 
+                        // ask for Info Index number
+                        var doc_index = $('#doc_index').val().trim();
+                        console.log('Value : ' + doc_index)
+
                         var totalInfo = Object.keys(docData).length
-                        console.log('Value : ' + totalInfo)
+                        let equal_cond = (Number(doc_index) > Number(totalInfo))
+                        //equal_cond = true // to Bypass Add check this check
 
-                        // ---- Add New Field ---
-                        var fieldData = getNewFieldDataSet(dataType);
-                        //console.log(fieldData)
+                        if((doc_index != '') && (doc_index != '0') && equal_cond) {
 
-                        docData['INFO' + totalInfo] = fieldData
+                            // ---- Add New Field ---
+                            var fieldData = getNewFieldDataSet(dataType);                           
 
-                        writeDocument(basePath + coll_lang + '/' + coll_name, key, docData, 'Collection Updated !!');
+                            docData['INFO' + doc_index] = fieldData
 
-                        console.log('New Field ADDED ' + key + ' : INFO' + totalInfo)
+                            writeDocument(basePath + coll_lang + '/' + coll_name, key, docData, 'Collection Updated !!');
+
+                            console.log('New Field ADDED ' + key + ' : INFO' + doc_index)
+                        } else {
+                            hidePleaseWait()
+                            alert('Incorrect Index Details\nIndex should be greater then Total Index.' + '\nTotal Info : ' + totalInfo)
+                        }
                     }
                 }
 
@@ -2790,7 +2802,11 @@ async function deletePublishedDocument(collPath, docValue, db_basePath) {
 // -------- Create DATA Collection ---------
 function createDATACollection(collection_path, db_basePath) {
 
-    updateCollectionListData(db_basePath);
+    // Get Config Details
+    let colConfig = getHashDataList(doc_config_info_details)
+    let covertToArrayList = colConfig['CONVERTTOARRAY'].split(',')
+
+    updateCollectionListData(db_basePath,covertToArrayList);
 
     var publish_mode = 'DEV';
     if (db_basePath.includes('PRODUCTION')) {
@@ -2800,7 +2816,7 @@ function createDATACollection(collection_path, db_basePath) {
     // Read Current Collection Data
 
     doc_count = 0;
-    total_doc = Object.keys(allDocData).length;
+    total_doc = Object.keys(allDocData).length;    
 
     for (var key in allDocData) {
         var docData = allDocData[key];
@@ -2879,7 +2895,28 @@ function createDATACollection(collection_path, db_basePath) {
                         } else if (info_data['TYPE'] == 'NUM') {
                             newDocDataSet[info_key] = Number(info_data['VALUE']);
                         } else {
-                            newDocDataSet[info_key] = info_data['VALUE'];
+                            // TEXT INFO
+                            if (key != 'MAIN') {
+                                // Check details for covertToArrayList                                
+                                if(covertToArrayList.includes(info_key)) {
+                                    if(info_data['VALUE'].includes(',')) {
+                                        console.log(info_key + ': Convert to Array')                                        
+                                        newDocDataSet[info_key] = info_data['VALUE'].split(',');
+                                    } else {
+                                        console.log(info_key + ': Convert to Array')   
+                                        newDocDataSet[info_key] =  [info_data['VALUE']];
+                                    }
+                                } else {
+                                    newDocDataSet[info_key] = info_data['VALUE'];
+                                }
+
+                               
+
+                            } else {
+                                newDocDataSet[info_key] = info_data['VALUE'];
+                            }
+
+                           
                         }
 
                     } else {
@@ -2943,7 +2980,7 @@ function publishProductionCurrentCollection() {
 // *********************************************************
 // ----- Update Collection LIST DATA -----------------------
 // *********************************************************
-function updateCollectionListData(db_base_path) {
+function updateCollectionListData(db_base_path,arrayListDetails) {
 
     console.log('-> LIST_DATA Updation ....')
 
@@ -2976,7 +3013,27 @@ function updateCollectionListData(db_base_path) {
                                 if (info_details.includes("_")) {
                                     doc_list_info[info_details] = docData[info_details.split('_')[0]]['VALUE'][info_details.split('_')[1]]['VALUE'];
                                 } else {
-                                    doc_list_info[info_details] = docData[info_details]['VALUE'];
+                                    
+                                    // TEXT INFO
+                                    if (key != 'MAIN') {
+                                        // Check details for covertToArrayList                                
+                                        if(arrayListDetails.includes(info_details)) {
+                                            if(docData[info_details]['VALUE'].includes(',')) {
+                                                console.log(info_details + ': Convert to Array')  
+                                                doc_list_info[info_details] = docData[info_details]['VALUE'].split(',');
+                                            } else {
+                                                console.log(info_details + ': Convert to Array') 
+                                                doc_list_info[info_details] = [docData[info_details]['VALUE']];
+                                            }
+                                        } else {
+                                            doc_list_info[info_details] = docData[info_details]['VALUE'];
+                                        }  
+        
+                                    } else {
+                                        doc_list_info[info_details] = docData[info_details]['VALUE'];
+                                    }
+
+                                    
                                 }
                         }
                     }
@@ -3922,6 +3979,36 @@ function showNoRecordMessage() {
     document.getElementById('message_container').style.display = "block";
 
 }
+
+// Get Hashvalues Details
+function getHashDataList(details) {
+  
+    var dataList = {}
+  
+    if(details == "NA") {
+         dataList['STATUS'] = false
+    } else {      
+  
+    var all_details_list = details.split('#')
+  
+    let dataLine = '{'
+    for(each_idx in all_details_list) {
+      if(each_idx == 0){continue}
+      var idx_data = all_details_list[each_idx]
+      dataLine += '"' + idx_data.split(':')[0].trim() + '"'  + ':' + '"' + idx_data.split(':')[1].trim() +'",'
+      
+    }
+  
+    dataLine = dataLine.slice(0, -1) + '}'
+  
+    dataList = JSON.parse(dataLine)
+    dataList['STATUS'] = true
+    
+  }
+  
+  return dataList
+  
+  }
 
 
 // ------ Create Toasts ---------------

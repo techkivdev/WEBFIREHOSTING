@@ -754,7 +754,16 @@ function getCollectionMainDocSet(){
 							ROLE: "ADMIN",
 							PUBLISH: "YES",
 							DESC: "Data which is common to all documents."
-					}
+					},
+		INFO21 : {
+			KEY: "Config",
+			VALUE: "#CONVERTTOARRAY: NA,NA #CONFIG2: config 2",
+			TYPE: "MULTI_TEXT",
+			MODE: "INFO",
+			ROLE: "ADMIN",
+			PUBLISH: "YES",
+			DESC: "Global Config"
+	     }
 
 	};
 

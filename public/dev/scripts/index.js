@@ -221,8 +221,35 @@ function updateHTMLPage() {
 
   // Update Header Images
   document.getElementById('hdr_img_1').src = getImageUrl(getInfoDetailsC("HDR IMG1"))
+  $("#hdr_img_1_bc").html(getImageDesc(getInfoDetailsC("HDR IMG1")).split('#')[0]);
+  $("#hdr_img_1_sc").html(getImageDesc(getInfoDetailsC("HDR IMG1")).split('#')[1]);
+
   document.getElementById('hdr_img_2').src = getImageUrl(getInfoDetailsC("HDR IMG2"))
+  $("#hdr_img_2_bc").html(getImageDesc(getInfoDetailsC("HDR IMG2")).split('#')[0]);
+  $("#hdr_img_2_sc").html(getImageDesc(getInfoDetailsC("HDR IMG2")).split('#')[1]);
+
   document.getElementById('hdr_img_3').src = getImageUrl(getInfoDetailsC("HDR IMG3"))
+  $("#hdr_img_3_bc").html(getImageDesc(getInfoDetailsC("HDR IMG3")).split('#')[0]);
+  $("#hdr_img_3_sc").html(getImageDesc(getInfoDetailsC("HDR IMG3")).split('#')[1]);
+
+  // Update Flash Content
+  let flash_cnt = getHashDataList(getInfoDetailsC("Top Header"))
+  // Create HTML Content
+  let img = '<i class="fab '+flash_cnt['FLASH_ICON_1']+'" style="font-size: 50px;"></i>'
+  $("#flash_img_1").html(img)
+  let content = '<h5>'+flash_cnt['FLASH_BOLD_HDR_1']+'</h5>' + flash_cnt['FLASH_CONTENT_1']
+  $("#flash_cnt_1").html(content)
+
+  img = '<i class="fab '+flash_cnt['FLASH_ICON_2']+'" style="font-size: 50px;"></i>'
+  $("#flash_img_2").html(img)
+  content = '<h5>'+flash_cnt['FLASH_BOLD_HDR_2']+'</h5>' + flash_cnt['FLASH_CONTENT_2']
+  $("#flash_cnt_2").html(content)
+
+
+
+
+  // Update Normal List Content
+  updateNormalListContent()
 
   // HTML Modification functions
   updateListRefDetails()
@@ -272,14 +299,14 @@ function updateMappingDetails(docID) {
 
 
 if(docID in allDocCmpData) {
-docMapDetails["header_bold"] = allDocCmpData[docID]["INFO0"]
+docMapDetails["top_header"] = allDocCmpData[docID]["INFO0"]
 docMapDetails["top_destination"] = docID + "#INFO10"
 docMapDetails["top_packages"] = docID + "#INFO11"
-docMapDetails["application_name"] = allDocCmpData[docID]["INFO12"]
-docMapDetails["header_text"] = allDocCmpData[docID]["INFO2"]
-docMapDetails["footer_bold"] = allDocCmpData[docID]["INFO3"]
-docMapDetails["footer_content"] = allDocCmpData[docID]["INFO4"]
-docMapDetails["extra"] = allDocCmpData[docID]["INFO5"]
+docMapDetails["app_config"] = allDocCmpData[docID]["INFO12"]
+docMapDetails["catg_list"] = allDocCmpData[docID]["INFO2"]
+docMapDetails["offer_list"] = allDocCmpData[docID]["INFO3"]
+docMapDetails["footer"] = allDocCmpData[docID]["INFO4"]
+docMapDetails["config"] = allDocCmpData[docID]["INFO5"]
 
 // MAP Development and Production Image correctly .....
 if(is_production_mode) {
@@ -306,6 +333,7 @@ docMapDetails["footer_image"] = docID + "#INFO8"
 
 
 }
+
 //**************** END ***************************
 
 // <<<<<<<<<<<<<<<<< CODE SECTION END >>>>>>>>>>>>>>>>>>>>>
@@ -322,8 +350,28 @@ function updateListRefDetails() {
 
   // Collect List Ref Details and Display Into HTML
   displayOutput('Update List view ...')
-  getListRefDetails(docMapDetails['top_destination'], 'col_section_1')
-  getListRefDetails(docMapDetails['top_packages'], 'col_section_2')  
+  getListRefDetails(getInfoDetailsC('Top Destination'), 'col_section_1')
+  getListRefDetails(getInfoDetailsC('Top Packages'), 'col_section_2')  
+
+}
+
+// Update Normal List Content
+function updateNormalListContent() {
+
+  let app_config = getHashDataList(getInfoDetailsC("App Config"))
+  displayOutput(app_config)
+
+  let catg_list = getHashDataList(getInfoDetailsC("Catg List"))
+  displayOutput(catg_list)
+
+  let offer_list = getHashDataList(getInfoDetailsC("Offer List"))
+  displayOutput(offer_list)
+
+  let footer_details = getHashDataList(getInfoDetailsC("Footer"))
+  displayOutput(footer_details)
+
+  let config = getHashDataList(getInfoDetailsC("Config"))
+  displayOutput(config)
 
 }
 
@@ -376,37 +424,15 @@ function getModelCompleteContent(mdl_coll, all_doc_info_list, doc_data) {
       var sub_header = doc_data[all_doc_info_list[1]]
       var ratings = doc_data[all_doc_info_list[2]]
       var price = doc_data[all_doc_info_list[3]]
-      var cut_price = doc_data[all_doc_info_list[4]]
+      var cut_price = doc_data[all_doc_info_list[4]] 
 
-      //html_div_line = '<b>' + header + '</b><br>' + content + '<br>' + content_1
-
-      // Update Ratings
-      //ratings = '2.5#(18,560)'
-      if(!ratings.includes("#")) {
-        ratings = '1#(1)'
-      }
-
-
-      var rating_num = ratings.split('#')[0]
-      
-      var ratings_line = ''
-      for (i = 0; i < Number(rating_num.split('.')[0]); i++) {
-        //ratings_line += '<i class="fas fa-star text-warning"></i>';
-        ratings_line += '<i class="material-icons orange-text">star</i>';
-      }
-
-      if(rating_num.includes(".5")) {
-        ratings_line += '<i class="material-icons orange-text">star_half</i>';
-      }
-
-      //ratings_line += rating_num + ' ' + ratings.split('#')[1]
-
-
-
+      let tags_line = getAppendHTMLLines(sub_header,
+        '<div class="small chip">',
+        '</div>')
 
   html_div_line = '<div><p style="font-size: 20px;">'+ header +'</p>\
-  <p class="card-text" style="font-size: 10px;">'+ sub_header +'</p>\
-  <p><small class="text-muted">' +  ratings_line  + '\
+  <p class="card-text" style="font-size: 10px;">'+ tags_line +'</p>\
+  <p><small class="text-muted">' +  getRatingHTMLCode(ratings)  + '\
       </small>\
   <br>\
   <span class="right"> \
@@ -485,6 +511,7 @@ function checkUserDetailsAndSTART() {
             readDocumentDataAsync(document_ID)
 
             document.getElementById("main_container").style.display = 'block';
+            document.getElementById("header_content").style.display = 'block';
 
           }
         })
@@ -517,6 +544,7 @@ function validationFailed() {
   readDocumentDataAsync(document_ID)
 
   document.getElementById("main_container").style.display = 'block';
+  document.getElementById("header_content").style.display = 'block';
 }
 
 // Check Session Data is Correct or Not
@@ -531,6 +559,15 @@ function checkLoginData(){
      displayOutput(userLoginData)
    }
 
+}
+
+// Open Request Form
+function openRequestForm() {
+  displayOutput('Open Request Form.')
+
+  localStorageData('ISPKG',false)
+
+  location.href = 'requestform.html?detail1=NA&detail2=NA&detail3=NA'
 }
 
 

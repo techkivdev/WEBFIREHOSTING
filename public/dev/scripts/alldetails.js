@@ -277,45 +277,31 @@ function getCompleteModelContentDetails(doc_details) {
       var header = doc_details['INFO2']
       var content = doc_details['INFO2']
 
+      $("#page_title").html('Destination');
+
+      
       html_div_line = '<b>' + header
 
       break;
 
     case "PACKAGES":
 
+        $("#page_title").html('Packages');
+
       var header = doc_details['INFO1']
       var sub_header = doc_details['INFO11']
       var ratings = doc_details['INFO66']
       var price = doc_details['INFO7']
-      var cut_price = doc_details['INFO8']
-     
-      // Update Ratings
-      //ratings = '2.5#(18,560)'
-      if(!ratings.includes("#")) {
-        ratings = '1#(1)'
-      }
+      var cut_price = doc_details['INFO8']  
 
-
-      var rating_num = ratings.split('#')[0]
-      
-      var ratings_line = ''
-      for (i = 0; i < Number(rating_num.split('.')[0]); i++) {
-        //ratings_line += '<i class="fas fa-star text-warning"></i>';
-        ratings_line += '<i class="material-icons orange-text">star</i>';
-      }
-
-      if(rating_num.includes(".5")) {
-        ratings_line += '<i class="material-icons orange-text">star_half</i>';
-      }
-
-      //ratings_line += rating_num + ' ' + ratings.split('#')[1]
-
-
+      let tags_line = getAppendHTMLLines(sub_header,
+        '<div class="small chip">',
+        '</div>')
 
 
       html_div_line = '<div><p style="font-size: 20px;">'+ header +'</p>\
-  <p class="card-text" style="font-size: 10px;">'+ sub_header +'</p>\
-  <p><small class="text-muted">' +  ratings_line  + '\
+  <p class="card-text" style="font-size: 10px;">'+ tags_line +'</p>\
+  <p><small class="text-muted">' +  getRatingHTMLCode(ratings)  + '\
       </small>\
   <br>\
   <span class="right"> \

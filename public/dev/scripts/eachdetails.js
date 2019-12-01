@@ -8,9 +8,11 @@
 
 // ---------- Main Variables ---------
 var coll_base_path = basePath
+var coll_base_path_P = basePrivatePath
 
 if (is_production_mode) {
   coll_base_path = baseProductionPath
+  coll_base_path_P = baseProductionPrivatePath
 }
 
 // -------- Link Page with Collection and Documents -----
@@ -27,6 +29,9 @@ var allDocCmpData = {}
 // Mapping Data
 var mainDocMapDetails = {}
 var docMapDetails = {}
+
+// Page Content
+var pageContent = {}
 
 // ***********************************************
 
@@ -195,13 +200,22 @@ function updateHTMLPage() {
   if (coll_name == 'DESTINATIONS') {
     document.getElementById("col_section_1").style.display = 'block';
     document.getElementById("header_section").style.display = 'block';
-    document.getElementById("header_btn_options").style.display = 'none';
+    document.getElementById("header_btn_options_pkg").style.display = 'none';
+    document.getElementById("btn_book_now").style.display = 'none';
+    document.getElementById("footer_sec").style.display = 'block';
+
+    $("#page_title").html('Destination');
+    
 
     genHTMLContentType1('col_section_1')
 
   } else if (coll_name == 'PACKAGES') {
     document.getElementById("col_section_2").style.display = 'block';
     document.getElementById("header_section").style.display = 'block';
+    document.getElementById("header_btn_options_dest").style.display = 'none';
+    document.getElementById("footer_sec").style.display = 'block';
+
+    $("#page_title").html('Packages');
 
     genHTMLContentType2('col_section_2')
 
@@ -274,6 +288,7 @@ function updateMappingDetails_D(docID) {
 
 if(docID in allDocCmpData) {
 docMapDetails["id"] = allDocCmpData[docID]["INFO0"]
+docMapDetails["config"] = allDocCmpData[docID]["INFO1"]
 docMapDetails["price"] = allDocCmpData[docID]["INFO10"]
 docMapDetails["cut_price"] = allDocCmpData[docID]["INFO11"]
 docMapDetails["reach_details"] = allDocCmpData[docID]["INFO12"]
@@ -320,6 +335,7 @@ docMapDetails["model"] = docID + "#INFO28"
 } else {
     displayOutput(docID + " Data not found !!")
 }
+
 }
 //**************** END ***************************
 
@@ -327,6 +343,7 @@ docMapDetails["model"] = docID + "#INFO28"
 //**************** Mapping Function ***************************
 // Update Mapping Data Sets details
 function updateMappingDetails_P(docID) {
+
   if("MAIN" in allDocCmpData) {
     mainDocMapDetails["ID"] = allDocCmpData["MAIN"]["INFO0"]
     mainDocMapDetails["NAME"] = allDocCmpData["MAIN"]["INFO1"]
@@ -377,9 +394,9 @@ docMapDetails["organiser"] = allDocCmpData[docID]["INFO22"]
 docMapDetails["map"] = allDocCmpData[docID]["INFO23"]
 docMapDetails["places_list"] = docID + "#INFO24"
 docMapDetails["review_list"] = docID + "#INFO25"
-docMapDetails["hotels"] = allDocCmpData[docID]["INFO3"]
-docMapDetails["hotel_star"] = allDocCmpData[docID]["INFO4"]
-docMapDetails["hotel_image"] = allDocCmpData[docID]["INFO5"]
+docMapDetails["stay"] = allDocCmpData[docID]["INFO3"]
+docMapDetails["config"] = allDocCmpData[docID]["INFO4"]
+docMapDetails["transport"] = allDocCmpData[docID]["INFO5"]
 docMapDetails["itinerary_1d"] = docID + "#INFO56"
 docMapDetails["itinerary_2d"] = docID + "#INFO57"
 docMapDetails["itinerary_3d"] = docID + "#INFO58"
@@ -388,7 +405,6 @@ docMapDetails["routes"] = allDocCmpData[docID]["INFO6"]
 docMapDetails["itinerary_5d"] = docID + "#INFO60"
 docMapDetails["itinerary_6d"] = docID + "#INFO61"
 docMapDetails["itinerary_7d"] = docID + "#INFO62"
-docMapDetails["district"] = allDocCmpData[docID]["INFO64"]
 docMapDetails["activities"] = allDocCmpData[docID]["INFO65"]
 docMapDetails["ratings"] = allDocCmpData[docID]["INFO66"]
 docMapDetails["best_time"] = allDocCmpData[docID]["INFO67"]
@@ -441,6 +457,9 @@ docMapDetails["image_8"] = docID + "#INFO54"
 } else {
     displayOutput(docID + " Data not found !!")
 }
+
+
+  
 }
 //**************** END ***************************
 
@@ -483,35 +502,14 @@ function getModelCompleteContent(mdl_coll, all_doc_info_list, doc_data) {
   var price = doc_data[all_doc_info_list[3]]
   var cut_price = doc_data[all_doc_info_list[4]]
 
-  //html_div_line = '<b>' + header + '</b><br>' + content + '<br>' + content_1
-
-  // Update Ratings
-  //ratings = '2.5#(18,560)'
-  if(!ratings.includes("#")) {
-    ratings = '1#(1)'
-  }
-
-
-  var rating_num = ratings.split('#')[0]
-      
-      var ratings_line = ''
-      for (i = 0; i < Number(rating_num.split('.')[0]); i++) {
-        //ratings_line += '<i class="fas fa-star text-warning"></i>';
-        ratings_line += '<i class="material-icons orange-text">star</i>';
-      }
-
-      if(rating_num.includes(".5")) {
-        ratings_line += '<i class="material-icons orange-text">star_half</i>';
-      }
-
-     // ratings_line += rating_num + ' ' + ratings.split('#')[1]
-
-
+  let tags_line = getAppendHTMLLines(sub_header,
+  '<div class="small chip">',
+  '</div>')
 
 
       html_div_line = '<div><p style="font-size: 20px;">'+ header +'</p>\
-      <p class="card-text" style="font-size: 10px;">'+ sub_header +'</p>\
-      <p><small class="text-muted">' +  ratings_line  + '\
+      <p class="card-text" style="font-size: 10px;">'+ tags_line +'</p>\
+      <p><small class="text-muted">' +  getRatingHTMLCode(ratings)  + '\
           </small>\
       <br>\
       <span class="right"> \
@@ -545,6 +543,10 @@ function genHTMLContentType1() {
   $("#dest_header_4").html(headerData["HEADER_4"]);
   $("#dest_header_5").html(headerData["HEADER_5"]);
 
+   // Read Config Details
+   let config = getHashDataList(getInfoDetails("Config"))
+   //displayOutput(config)
+
   //$("#banner_main_header").html(getInfoDetails("Name"));
   //$("#banner_small_header").html(" ");
  
@@ -554,18 +556,12 @@ function genHTMLContentType1() {
   $("#dest_best_time").html(getInfoDetails("Best Times"));  
   //$("#dest_ratings").html(getInfoDetails("Ratings"));
   $("#dest_description").html(getInfoDetails("Description"));
+  
 
   // Update Activities
-  var all_activities_list = getInfoDetails("Activities").split(',')
-
-  var activities_html_line = ''
-  for(each_act_idx in all_activities_list) {
-    var act_name = all_activities_list[each_act_idx]
-    activities_html_line += '<div class="chip"> \
-                <img src="Images/default.jpg" alt="default"> '+ act_name +'</div>'
-  }
-
-  $("#dest_activities").html(activities_html_line);
+  $("#dest_activities").html(getAppendHTMLLines(getInfoDetails("Activities"),
+  '<div class="chip"><img src="Images/default.jpg" alt="default"> ',
+  '</div>'));  
 
   // Update List Ref Details
   getListRefDetails(getInfoDetails("Packages Details"), 'all_packages_list_ref')
@@ -605,86 +601,81 @@ function genHTMLContentType2() {
   $("#pkg_header_17").html(headerData["HEADER_17"]);
 
   // -------------------------------------------
+
+  // Read Config Details
+  let config = getHashDataList(getInfoDetails("Config"))
+  //displayOutput(config)
+  let transport = getHashDataList(getInfoDetails("Transport"))
+
+  // Update Page Content details
+  pageContent['ID'] = getInfoDetails("ID")
+  pageContent['NAME'] = getInfoDetails("Name")
+  pageContent['IMAGE'] = getImageUrl(getInfoDetails("Image 1"))
+  pageContent['EXTRA'] = getInfoDetails("Days")
+  pageContent['DEST_ID'] = getInfoDetails("Destination ID")
+  pageContent['DEST_NAME'] = getInfoDetails("State")+'#'+getInfoDetails("District")
   
 
   //$("#banner_main_header").html(getInfoDetails("Name"));
   //$("#banner_small_header").html(" ");
 
   // Update HTML Page Details
-  $("#pkg_id").html(getInfoDetails("ID"));
+  //$("#pkg_id").html(getInfoDetails("ID"));
   $("#pkg_title").html(getInfoDetails("Name"));
   $("#pkg_price").html('&#x20b9;' + getInfoDetails("Price"));
   if(getInfoDetails("Cut Price") != '0'){$("#pkg_cut_price").html('&#x20b9;' + getInfoDetails("Cut Price"));}
   $("#pkg_best_time").html(getInfoDetails("Best Time"));
-  $("#pkg_days").html(getInfoDetails("Days"));
-  $("#pkg_hotel_inc").html(getInfoDetails("Hotel Star"));
+  $("#pkg_days").html(getInfoDetails("Days")); 
   $("#pkg_cities").html(getInfoDetails("Cities"));
-  $("#pkg_ratings").html(getInfoDetails("Ratings").replace('#',','));
+  $("#pkg_ratings").html(getRatingHTMLCode(getInfoDetails("Ratings"),'medium'));
+  $("#pkg_ratings_num").html(getInfoDetails("Ratings").replace('#',','));
 
-  // Update Activities
-  var all_activities_list = getInfoDetails("Activities").split(',')
-
-  var activities_html_line = ''
-  for(each_act_idx in all_activities_list) {
-    var act_name = all_activities_list[each_act_idx]
-    activities_html_line += '<div class="chip"> \
-                <img src="Images/default.jpg" alt="default"> '+ act_name +'</div>'
-  }
-
-  $("#pkg_activities").html(activities_html_line);
+  // Update Activities 
+  $("#pkg_activities").html(getAppendHTMLLines(getInfoDetails("Activities"),
+  '<div class="chip"><img src="Images/default.jpg" alt="default"> ',
+  '</div>'));
 
   // Update Includes
-  var all_includes_list = getInfoDetails("Includes").split(',')
-
-  var includes_html_line = ''
-  for(each_incl_idx in all_includes_list) {
-    var incl_name = all_includes_list[each_incl_idx]
-    includes_html_line += '<div class="chip"> \
-                <img src="Images/default.jpg" alt="default"> '+ incl_name +'</div>'
-  }
-
-  $("#pkg_includes").html(includes_html_line);
+  $("#pkg_includes").html(getAppendHTMLLines(getInfoDetails("Includes").split(','),
+  '<div class="chip"><img src="Images/default.jpg" alt="default"> ',
+  '</div>'));
 
 
   $("#pkg_description").html(getInfoDetails("Overview"));
 
   // Update Highlights
   var highligts_details = getInfoDetails("Highlights")
-
   if(highligts_details == "NA") {
     document.getElementById("card_highlights").style.display = 'none';
-  } else {  
-
-  var all_highlights_list = highligts_details.split('#')
-
-  var highlights_html_line = ''
-  for(each_highl_idx in all_highlights_list) {
-    if(each_highl_idx == 0){continue}
-    var highl_name = all_highlights_list[each_highl_idx]
-    highlights_html_line += '<blockquote>' + highl_name + '</blockquote>'
+  } else { 
+  $("#pkg_highlights").html(getHashLinesList(highligts_details,'<blockquote>','</blockquote>'));
   }
 
-  $("#pkg_highlights").html(highlights_html_line);
-}
+// ------------ Stay Details --------------------------
+// Update Stay Details
+var hotel_details = getHashDataList(getInfoDetails("Stay"))
 
+$("#pkg_hotel_inc").html(getRatingHTMLCode(hotel_details['STAR']+'#1'));
+$("#pkg_header_14").html(hotel_details['HEADER']);
 
-// Update Hotels Details
-var hotel_details = getInfoDetails("Hotels")
+$("#hotel_name").html(hotel_details['NAME']);
+$("#hotel_days").html(hotel_details['DAYS']);
+$("#hotel_star").html(getRatingHTMLCode(hotel_details['STAR']+'#1'));
 
-$("#hotel_name").html(hotel_details.split('#')[1].split(':')[1].trim());
-$("#hotel_days").html(hotel_details.split('#')[2].split(':')[1].trim());
-$("#hotel_star").html(hotel_details.split('#')[3].split(':')[1].trim());
-
-var extra_details = hotel_details.split('#')[4].split(':')[1].trim()
+var extra_details = hotel_details['EXTRA']
 if(extra_details == "NA") {  
   document.getElementById("hotel_extra").style.display = 'none';
 } else {
   $("#hotel_extra").html(extra_details);
 }
 
-var hotel_image_details = getImageUrl(getInfoDetails(getInfoDetails("Hotel Image")))
+if(hotel_details['IMAGE'] != 'NA') {
+var hotel_image_details = getImageUrl(getInfoDetails(hotel_details['IMAGE']))
 if(hotel_image_details != "NOK") {
   document.getElementById('hotel_image').src = hotel_image_details
+} else {
+  document.getElementById('hotel_image').src = getDirectImageUrl("Images/hotel_default.jpg")
+}
 } else {
   document.getElementById('hotel_image').src = getDirectImageUrl("Images/hotel_default.jpg")
 }
@@ -692,29 +683,12 @@ if(hotel_image_details != "NOK") {
 
 
 // Update Inclusions
-var all_inclusions_list = getInfoDetails("Inclusions").split('#')
-
-  var inclusions_html_line = ''
-  for(each_incl_idx in all_inclusions_list) {
-    if(each_incl_idx == 0){continue}
-    var incl_name = all_inclusions_list[each_incl_idx]
-    inclusions_html_line += '<div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>'+ incl_name +'</div>'
-  }
-
-  $("#pkg_inclusions").html(inclusions_html_line);
+$("#pkg_inclusions").html(getHashLinesList(getInfoDetails("Inclusions"),'<div class="collapsible-header grey lighten-4"><i class="material-icons">add</i>','</div>'));
 
 
   // Update Inclusions
-var all_exclusion_list = getInfoDetails("Exclusions").split('#')
+$("#pkg_exclusions").html(getHashLinesList(getInfoDetails("Exclusions"),'<div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>','</div>'));
 
-var exclusion_html_line = ''
-for(each_exincl_idx in all_exclusion_list) {
-  if(each_exincl_idx == 0){continue}
-  var exclu_name = all_exclusion_list[each_exincl_idx]
-  exclusion_html_line += '<div class="collapsible-header grey lighten-4"><i class="material-icons">remove</i>'+ exclu_name +'</div>'
-}
-
-$("#pkg_exclusions").html(exclusion_html_line);
 
 
 // Update Itinerary 
@@ -726,10 +700,18 @@ updateMultiInfoDetails(getInfoDetails("Itinerary 5D"),"itinerary_5")
 updateMultiInfoDetails(getInfoDetails("Itinerary 6D"),"itinerary_6")
 updateMultiInfoDetails(getInfoDetails("Itinerary 7D"),"itinerary_7")
 
+// Collect Details
+let pkg_details = getInfoDetails("ID") + '#' + getInfoDetails("Name")
+// Floating Button Options
+let floating_btn_line = '<a class="btn-floating btn-large blue">\
+<i class="large material-icons">more_horiz</i>\
+</a>\
+<ul>\
+<li><a a href="#!" onclick="bookmarkHandling(\'' + pkg_details  + '\')" class="btn-floating red"><i class="material-icons">favorite</i></a></li>\
+</ul>'
 
-// Update Bookmark Section
-let bookmark_line ='<a href="#!" onclick="bookmarkHandling(\'' + getInfoDetails("ID")  + '\')"><i class="medium material-icons white-text">favorite_border</i></a>'
-$("#pkg_bookmark_sec").html(bookmark_line);
+$("#pkg_bookmark_sec").html(floating_btn_line);
+startUpCalls()
 
 }
 
@@ -820,7 +802,7 @@ function updateImageView(divID,imagesList) {
                   <div class="card">\
                     <div class="card-image">\
                         <img class="materialboxed" data-caption="Click on image to close it" src="' + imageDetails +'"> </div>\
-                    <div class="card-content">\
+                    <div style="margin-left: 20px;">\
                         <p style="font-size: 10px;">'+ imageDesc +'</p>\
                       </div></div>\
                 </div>';
@@ -846,6 +828,61 @@ function bookmarkHandling(details) {
 
   displayOutput('Bookmark ID : ' + details)
 
+  // Get User Login Details
+   // Check Session Data
+   let status = getLoginUserStatus()
+   displayOutput('Check Session Data ...')
+   displayOutput(status)
+   
+   if(status == 'true') {
+     let userLoginData = getLoginUserData()
+     displayOutput(userLoginData)
+
+     uuid = userLoginData['UUID']
+
+     // Update into Database
+     var userBookmarkPath = coll_base_path_P + 'USER/ALLUSER/' + uuid + '/BOOKMARK'
+     displayOutput(userBookmarkPath)
+     let doc_id = coll_name+'_'+document_ID
+     displayOutput(doc_id)
+
+    let data = {
+      COLLNAME: coll_name,
+      DOCID: document_ID,
+      DETAILS: details
+    };
+    
+    db.collection(userBookmarkPath).doc(doc_id).set(data).then(ref => {
+           displayOutput('User Bookmark Added !!')   
+           
+           toastMsg('Bookmark Added !!')
+    });     
+     
+ 
+   } else {
+     toastMsg('Please login first !!')
+   }
+
+}
+
+// Open Request Form
+function openRequestForm() {
+  displayOutput('Open Request Form.')
+
+  updateLoaclSessionDetails()
+  location.href = 'requestform.html?detail1=NA&detail2=NA&detail3=NA'
+}
+
+// --------------- Local Session -------------------
+function updateLoaclSessionDetails() {
+  // Update Session Data
+  localStorageData('ISPKG',true)
+  localStorageData('PKG_NAME',pageContent['NAME'])
+  localStorageData('PKG_ID',pageContent['ID'])
+  localStorageData('PKG_IMG',pageContent['IMAGE'])
+  localStorageData('PKG_EXTRA',pageContent['EXTRA'])
+  localStorageData('PKG_DEST_ID',pageContent['DEST_ID'])
+  localStorageData('PKG_DEST_NAME',pageContent['DEST_NAME'])
 }
 
 
@@ -872,6 +909,10 @@ function startUpCalls() {
 
   $(document).ready(function(){
     $('.materialboxed').materialbox();
+  });
+
+  $(document).ready(function(){
+    $('.fixed-action-btn').floatingActionButton();
   });
 
 }

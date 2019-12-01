@@ -18,14 +18,13 @@
 </head>
 
 
-<body>
+<body>   
 
   <!-- **************************************** -->
   <!-- Navigation Sectione -->
-  <!-- **************************************** 
-
-  <div class="navbar-fixed white"> -->
-  <nav class="white" role="navigation">
+  <!-- **************************************** -->
+  
+  <nav class="white z-depth-2" role="navigation" style="position: relative;">
     <div class="nav-wrapper container">
 
       <!-- Logo Container -->
@@ -36,15 +35,27 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="alldetails.html?detail1=DESTINATIONS&detail2=NA&detail3=NA">Destinations</a></li>
         <li><a href="alldetails.html?detail1=PACKAGES&detail2=NA&detail3=NA">Packages</a></li>
-        <li><a href="login.html">Profile</a></li>
+        <li class="active"><a href="login.html">Profile</a></li>
       </ul>
 
       <!-- Mobile Navigation List -->
       <ul id="nav-mobile" class="sidenav">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="alldetails.html?detail1=DESTINATIONS&detail2=NA&detail3=NA">Destinations</a></li>
-        <li><a href="alldetails.html?detail1=PACKAGES&detail2=NA&detail3=NA">Packages</a></li>
-        <li><a href="login.html">Profile</a></li>
+        
+          <div class="container-fluid">
+              <div class="fb-profile">            
+                <img class="fb-image-lg left-align z-depth-2" src="Images/default.jpg" alt="Snow" style="height: 200px; margin-bottom: 10px;">            
+              </div>
+            </div>
+
+
+          <li><a href="index.html">Home</a></li>
+          <li><a href="alldetails.html?detail1=DESTINATIONS&detail2=NA&detail3=NA">Destinations</a></li>
+          <li><a href="alldetails.html?detail1=PACKAGES&detail2=NA&detail3=NA">Packages</a></li>
+          <li class="active"><a href="login.html">Profile</a></li> 
+          <li class="divider"></li>    
+          <li style="margin-top: 10px;"><a href="terms_and_conditions.html">Terms & Conditions</a></li>  
+          <li><a href="privacy_police.html">Privacy Police</a></li>
+          <li><a href="about_us.html">About Us</a></li>
       </ul>
 
       <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -76,20 +87,21 @@
 
   <!-- Login Header -->
 
-  <div id="login_header_section" class="fresh-content  white-text py-3" style="display: none; margin-top: 1px;">
+  <div id="login_header_section" style="display: none; margin-top: 1px;">
 
+      <div class="bg">
     <div class="container">
       <br>
 
       <div class="row">
 
         <!-- User Image -->
-        <div class="col s6">
+        <div class="col s12 m12">
 
           <div class="row">
 
             <div class="col s12 m7">
-              <h1>Login</h1>
+              <h1 class="white-text" ></h1>
 
             </div>
           </div>
@@ -97,19 +109,37 @@
 
 
         <!-- User Content -->
-        <div class="col s6">
+        <div class="col s12 m12">
 
           <div class="row">
-
-            <div id="firebaseui-auth-container"></div>
-            <div id="loader">Loading...</div>
+            
+            <div class="col s12 m12" style="margin-top: 100px;">
+                <div class="card" style="border-radius: 25px;">
+                    <div class="red-card-content white-text z-depth-2" style="border-radius: 25px 25px 0px 0px;
+                    height: 100px;">
+                        <div class="card-content">
+                            <p style="font-size: 40px;">Login</p>
+                            </div>                    
+                    </div>
+                   
+                    <div style="height: 100px; margin-top: 50px;">
+                    <div id="firebaseui-auth-container"></div>  
+                    </div>   
+    
+    
+                  </div>
+                </div>
+              </div>
 
 
           </div>
         </div>
+
       </div>
       <br>
     </div>
+
+  </div>
   </div>
 
   <!-- ***************** END ******************* -->
@@ -118,12 +148,6 @@
   <!-- **************************************** -->
   <!--   Profile Section  -->
 
-  <!-- Testing Profile Header -->
-
-
-
-  <!-- ***************** END ******************* -->
-
   <!-- Header -->
   <div id="main_profile_section" style="display: none; margin-top: 1px;">
 
@@ -131,18 +155,11 @@
 
       <div class="container-fluid">
         <div class="fb-profile">
-          <img class="fb-image-lg left-align z-depth-2" src="Images/profile_background.jpg" alt="Profile image example" />
+          <img class="fb-image-lg left-align z-depth-2" src="Images/profile_background.jpg" alt="Profile image" />
           <div class="center-align">
             <img id="user_profile_image" class="fb-image-profile thumbnail z-depth-2" src="Images/default.jpg"
               alt="Profile image example" />
           </div>
-
-          <!--
-          <div class="center-align" style="margin-top: 2%;">
-            <a onclick="signout()" class="waves-effect waves-light btn red rcorners" style="width: 150px;"><i
-                class="material-icons right">exit_to_app</i>Signout</a>
-          </div>
-          -->
 
           <div id="user_content" class="center-align">
             <!-- Script Code -->>
@@ -273,7 +290,7 @@
 
                           <div id="user_options">
                             <div class="collection">
-                              <a href="#!" class="collection-item">Your Wishlist</a>
+                              <a href="#!" onclick="openBookmark()" class="collection-item">Your Wishlist</a>
                             </div>
                           </div>
 
@@ -308,49 +325,51 @@
 
   </div>
 
-
-
   <!-- ***************** END ******************* -->
 
 
   <!-- **************************************** -->
   <!-- Footer -->
   <!-- **************************************** -->
-  <footer class="page-footer fresh-content  white-text">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our
-            full time job. Any amount would help support and continue development on this project and is greatly
-            appreciated.</p>
-
-
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
-          <ul>
-            <li><a class="white-text" href="#!">About</a></li>
-            <li><a class="white-text" href="#!">Terms & Conditions</a></li>
-            <li><a class="white-text" href="#!">Privacy and Cookie Police</a></li>
-            <li><a class="white-text" href="#!">Support</a></li>
-          </ul>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Facebook</a></li>
-            <li><a class="white-text" href="#!">Instgram</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-copyright">
+  <footer id="footer_sec" style="display: none;" class="page-footer fresh-content  white-text">
       <div class="container">
-        Made by <a class="brown-text text-lighten-3" href="http://materializecss.com">Materialize</a>
-      </div>
-    </div>
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">Company Bio</h5>
+              <!--
+              <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our
+                full time job. Any amount would help support and continue development on this project and is greatly
+                appreciated.</p>
+                -->
+  
+  
+            </div>
+            <div class="col l3 s12">
+              <!-- <h5 class="white-text">Settings</h5> -->
+              <ul>
+                <li><a class="white-text" href="about_us.html">About</a></li>
+                <li><a class="white-text" href="terms_and_conditions.html">Terms & Conditions</a></li>
+                <li><a class="white-text" href="privacy_police.html">Privacy and Cookie Police</a></li>              
+              </ul>
+            </div>
+            <div class="col l3 s12">
+            <!--
+              <h5 class="white-text">Connect</h5>
+              <ul>
+                <li><a class="white-text" href="#!">Facebook</a></li>
+                <li><a class="white-text" href="#!">Instgram</a></li>
+              </ul>
+             -->
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container">
+            Made by <a class="brown-text text-lighten-3" href="#!">KivTech</a>
+          </div>
+        </div>
   </footer>
+
 
 
   <!-- **************************************** -->

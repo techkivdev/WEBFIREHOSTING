@@ -28,6 +28,10 @@ var quotesPath = coll_base_path+'COMMON/QUOTES'
 // All documents data
 var allDocCmpData = {}
 
+// Pkg details
+var pkg_id = 'NA'
+var dest_id = 'NA'
+
 // ***********************************************
 
 // ***********************************************
@@ -79,6 +83,30 @@ function checkLoginData(){
 
   }
 
+  // Check Package Details
+  let pkg_status = getLocalSessionIDStatus('ISPKG')
+  displayOutput(pkg_status)
+
+  if(pkg_status  == 'true') {
+     let pkg_data = getLocalSessionPkgData()
+     displayOutput(pkg_data)
+     document.getElementById("package_details_sec").style.display = 'block';
+
+     document.getElementById('pkg_img').src = pkg_data['PKG_IMG']
+     $("#pkg_hdr").html(pkg_data['PKG_NAME']);
+     $("#pkg_extra").html(pkg_data['PKG_EXTRA']);
+
+     pkg_id = pkg_data['PKG_ID']
+     dest_id = pkg_data['PKG_DEST_ID']
+
+     document.getElementById('autocomplete-input-destination').value = pkg_data['PKG_DEST_NAME'].split('#')[0]
+     document.getElementById('autocomplete-input-destination').disabled = true
+
+  } else {
+    document.getElementById("package_details_sec").style.display = 'none';
+  }
+
+
 }
 
 // ******************************************************
@@ -127,6 +155,12 @@ function submitDetails() {
 
   var user_comment = document.getElementById("user_comment").value;
   displayOutput('User Comment : ' + user_comment)
+
+  var hotelOption = document.getElementById("hotelOption").checked;
+  displayOutput('hotelOption : ' + hotelOption)
+
+  var transOption = document.getElementById("transOption").checked;
+  displayOutput('transOption : ' + transOption)
   
 
 
@@ -205,13 +239,17 @@ function submitDetails() {
     customedata['VENDORID'] = 'NA'
     customedata['DEALPRICE'] = 'NA'
 
-    customedata['PKGID'] = 'NA'
-    customedata['DESTID'] = 'NA'
+    customedata['PKGID'] = pkg_id
+    customedata['DESTID'] = dest_id
     customedata['PRIORITY'] = 'HIGH'
 
     // Disscussion Details
     customedata['DISSSTATUS'] = 'OPEN'
     customedata['DISSDATE'] = ''
+
+    // Check Option
+    customedata['HOTELOPT'] = hotelOption
+    customedata['TRANSOPT'] = transOption
 
     // Extra Options
     customedata['OPTION1'] = 'NA'
@@ -246,12 +284,16 @@ function writeDocument(data) {
     let comdata = {NAME: 'COMMON'};
     let setDoc = db.collection(coll_base_path).doc('COMMON').set(comdata);
   }
+
+  showPleaseWaitModel()
   
   // Add a new document with a generated id.
   let addDoc = db.collection(quotesPath).add(data).then(ref => {
     displayOutput('Added document with ID: ', ref.id);
 
     updateUserBookingSection(ref.id,data)
+
+    hidePleaseWaitModel()
 
     document.getElementById("col_section_1").style.display = 'none';
     document.getElementById("col_section_2").style.display = 'block';

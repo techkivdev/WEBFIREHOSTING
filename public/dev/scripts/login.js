@@ -40,8 +40,7 @@ var uiConfig = {
     },
     uiShown: function () {
       // The widget is rendered.
-      // Hide the loader.
-      document.getElementById('loader').style.display = 'none';
+      // Hide the loader.     
 
       authDetails()
     }
@@ -114,6 +113,7 @@ function authDetails() {
       displayOutput('User logout !!')
       localStorageData('ISUSER',false)
       document.getElementById("main_profile_section").style.display = 'none';
+      document.getElementById("footer_sec").style.display = 'none';
       document.getElementById("login_header_section").style.display = 'block';
       document.getElementById("spinner").style.display = 'none';
 
@@ -234,6 +234,7 @@ function updateHTMLPage() {
 
   document.getElementById("spinner").style.display = 'none';
   document.getElementById("main_profile_section").style.display = 'block';
+  document.getElementById("footer_sec").style.display = 'block';
 
 
   // Update Admin Options
@@ -330,6 +331,16 @@ function collectBookingDetails() {
     if (querySnapshot.size == 0) {
       // ------ No Details Present -------------  
       displayOutput('No Record Found !!')
+
+      // Show No Booking Details
+      let emptyMsg= '<div class="row" style="margin-top:1%;"><div class="col s12"><div class="card" style="border-radius: 25px;">\
+      <div class="red-card-content white-text z-depth-2" style="border-radius: 25px 25px 0px 0px; height: 100px;">\
+      <p class="card-content" style="font-size: 40px;">Booking</p>\
+      </div><div class="card-content"><div class="row">\
+      <h5 class="grey-text">No Booking.</h5>\
+      </div></div></div></div></div>'
+
+      $("#user_bookings").html(emptyMsg);
       
     } else {
 
@@ -616,6 +627,79 @@ function updateBooking(details) {
   });
 
   
+
+
+}
+
+// Open Bookmark details
+function openBookmark() {
+
+  let content = '<ul class="collection">'
+
+  // Get Bookmark Details    
+  showPleaseWaitModel()
+
+    db.collection(userDataPath+'/'+uuid+'/BOOKMARK').get().then((querySnapshot) => {
+      displayOutput("SIZE : " + querySnapshot.size);
+  
+      if (querySnapshot.size == 0) {
+        // ------ No Details Present -------------  
+        displayOutput('No Record Found !!')
+        hidePleaseWaitModel()    
+        viewModel('My Wishlist','<h1>Empty List</h1>'); 
+  
+      } else {
+  
+        totaldocCount = querySnapshot.size
+        var docCount = 0;
+  
+        // Read Each Documents
+        querySnapshot.forEach((doc) => {
+          let mark_data = doc.data()
+          displayOutput(mark_data);
+
+         // content += '<a href="eachdetails.html?detail1='+mark_data['COLLNAME']+'&detail2='+mark_data['DOCID']+'&detail3=NA" class="collection-item">'+ mark_data['DETAILS'].split('#')[1] +'</a>'
+         let link = 'eachdetails.html?detail1='+mark_data['COLLNAME']+'&detail2='+mark_data['DOCID']+'&detail3=NA'
+         let markname = mark_data['DETAILS'].split('#')[1]
+         let markid = mark_data['DETAILS'].split('#')[0]       
+
+         
+          content += '<li class="collection-item avatar">\
+          <a href="'+link+'"><i class="material-icons circle green">open_in_new</i></a>\
+          <span class="title"><b>'+markname+'</b></span>\
+          <p>'+markid+'</p>\
+          <a href="#!" onclick="removeBookmark(\'' + doc.id  + '\')" class="secondary-content"><i class="material-icons">delete</i></a>\
+        </li>'  
+
+          // Check Document count
+          docCount++;
+          if (totaldocCount == docCount) {
+           
+           hidePleaseWaitModel()
+           content += '</ul>'
+           viewModel('My Wishlist',content); 
+
+          }
+  
+        }); 
+        
+  
+      }
+  
+    });
+
+}
+
+// Remove Bookmark
+function removeBookmark(details) {
+    displayOutput(details)
+
+    db.collection(userDataPath+'/'+uuid+'/BOOKMARK').doc(details).delete().then(function () {
+      displayOutput("Bookmark Deleted !!");  
+
+      closeModel()
+      openBookmark()
+    });
 
 
 }
