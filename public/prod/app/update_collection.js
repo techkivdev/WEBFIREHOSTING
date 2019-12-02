@@ -2845,9 +2845,6 @@ function createDATACollection(collection_path, db_basePath) {
                         publish_tree_content = false;
                     }
 
-                    console.log(info_data['MODE'] + publish_mode)
-                    console.log('Image Publish Status : ' + publish_tree_content)
-
 
                     if (publish_tree_content) {
                         // Parse Into Tree Data
@@ -3220,7 +3217,7 @@ function generateMappingCurrentCollection() {
 
     info_line += '\
     \n// MAP Development and Production Image correctly .....\n\
-    if(check_dev_publish_content) {\n\n\
+    if(is_production_mode) {\n\n\
     // IMAGES Production Information\n\n' + image_pro +
         '\n} else {\n\
     // IMAGES Information\n\n' + image + '\n}';

@@ -257,6 +257,7 @@ function validateAdminRoles() {
 
   // Change Path According to the project
   var userDataPath = baseProductionPrivatePath + 'USER/ALLUSER'
+  console.log(userDataPath)
 
   firebase.auth().onAuthStateChanged(function (user) {
 

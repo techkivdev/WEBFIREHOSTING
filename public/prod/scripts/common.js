@@ -8,22 +8,22 @@
 
 // *********************************************
 // ------------- CONFIGURATION ----------------
-var basePath = '/DATABASE/DEVELOPMENT/PUBLIC/';
-var basePrivatePath = '/DATABASE/DEVELOPMENT/PRIVATE/';
+var basePath = '/DATABASEPRO/DEVELOPMENT/PUBLIC/';
+var basePrivatePath = '/DATABASEPRO/DEVELOPMENT/PRIVATE/';
 
-var baseProductionPath = '/DATABASE/PRODUCTION/PUBLIC/';
-var baseProductionPrivatePath = '/DATABASE/PRODUCTION/PRIVATE/';
+var baseProductionPath = '/DATABASEPRO/PRODUCTION/PUBLIC/';
+var baseProductionPrivatePath = '/DATABASEPRO/PRODUCTION/PRIVATE/';
 
-var imagebasePath = '/DATABASE/DEVELOPMENT/PUBLIC/';
-var imagebaseProductionPath = '/DATABASE/PRODUCTION/PUBLIC/';
+var imagebasePath = '/DATABASEPRO/DEVELOPMENT/PUBLIC/';
+var imagebaseProductionPath = '/DATABASEPRO/PRODUCTION/PUBLIC/';
 
 // ********************************************
 // ------------ Mode Configuration -----------
 // Debug Mode
-var debug_mode = true
+var debug_mode = false
 
 // Change Mode for Production or Development
-var is_production_mode = false
+var is_production_mode = true
 
 // First Time Database Operation
 var first_time_operation = true
