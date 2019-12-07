@@ -35,6 +35,11 @@ var first_time_operation = true
 var check_dev_publish_content = true
 
 
+// ------------------------------------------------------
+// Auto Init
+M.AutoInit();
+
+
 
 // *******************************************************
 // --------------- Extract Functions ---------------------
@@ -551,6 +556,62 @@ function modelLytSquareHoriCard(mdl_map_details) {
         </div>';
 
   return htmlLine;
+
+}
+
+// Create Scroll card model layout with map data list
+function createScrollCardLytFromMapListData(htmldocID,mapListData,size_status,border) {
+
+  let scroll_item_line = '<div class="row-scroll">' 
+  
+  let width = '320px'
+  let height = '200px'
+
+  if(size_status == 'M') {
+    width = '320px'
+    height = '200px'
+  } else if(size_status == 'S') {
+    width = '200px'
+    height = '100px'
+  }
+
+  let border_radius = '0'
+  if(border) {
+    border_radius = '10'
+  }
+
+
+  if(mapListData['STATUS']) {
+  for (let key in mapListData) {
+    
+    if(key != 'STATUS') {
+    let details = mapListData[key]
+
+    let name = details.split(',')[0]
+    let image = getDirectImageUrl('Images/'+details.split(',')[1])
+    let click = details.split(',')[2]
+    let link = details.split(',')[3]
+    
+    if(name == 'NA') {name = ''}
+    if(link == 'NA') {link = '#!'}
+
+    scroll_item_line += '<div class="card-scroll">\
+    <a href="' + link + '">\
+    <div class="card hoverable" style="width:'+width+'; height: '+height+'; border-radius: '+border_radius+'px;">\
+      <div class="card-image">\
+        <img src="'+image+'" style="border-radius: '+border_radius+'px;">\
+        <span class="card-title">'+name+'</span>\
+      </div></div></a></div>'
+
+    }
+  }
+
+  scroll_item_line += ' </div>'
+
+  displayOutput(scroll_item_line)
+  $("#"+htmldocID).html(scroll_item_line)
+
+}
 
 }
 

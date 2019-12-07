@@ -228,6 +228,7 @@ function submitDetails() {
     customedata['ADMINSTATUS'] = 'OPEN'
     customedata['ADMINCOMMENT'] = 'NA'
     customedata['FINALMESSAGE'] = 'NA'
+    customedata['RESPONSIBLE'] = 'NA'
 
     customedata['USERUUID'] = uuid
     customedata['USERCOMMENT'] = user_comment
