@@ -8,14 +8,17 @@
 
 // *********************************************
 // ------------- CONFIGURATION ----------------
-var basePath = '/DATABASEPRO/DEVELOPMENT/PUBLIC/';
-var basePrivatePath = '/DATABASEPRO/DEVELOPMENT/PRIVATE/';
+var base_database_name = 'DATABASEPRO'
 
-var baseProductionPath = '/DATABASEPRO/PRODUCTION/PUBLIC/';
-var baseProductionPrivatePath = '/DATABASEPRO/PRODUCTION/PRIVATE/';
 
-var imagebasePath = '/DATABASEPRO/DEVELOPMENT/PUBLIC/';
-var imagebaseProductionPath = '/DATABASEPRO/PRODUCTION/PUBLIC/';
+var basePath = '/'+base_database_name+'/DEVELOPMENT/PUBLIC/';
+var basePrivatePath = '/'+base_database_name+'/DEVELOPMENT/PRIVATE/';
+
+var baseProductionPath = '/'+base_database_name+'/PRODUCTION/PUBLIC/';
+var baseProductionPrivatePath = '/'+base_database_name+'/PRODUCTION/PRIVATE/';
+
+var imagebasePath = '/'+base_database_name+'/DEVELOPMENT/PUBLIC/';
+var imagebaseProductionPath = '/'+base_database_name+'/PRODUCTION/PUBLIC/';
 
 // ********************************************
 // ------------ Mode Configuration -----------
@@ -33,6 +36,11 @@ var first_time_operation = true
 // true : Production Publish Content
 // false : Development Publish Content
 var check_dev_publish_content = true
+
+
+// ------------------------------------------------------
+// Auto Init
+M.AutoInit();
 
 
 
@@ -347,6 +355,7 @@ function getBaseLayoutHTML(mdl_coll,base_layout, header, model_content) {
                     <div class="col s12 ' + header_text_layout_position + '">\
                       <h3><i class="mdi-content-send brown-text"></i></h3>\
                       <div class="row">'
+
                       if(show_model_base_header) {
                         base_layout_html += '<div class="col s12">\
                         <h4>' + header + '</h4>\
@@ -365,6 +374,44 @@ function getBaseLayoutHTML(mdl_coll,base_layout, header, model_content) {
                       base_layout_html += '</div>\
                       </div>\
                   </div><div class="row">' + model_content + '</div>';
+  }
+
+  // **********************************************************************
+  // ---------------------- CARD_ROW_SCROLL -------------------------------
+  // *********************************************************************
+
+  if (base_layout == 'CARD_ROW_SCROLL') {
+    
+    // ------------- Configuration -------------------------
+    var mdl_lyt_config = getModelLayoutConfig(mdl_coll)
+    show_model_base_header = mdl_lyt_config[0]
+    show_model_base_button = mdl_lyt_config[1]
+    header_text_layout_position = mdl_lyt_config[2]
+    header_button_layout_position = mdl_lyt_config[3]
+    // -----------------------------------------------------
+
+    base_layout_html = '<div class="row">\
+                    <div class="col s12 ' + header_text_layout_position + '">\
+                      <h3><i class="mdi-content-send brown-text"></i></h3>\
+                      <div class="row">'
+                      if(show_model_base_header) {
+                        base_layout_html += '<div class="col s12">\
+                        <h4>' + header + '</h4>\
+                      </div> ';                     
+                    }
+                        
+
+                      if(show_model_base_button){
+                        base_layout_html += '<div class="col s12">\
+                          <div class="' + header_button_layout_position + '">\
+                            <a onclick="clickViewAll(\'' + mdl_coll + '\')" class="waves-effect waves-light btn blue rcorners">View All</a>\
+                          </div>\
+                        </div>'
+                      }
+
+                      base_layout_html += '</div>\
+                      </div>\
+                  </div><div class="row-scroll">' + model_content + '</div>';
   }
 
 
@@ -448,10 +495,22 @@ function modelLayoutSelector(mdl_coll, mdl_layout, doc_details, all_doc_info_lis
     mdl_html_line = modelLytSquareCard(mdl_map_details)
   }
 
+  // SQUARE_CARD_SCROLL Layout
+  if (mdl_layout == 'SQUARE_CARD_SCROLL') {
+
+    mdl_html_line = modelLytSquareCardScroll(mdl_map_details)
+  }
+
   // SQUARE_CARD_IMAGE Layout
   if (mdl_layout == 'SQUARE_CARD_IMAGE') {
 
     mdl_html_line = modelLytSquareCardImage(mdl_map_details)
+  }
+
+  // SQUARE_CARD_IMAGE_SCROLL Layout
+  if (mdl_layout == 'SQUARE_CARD_IMAGE_SCROLL') {
+
+    mdl_html_line = modelLytSquareCardImageScroll(mdl_map_details)
   }
 
   // SQUARE_CARD_HORIZ Layout
@@ -496,11 +555,33 @@ function modelLytSquareCard(mdl_map_details) {
   var complete_content = mdl_map_details['CONTENT'] 
 
   var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_map_details) + '">\
-                  <div class="card hoverable" style="border-radius: 25px; widht: 400px; max-width: 400px;">\
-                    <div class="card-image z-depth-2" style="height: 200px; max-height: 200px; widht: 400px; max-width: 400px; border-radius: 25px 25px 0px 0px;">\
-                      <img src="' + getModelImageRef(image_ref) + '" style="height: 200px; max-height: 200px; widht: 400px; max-width: 400px; border-radius: 25px 25px 0px 0px;">\
+                  <div class="card hoverable" style="border-radius: 10px; widht: 400px; max-width: 400px;">\
+                    <div class="card-image z-depth-2" style="height: 200px; max-height: 200px; widht: 400px; max-width: 400px; border-radius: 10px 25px 0px 0px;">\
+                      <img src="' + getModelImageRef(image_ref) + '" style="height: 200px; max-height: 200px; widht: 400px; max-width: 400px; border-radius: 10px 10px 0px 0px;">\
                     </div>\
-                    <div class="red-card-content white-text" style="border-radius: 0px 0px 25px 25px;">\
+                    <div class="red-card-content white-text" style="border-radius: 0px 0px 10px 10px;">\
+                      <div class="card-content white-text">' + complete_content + '</div>\
+                    </div>\
+                  </div>\
+                </a>\
+              </div>';
+
+  return htmlLine;
+
+}
+
+// Model Square Card - Customize - Scroll
+function modelLytSquareCardScroll(mdl_map_details) {
+
+  var image_ref = mdl_map_details['IMAGE']
+  var complete_content = mdl_map_details['CONTENT'] 
+
+  var htmlLine = '<div class="card-scroll"><a href="' + clickHandling(mdl_map_details) + '">\
+                  <div class="card hoverable" style="border-radius: 10px; widht: 300px; max-width: 300px;">\
+                    <div class="card-image z-depth-2" style="height: 200px; max-height: 200px; widht: 400px; max-width: 400px; border-radius: 10px 25px 0px 0px;">\
+                      <img src="' + getModelImageRef(image_ref) + '" style="height: 200px; max-height: 200px; widht: 400px; max-width: 400px; border-radius: 10px 10px 0px 0px;">\
+                    </div>\
+                    <div class="red-card-content white-text" style="border-radius: 0px 0px 10px 10px;">\
                       <div class="card-content white-text">' + complete_content + '</div>\
                     </div>\
                   </div>\
@@ -518,9 +599,28 @@ function modelLytSquareCardImage(mdl_map_details) {
   var complete_content = mdl_map_details['CONTENT']
 
   var htmlLine = '<div class="col s12 m6"><a href="' + clickHandling(mdl_map_details) + '">\
-  <div class="card hoverable" style="border-radius: 25px;">\
-    <div class="card-image" style="border-radius: 25px;">\
-      <img src="' + getModelImageRef(image_ref) + '" style="height: 250px; max-height: 250px; border-radius: 25px;">\
+  <div class="card hoverable" style="border-radius: 10px;">\
+    <div class="card-image" style="border-radius: 10px;">\
+      <img src="' + getModelImageRef(image_ref) + '" style="height: 250px; max-height: 250px; border-radius: 10px;">\
+      <span class="card-title">' + complete_content + '</span>\
+    </div></div>\
+</a>\
+</div>';            
+
+  return htmlLine;
+
+}
+
+// Model Square Card with Image Only - Scroll
+function modelLytSquareCardImageScroll(mdl_map_details) {
+
+  var image_ref = mdl_map_details['IMAGE']
+  var complete_content = mdl_map_details['CONTENT']
+
+  var htmlLine = '<div class="card-scroll"><a href="' + clickHandling(mdl_map_details) + '">\
+  <div class="card hoverable" style="border-radius: 10px; width: 300px; height: 200px;">\
+    <div class="card-image" style="border-radius: 10px;">\
+      <img src="' + getModelImageRef(image_ref) + '" style="width: 300px; height: 200px; max-height: 200px; border-radius: 10px;">\
       <span class="card-title">' + complete_content + '</span>\
     </div></div>\
 </a>\
@@ -551,6 +651,62 @@ function modelLytSquareHoriCard(mdl_map_details) {
         </div>';
 
   return htmlLine;
+
+}
+
+// Create Scroll card model layout with map data list
+function createScrollCardLytFromMapListData(htmldocID,mapListData,size_status,border) {
+
+  let scroll_item_line = '<div class="row-scroll">' 
+  
+  let width = '300px'
+  let height = '200px'
+
+  if(size_status == 'M') {
+    width = '300px'
+    height = '200px'
+  } else if(size_status == 'S') {
+    width = '200px'
+    height = '100px'
+  }
+
+  let border_radius = '0'
+  if(border) {
+    border_radius = '10'
+  }
+
+
+  if(mapListData['STATUS']) {
+  for (let key in mapListData) {
+    
+    if(key != 'STATUS') {
+    let details = mapListData[key]
+
+    let name = details.split(',')[0]
+    let image = getDirectImageUrl('Images/'+details.split(',')[1])
+    let click = details.split(',')[2]
+    let link = details.split(',')[3]
+    
+    if(name == 'NA') {name = ''}
+    if(link == 'NA') {link = '#!'}
+
+    scroll_item_line += '<div class="card-scroll">\
+    <a href="' + link + '">\
+    <div class="card hoverable" style="width:'+width+'; height: '+height+'; border-radius: '+border_radius+'px;">\
+      <div class="card-image">\
+        <img src="'+image+'" style="border-radius: '+border_radius+'px;">\
+        <span class="card-title">'+name+'</span>\
+      </div></div></a></div>'
+
+    }
+  }
+
+  scroll_item_line += ' </div>'
+
+  displayOutput(scroll_item_line)
+  $("#"+htmldocID).html(scroll_item_line)
+
+}
 
 }
 

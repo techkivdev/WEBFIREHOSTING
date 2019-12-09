@@ -446,11 +446,11 @@ function modelLytSquareCard_local(mdl_map_details) {
   var complete_content = mdl_map_details['CONTENT'] 
 
   var htmlLine = '<div class="col s12 m4"><a href="' + clickHandling(mdl_map_details) + '">\
-                  <div class="card hoverable" style="border-radius: 25px;">\
-                    <div class="card-image z-depth-2" style="height: 200px; max-height: 200px; widht: 500px; max-width: 500px; border-radius: 25px 25px 0px 0px;">\
-                      <img src="' + getModelImageRef(image_ref) + '" style="height: 200px; max-height: 200px; widht: 400px; max-width: 400px; border-radius: 25px 25px 0px 0px;">\
+                  <div class="card hoverable" style="border-radius: 10px;">\
+                    <div class="card-image z-depth-2" style="height: 200px; max-height: 200px; widht: 500px; max-width: 500px; border-radius: 10px 10px 0px 0px;">\
+                      <img src="' + getModelImageRef(image_ref) + '" style="height: 200px; max-height: 200px; widht: 400px; max-width: 400px; border-radius: 10px 10px 0px 0px;">\
                     </div>\
-                    <div class="red-card-content white-text" style="border-radius: 0px 0px 25px 25px;">\
+                    <div class="red-card-content white-text" style="border-radius: 0px 0px 10px 10px;">\
                       <div class="card-content white-text">' + complete_content + '</div>\
                     </div>\
                   </div>\
@@ -468,9 +468,9 @@ function modelLytSquareCardImage_local(mdl_map_details) {
   var complete_content = mdl_map_details['CONTENT'] 
 
   var htmlLine = '<div class="col s12 m6"><a href="' + clickHandling(mdl_map_details) + '">\
-  <div class="card hoverable" style="border-radius: 25px;">\
-    <div class="card-image" style="border-radius: 25px;">\
-      <img src="' + getModelImageRef(image_ref) + '" style="height: 250px; max-height: 250px; border-radius: 25px;">\
+  <div class="card hoverable" style="border-radius: 10px;">\
+    <div class="card-image" style="border-radius: 10px;">\
+      <img src="' + getModelImageRef(image_ref) + '" style="height: 250px; max-height: 250px; border-radius: 10px;">\
       <span class="card-title">' + complete_content + '</span>\
     </div></div>\
 </a>\

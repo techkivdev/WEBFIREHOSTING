@@ -391,7 +391,7 @@ function updateNormalListContent() {
   // ------------------------------------
   createScrollCardLytFromMapListData('catg_list_sec',catg_list,'S',true)
 
-  createScrollCardLytFromMapListData('offr_list_sec',offer_list,'M',false)
+  createScrollCardLytFromMapListData('offr_list_sec',offer_list,'M',true)
 
 
 

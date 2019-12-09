@@ -211,6 +211,8 @@ getParams();
 //readDocumentDataAsync(document_ID)
 checkUserDetailsAndSTART()
 
+
+
 // *******************************************************
 // --------------- Functions -----------------------------
 
@@ -382,6 +384,17 @@ function updateNormalListContent() {
 
   let config = getHashDataList(getInfoDetailsC("Config"))
   displayOutput(config)
+
+
+  // ------------------------------------
+  // Update Catg List
+  // ------------------------------------
+  createScrollCardLytFromMapListData('catg_list_sec',catg_list,'S',true)
+
+  createScrollCardLytFromMapListData('offr_list_sec',offer_list,'M',true)
+
+
+
 
 }
 
@@ -627,7 +640,6 @@ function openRequestForm() {
 
   location.href = 'requestform.html?detail1=NA&detail2=NA&detail3=NA'
 }
-
 
 
 // ******************************************************

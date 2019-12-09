@@ -258,7 +258,8 @@ function updateHTMLPage() {
     document.getElementById("footer_sec").style.display = 'block';
 
     $("#page_title").html('Destination');
-    
+   
+    document.getElementById('header_card_dest').className = "green-card-content white-text z-depth-2";   
 
     genHTMLContentType1('col_section_1')
 
@@ -269,6 +270,8 @@ function updateHTMLPage() {
     document.getElementById("footer_sec").style.display = 'block';
 
     $("#page_title").html('Packages');
+
+    document.getElementById('header_card_pkg').className = "blue-card-content white-text z-depth-2";
 
     genHTMLContentType2('col_section_2')
 
